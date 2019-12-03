@@ -103,7 +103,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
-        groupViewHolder.tv_typename.setText(data.get(groupPosition).getOrder_status_detail());
+        groupViewHolder.tv_typename.setText(data.get(groupPosition).getOrder_status_detail().getName());
         groupViewHolder.tv_orderNumeber.setText(data.get(groupPosition).getOrder_sn());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,29 +133,23 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         }else {
             childViewHolder.myorder_item_bottom_rl.setVisibility(View.GONE);
         }
-        int receive_btn = datasBean.getReceive_btn();
-        int pay_btn = datasBean.getPay_btn();
-        int pay_status = datasBean.getPay_status();
-        int cancel_btn = datasBean.getCancel_btn();
-        int shipping_btn = datasBean.getShipping_btn();
-        int shipping_status = datasBean.getShipping_status();
-        int comment_btn = datasBean.getComment_btn();
-        if (datasBean.getOrder_status_detail().equals("待支付")){
+        OrderListBean.DataBean.OrderStatusDetailBean order_status_detail = datasBean.getOrder_status_detail();
+        if (order_status_detail.getStatus()==0){
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_obligation.setVisibility(View.VISIBLE);
-        }else if(datasBean.getOrder_status_detail().equals("待发货")){
+        }else if(order_status_detail.getStatus()==1){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-        }else if(datasBean.getOrder_status_detail().equals("待收货")){
+        }else if(order_status_detail.getStatus()==2){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.VISIBLE);
-        }else if (datasBean.getOrder_status_detail().equals("已完成")){
+        }else if (order_status_detail.getStatus()==5){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
@@ -173,7 +167,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_title.setText(datasBean.getOrder_goods().get(childPosition).getGoods_name());
         childViewHolder.tv_num.setText("X"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
         childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
-        childViewHolder.tv_price.setText("¥ "+datasBean.getOrder_goods().get(childPosition).getPrice());
+        childViewHolder.tv_price.setText("¥ "+datasBean.getOrder_goods().get(childPosition).getGoods_price());
         childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
         childViewHolder.tv_total_amount.setText("¥"+datasBean.getTotal_amount());
         return convertView;

@@ -37,6 +37,7 @@ import com.zhkj.syyj.Adapters.OnItemClickListener;
 import com.zhkj.syyj.Adapters.RecyclerLeftAdapter;
 import com.zhkj.syyj.Adapters.TaskListAdapter;
 import com.zhkj.syyj.Adapters.TaskTableAdapter;
+import com.zhkj.syyj.Beans.DoneListBean;
 import com.zhkj.syyj.Beans.TaskCategoryBean;
 import com.zhkj.syyj.Beans.TaskListsBean;
 import com.zhkj.syyj.CustView.CustomProgressDialog;
@@ -65,7 +66,7 @@ public class TaskFragment extends Fragment {
     private RadioButton ckbtn_done;
     private XRecyclerView mRecyclerView;
     private List<TaskListsBean.DataBean.TaskListBean> tasklist_item=new ArrayList<>();
-    private List<String> tasklist=new ArrayList<>();
+    private List<DoneListBean.DataBean> tasklist=new ArrayList<>();
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
     private HasBeenDoneAdapter hasBeenDoneAdapter;
@@ -96,11 +97,6 @@ public class TaskFragment extends Fragment {
         share = mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         token = share.getString("token", "");
         uid = share.getString("uid", "");
-        tasklist.add("112");
-        tasklist.add("112");
-        tasklist.add("112");
-        tasklist.add("112");
-        tasklist.add("112");
         InitUI();
         InitData();
         return inflate;
@@ -275,7 +271,14 @@ public class TaskFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Gson gson = new GsonBuilder().create();
+                        DoneListBean doneListBean = new GsonBuilder().create().fromJson(response.body(), DoneListBean.class);
+                        tasklist.clear();
+                        if (doneListBean.getCode()==1) {
+                            List<DoneListBean.DataBean> data = doneListBean.getData();
+                            tasklist=data;
+                            hasBeenDoneAdapter.setListAll(tasklist);
+                            mRecyclerView.setAdapter(hasBeenDoneAdapter);
+                        }
                         hasBeenDoneAdapter.setListAll(tasklist);
                         mRecyclerView.setAdapter(hasBeenDoneAdapter);
                     }

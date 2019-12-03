@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.zhkj.syyj.Adapters.HasBeenDoneAdapter;
 import com.zhkj.syyj.Adapters.TaskListAdapter;
+import com.zhkj.syyj.Beans.DoneListBean;
 import com.zhkj.syyj.R;
 import com.zhouyou.recyclerview.XRecyclerView;
 
@@ -31,7 +32,7 @@ public class HasBeenDoneFragment extends Fragment {
 
     private View inflate;
     private XRecyclerView mRecyclerView;
-    private List<String> tasklist_item=new ArrayList<>();
+    private List<DoneListBean.DataBean> tasklist_item=new ArrayList<>();
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
     private HasBeenDoneAdapter hasBeenDoneAdapter;
@@ -51,11 +52,6 @@ public class HasBeenDoneFragment extends Fragment {
     }
 
     private void InitUI() {
-        tasklist_item.add("112");
-        tasklist_item.add("112");
-        tasklist_item.add("112");
-        tasklist_item.add("112");
-        tasklist_item.add("112");
         mRecyclerView = inflate.findViewById(R.id.fm_has_been_done_recyclerView);
         mLayoutManager = new LinearLayoutManager(mContext);
         hasBeenDoneAdapter = new HasBeenDoneAdapter(mContext);

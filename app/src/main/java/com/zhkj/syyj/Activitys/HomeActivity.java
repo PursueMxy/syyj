@@ -110,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                 }else if (currentItems==2){
                     taskFragment.InitData();
                 }else if (currentItems==3){
+                     shopCartFragment.InitData();
                 }else if (currentItems==4){
                     minFragment.InitData();
                 }else{

@@ -34,6 +34,7 @@ import com.yyydjk.library.BannerLayout;
 import com.zhkj.syyj.Adapters.GridAdapter;
 import com.zhkj.syyj.Beans.CommentStatisticsBean;
 import com.zhkj.syyj.Beans.GoodsDetailBean;
+import com.zhkj.syyj.Beans.GoodsSpecBean;
 import com.zhkj.syyj.Beans.ShareImgBean;
 import com.zhkj.syyj.Beans.SpecGoodsPriceBean;
 import com.zhkj.syyj.CustView.BottomDialog;
@@ -82,7 +83,6 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private String goods_id;
     private String uid;
     private String token;
-    private HtmlTextView tv_goods_content;
     private TextView tv_share;
     private Button tv_forward;
     private String shop_price;
@@ -90,14 +90,13 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView tv_market_price;
     private TextView tv_money;
     private List<SpecGoodsPriceBean> SpecGoodsPriceList=new ArrayList<>();
-    private LabelsView  labelsView;
     private String key_name;
     private TextView tv_selectedNum;
     private TextView tv_select_num;
     private TextView tv_stock_num;
     private int store_count=0;
     private GoodsDetailPresenter goodsDetailPresenter;
-    private int item_id;
+    private int item_id=0;
     private MyScrollView scrollView;
     private MeasureRelativeLayout rl_appraise;
     private MeasureRelativeLayout rl_official;
@@ -112,7 +111,13 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private List<GoodsDetailBean.DataBean.GoodsImagesBean> goods_images=new ArrayList<>();
     private WebView webview;
     private String webUrl="file:///android_asset/EmptyView.html";
-
+    private NoScrollListView dtl_nolistview;
+    private List<GoodsSpecBean.SpecBean> specList=new ArrayList<>();
+    private int OneType;
+    private int TwoType;
+    private int ThreeType;
+    private int FourType;
+    private int FiveType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +147,6 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         webSettings.setJavaScriptEnabled(true);
         //2. 将Java对象映射到JS对象
         webview.addJavascriptInterface(GoodsDetailActivity.this, "jsObject");
-        tv_goods_content = findViewById(R.id.goods_detail_tv_goods_content);
         bannerLayout = findViewById(R.id.goods_detail_banner);
         bannerLayout.setAutoPlay(true);
         bannerLayout.setImageLoader(new GlideImageLoader());
@@ -176,8 +180,6 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         rl_officialHeight = rl_official.getViewHeight(rl_official);
         appraiseContentHeight = tv_appraise_content.getViewHeight(tv_appraise_content);
         copywritingHeight = tv_copywriting.getViewHeight(tv_copywriting);
-        tv_appraise_content.setText("sfsadgfdg\ngdhsdha");
-        tv_copywriting.setText("dfbhsdfds\nsdvasgvvvGYYYGB\n海景房和接电话发送到分工表计划的关键还是\n恒大华府更舒服");
         scrollView.setOnScrollListener(new MyScrollView.OnScrollListener() {
             @Override
             public void onScroll(int scrollY) {
@@ -185,8 +187,8 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 int viewHeight1 = tv_copywriting.getViewHeight(tv_copywriting);
                 int oneHeight=rl_appraiseHeight+(viewHeight-appraiseContentHeight);
                 int TwoHeight=rl_officialHeight+(viewHeight1-copywritingHeight);
-                Log.e("滑动距离",scrollY+"和"+oneHeight+"加"+rl_appraiseHeight);
-                Log.e("滑动距离ssss",scrollY+"和"+TwoHeight+"加"+rl_officialHeight);
+//                Log.e("滑动距离",scrollY+"和"+oneHeight+"加"+rl_appraiseHeight);
+//                Log.e("滑动距离ssss",scrollY+"和"+TwoHeight+"加"+rl_officialHeight);
             }
         });
     }
@@ -227,27 +229,34 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void RedeemNowDialog() {
         try{
-        item_id = SpecGoodsPriceList.get(0).getItem_id();
-        key_name = SpecGoodsPriceList.get(0).getKey_name();
-        store_count = SpecGoodsPriceList.get(0).getStore_count();
         final BottomDialog bottomDialog = new BottomDialog(this, R.style.ActionSheetDialogStyle);
         View inflate = LayoutInflater.from(mContext).inflate(R.layout.dialog_bottom_integral_detail, null);
         tv_select_num = inflate.findViewById(R.id.db_integral_dtl_tv_select_num);
         tv_selectedNum = inflate.findViewById(R.id.db_integral_dtl_tv_selectedNum);
         tv_stock_num = inflate.findViewById(R.id.db_integral_dtl_tv_stock_num);
-        labelsView = inflate.findViewById(R.id.db_integral_dtl_labels);
         tv_money = inflate.findViewById(R.id.db_integral_dtl_tv_money);
         tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
         tv_market_price.setText("建议售价：¥ "+market_price);
         tv_money.setText("¥ "+shop_price);
         tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
         tv_stock_num.setText("库存："+store_count+"");
+            dtl_nolistview = inflate.findViewById(R.id.db_integral_dtl_nolistview);
+            dtl_nolistview.setAdapter(new TypeAdapter());
         inflate.findViewById(R.id.db_integral_dtl_btn_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomDialog.dismiss();
                 //加入购物车
-                goodsDetailPresenter.GetCartAdd(uid,token,goods_id,item_id+"",SelectNum+"");
+                if (item_id>0) {
+                    if (SelectNum>0) {
+                        goodsDetailPresenter.GetCartAdd(uid,token,goods_id,item_id+"",SelectNum+"");
+                        bottomDialog.dismiss();
+                    }else {
+                        ToastUtils.showToast(mContext,"购买数量不能为0");
+                    }
+                }else {
+                    ToastUtils.showToast(mContext,"请选择类别");
+                }
 
             }
         });
@@ -281,38 +290,6 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-        labelsView.setMaxLines(0);
-        labelsView.setLabels(SpecGoodsPriceList, new LabelsView.LabelTextProvider<SpecGoodsPriceBean>() {
-            @Override
-            public CharSequence getLabelText(TextView label, int position, SpecGoodsPriceBean data) {
-                //根据data和position返回label需要显示的数据。
-                return data.getKey_name();
-            }
-        });
-        //标签的点击监听
-        labelsView.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
-            @Override
-            public void onLabelClick(TextView label, Object data, int position) {
-                store_count = SpecGoodsPriceList.get(position).getStore_count();
-                Log.e("store_count",store_count+"");
-                item_id = SpecGoodsPriceList.get(position).getItem_id();
-                if (store_count>0) {
-                    SelectNum = 1;
-                    tv_select_num.setText(SelectNum + "");
-                    key_name = SpecGoodsPriceList.get(position).getKey_name();
-                    //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
-                    tv_stock_num.setText("库存："+store_count + "");
-                }else {
-                    SelectNum = 0;
-                    tv_select_num.setText(SelectNum + "");
-                    key_name = SpecGoodsPriceList.get(position).getKey_name();
-                    //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
-                    tv_stock_num.setText("库存："+store_count + "");
-                }
-            }
-        });
         bottomDialog.setContentView(inflate);
         bottomDialog.show();
     }catch (Exception e){}
@@ -321,15 +298,13 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     //立即购买弹出窗
     public void  RedeemBuyNowDialog(){
         try {
-            item_id = SpecGoodsPriceList.get(0).getItem_id();
-            key_name = SpecGoodsPriceList.get(0).getKey_name();
-            store_count = SpecGoodsPriceList.get(0).getStore_count();
             final BottomDialog bottomDialog = new BottomDialog(this, R.style.ActionSheetDialogStyle);
             View inflate = LayoutInflater.from(mContext).inflate(R.layout.dialog_bottom_integral_detail, null);
             tv_select_num = inflate.findViewById(R.id.db_integral_dtl_tv_select_num);
             tv_selectedNum = inflate.findViewById(R.id.db_integral_dtl_tv_selectedNum);
             tv_stock_num = inflate.findViewById(R.id.db_integral_dtl_tv_stock_num);
-            labelsView = inflate.findViewById(R.id.db_integral_dtl_labels);
+            dtl_nolistview = inflate.findViewById(R.id.db_integral_dtl_nolistview);
+            dtl_nolistview.setAdapter(new TypeAdapter());
             tv_money = inflate.findViewById(R.id.db_integral_dtl_tv_money);
             tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
             tv_market_price.setText("建议售价：¥ " + market_price);
@@ -339,8 +314,16 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             inflate.findViewById(R.id.db_integral_dtl_btn_confirm).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bottomDialog.dismiss();
-                    goodsDetailPresenter.GetCartAdd2(uid, token, goods_id, item_id + "", SelectNum + "", "buy_now");
+                    if (item_id>0) {
+                        if (SelectNum>0) {
+                            goodsDetailPresenter.GetCartAdd2(uid, token, goods_id, item_id + "", SelectNum + "", "buy_now");
+                            bottomDialog.dismiss();
+                        }else {
+                            ToastUtils.showToast(mContext,"购买数量不能为0");
+                        }
+                    }else {
+                        ToastUtils.showToast(mContext,"请选择类别");
+                    }
                 }
             });
             inflate.findViewById(R.id.db_integral_dtl_img_close).setOnClickListener(new View.OnClickListener() {
@@ -370,37 +353,6 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                         tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
                     } else {
                         ToastUtils.showToast(mContext, "库存不足");
-                    }
-                }
-            });
-            labelsView.setMaxLines(0);
-            labelsView.setLabels(SpecGoodsPriceList, new LabelsView.LabelTextProvider<SpecGoodsPriceBean>() {
-                @Override
-                public CharSequence getLabelText(TextView label, int position, SpecGoodsPriceBean data) {
-                    //根据data和position返回label需要显示的数据。
-                    return data.getKey_name();
-                }
-            });
-            //标签的点击监听
-            labelsView.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
-                @Override
-                public void onLabelClick(TextView label, Object data, int position) {
-                    store_count = SpecGoodsPriceList.get(position).getStore_count();
-                    item_id = SpecGoodsPriceList.get(position).getItem_id();
-                    if (store_count > 0) {
-                        SelectNum = 1;
-                        tv_select_num.setText(SelectNum + "");
-                        key_name = SpecGoodsPriceList.get(position).getKey_name();
-                        //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
-                        tv_stock_num.setText("库存：" + store_count + "");
-                    } else {
-                        SelectNum = 0;
-                        tv_select_num.setText(SelectNum + "");
-                        key_name = SpecGoodsPriceList.get(position).getKey_name();
-                        //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
-                        tv_stock_num.setText("库存：" + store_count + "");
                     }
                 }
             });
@@ -443,20 +395,18 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             String sales_sum= jsonObject.getString("sales_sum");
             String share_imgs = jsonObject.getString("share_imgs");
             String comment_statistics = jsonObject.getString("comment_statistics");
-            CommentStatisticsBean commentStatisticsBean = new GsonBuilder().create().fromJson(comment_statistics, CommentStatisticsBean.class);
-            Glide.with(mContext).load(RequstUrlUtils.URL.HOST+commentStatisticsBean.getHeadimg()).into(img_appraise);
-            tv_appraise_name.setText(commentStatisticsBean.getNickname());
-            tv_appraise_content.setText(commentStatisticsBean.getContent());
-            if (share_imgs.length()>10){
-                urls.clear();
-                ShareImgBean shareImgBean = new GsonBuilder().create().fromJson("{share_imgs:"+ share_imgs+"}", ShareImgBean.class);
-                List<String> share_imgsList = shareImgBean.getShare_imgs();
-                for (int a=0;a<share_imgsList.size();a++){
-                    urls.add(RequstUrlUtils.URL.HOST+share_imgsList.get(a));
-                }
-                bannerLayout.setViewUrls(urls);
-            }
-            tv_goods_content.setHtml(goods_content,new HtmlHttpImageGetter(tv_goods_content));
+            JosnStatistics(comment_statistics);
+            //轮播图
+             urls.clear();
+             ShareImgBean shareImgBean = new GsonBuilder().create().fromJson("{share_imgs:"+ share_imgs+"}", ShareImgBean.class);
+             List<String> share_imgsList = shareImgBean.getShare_imgs();
+             for (int a=0;a<share_imgsList.size();a++){
+             urls.add(RequstUrlUtils.URL.HOST+share_imgsList.get(a));
+             }
+             if (urls.size()>0) {
+                 bannerLayout.setViewUrls(urls);
+             }
+             //产品详情
             webview.loadUrl("javascript:callJS('"+goods_content+"')");
             tv_goodsTitle.setText(goods_name);
             tv_goodsMoney.setText("¥ "+ shop_price);
@@ -470,11 +420,37 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 tv_share.setText("该商品不支持转发卖货");
                 tv_forward.setClickable(false);
             }
+            //规格详情
+            String spec_goods_price = jsonObject.getString("spec_goods_price");
+            JsonSpecGoodsPrice(spec_goods_price);
+             //规格列表
+            String spec = jsonObject.getString("spec");
+            GoodsSpecBean goodsSpecBean = new GsonBuilder().create().fromJson("{spec:" + spec + "}", GoodsSpecBean.class);
+            specList = goodsSpecBean.getSpec();
+            for (int a = 0; a< specList.size(); a++){
+                String name = specList.get(a).getName();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    //解析评论数据
+    public void JosnStatistics(String data){
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(data);
+            String content = jsonObject.getString("content");
+            String goods_rank = jsonObject.getString("goods_rank");
+            String headimg = jsonObject.getString("headimg");
+            String nickname = jsonObject.getString("nickname");
+            tv_appraise_name.setText(nickname);
+            tv_appraise_content.setText(content);
+            Glide.with(mContext).load(RequstUrlUtils.URL.HOST+headimg).into(img_appraise);
+        }catch (Exception e){
+
+        }
+    }
 
     //解析产品规格列表
     public boolean JsonSpecGoodsPrice(String specGoodsPrice){
@@ -488,15 +464,10 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 String key = jsonObject.getString("key");
                 String key_name = jsonObject.getString("key_name");
                 String price = jsonObject.getString("price");
-                String  cost_price = jsonObject.getString("cost_price");
-                String commission = jsonObject.getString("commission");
+                String  market_price = jsonObject.getString("market_price");
                 int store_count = jsonObject.getInt("store_count");
-                String bar_code = jsonObject.getString("bar_code");
-                String sku = jsonObject.getString("sku");
                 String spec_img = jsonObject.getString("spec_img");
-                int prom_id = jsonObject.getInt("prom_id");
-                int prom_type = jsonObject.getInt("prom_type");
-                SpecGoodsPriceBean specGoodsPriceBean = new SpecGoodsPriceBean(item_id, goods_id, key, key_name, price, cost_price, commission, store_count, bar_code, sku, spec_img, prom_id, prom_type);
+                SpecGoodsPriceBean specGoodsPriceBean = new SpecGoodsPriceBean(item_id, goods_id, key, key_name,market_price, price,store_count, spec_img);
                 SpecGoodsPriceList.add(specGoodsPriceBean);
             }
              return true;
@@ -513,10 +484,14 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
 
     //立即购买返回事件
     public void UpdateCartBuy(int code,String msg,String content){
-        Intent intent = new Intent(mContext, PlaceOrderActivity.class);
-        intent.putExtra("content",content);
-        intent.putExtra("item_id",item_id+"");
-        startActivity(intent);
+        if (code==1) {
+            Intent intent = new Intent(mContext, PlaceOrderActivity.class);
+            intent.putExtra("content", content);
+            intent.putExtra("item_id", item_id + "");
+            startActivity(intent);
+        }else {
+            ToastUtils.showToast(mContext,msg);
+        }
     }
 
    //返回通知
@@ -525,5 +500,94 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    //选择规格适配器
+    public class TypeAdapter extends  BaseAdapter{
+        @Override
+        public int getCount() {
+            return specList.size();
+        }
 
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View inflate = getLayoutInflater().inflate(R.layout.goods_type, null);
+            TextView tv_size = inflate.findViewById(R.id.goods_type_tv_size);
+            tv_size.setText(specList.get(position).getName());
+            final List<GoodsSpecBean.SpecBean.SpecItemBean> spec_item = specList.get(position).getSpec_item();
+            LabelsView  labelsView = inflate.findViewById(R.id.goods_type_labels);
+            labelsView.setMaxLines(0);
+            labelsView.setLabels(spec_item, new LabelsView.LabelTextProvider<GoodsSpecBean.SpecBean.SpecItemBean>() {
+                @Override
+                public CharSequence getLabelText(TextView label, int position, GoodsSpecBean.SpecBean.SpecItemBean data) {
+                    //根据data和position返回label需要显示的数据。
+                    return data.getItem();
+                }
+            });
+            //标签的点击监听
+            labelsView.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
+                @Override
+                public void onLabelClick(TextView label, Object data, int positions) {
+                    if (position==0){
+                        OneType=spec_item.get(positions).getId();
+                    }else if (position==1){
+                        TwoType=spec_item.get(positions).getId();
+                    }else if (position==2){
+                        ThreeType=spec_item.get(positions).getId();
+                    }else if (position==3){
+                        FourType=spec_item.get(positions).getId();
+                    }else if (position==4){
+                        FiveType=spec_item.get(positions).getId();
+                    }
+                    SleItemType();
+                }
+            });
+            return inflate;
+        }
+        public void SleItemType(){
+            if (specList.size()==1){
+                SltSpecGoods(OneType+"");
+            }else if (specList.size()==2){
+                SltSpecGoods(OneType+"_"+TwoType);
+            }else if (specList.size()==3){
+                SltSpecGoods(OneType+"_"+TwoType+"_"+ThreeType);
+            }else if (specList.size()==4){
+                SltSpecGoods(OneType+"_"+TwoType+"_"+ThreeType+"_"+FourType);
+            }else if (specList.size()==5){
+                SltSpecGoods(OneType+"_"+TwoType+"_"+ThreeType+"_"+FourType+"_"+FiveType);
+            }
+        }
+
+        public void SltSpecGoods(String type){
+            for (int a=0;a<SpecGoodsPriceList.size();a++){
+                if (type.equals(SpecGoodsPriceList.get(a).getKey())){
+                    key_name = SpecGoodsPriceList.get(a).getKey_name();
+                    store_count = SpecGoodsPriceList.get(a).getStore_count();
+                    item_id = SpecGoodsPriceList.get(a).getItem_id();
+                    //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
+                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                    tv_stock_num.setText("库存：" + store_count + "");
+                    return ;
+                }else {
+                    tv_selectedNum.setText("已选" + "请选择"+ "," + SelectNum + "件");
+                    tv_stock_num.setText("库存：" + store_count + "");
+                }
+                if (store_count > 0) {
+                    SelectNum = 1;
+                    tv_select_num.setText(SelectNum + "");
+                } else {
+                    SelectNum = 0;
+                    tv_select_num.setText(SelectNum + "");
+                }
+            }
+        }
+    }
 }

@@ -75,6 +75,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         ButterKnife.inject(this);
         initExpandableListView();
         initData();
+        myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
     }
 
     private void InitUI() {
@@ -380,15 +381,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     //解析数据
     public void UpdateJson(int code,String msg,String data) {
         if (code == 1) {
-            try {
                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
                 datas = orderListBean.getData();
                 initExpandableListViewData(datas);
                 myOrderAdapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                initExpandableListViewData(datas);
-                myOrderAdapter.notifyDataSetChanged();
-            }
         }
     }
 

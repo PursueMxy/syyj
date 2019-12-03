@@ -4,11 +4,12 @@ import java.util.List;
 
 public class OrderDetailBean {
 
+
     /**
      * code : 1
      * msg : 请求成功
-     * time : 1573799554
-     * data : {"order_id":673,"order_sn":"2019111510140363322","pay_status":0,"consignee":"Fu","mobile":"15306987599","shipping_name":"","pay_name":"微信","goods_price":"1699.00","shipping_price":"10.00","coupon_price":"0.00","integral":0,"total_amount":"1709.00","add_time":1573784043,"shipping_time":0,"confirm_time":0,"pay_time":0,"user_note":"","order_goods":[{"rec_id":718,"order_id":673,"goods_id":13,"goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_num":1,"price":"1699.00","spec_key_name":"选择版本:全网通3G+32G 选择颜色:红色 套餐类型:套餐一"}],"order_status_detail":"待支付","delivery_doc":[],"pay_btn":1,"cancel_btn":1,"receive_btn":0,"comment_btn":0,"shipping_btn":0}
+     * time : 1575361972
+     * data : {"order_id":666,"order_sn":"2019111417063129588","user_id":48,"consignee":"Fu","mobile":"15306987599","zipcode":"36100","shipping_name":"","pay_name":"余额支付","goods_price":"1699.00","shipping_price":"10.00","user_money":"1709.00","coupon_price":"0.00","integral":0,"order_amount":"0.00","total_amount":"1709.00","add_time":1573722391,"confirm_time":0,"pay_time":1573722391,"user_note":"","full_address":"福建厦门市思明区梧村街道火车站","order_goods":[{"goods_id":13,"goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_num":1,"goods_price":"1699.00","spec_key_name":"选择版本:全网通3G+32G 选择颜色:红色 套餐类型:官方标配","original_img":"/uploads/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png","integral":16990}],"order_status_detail":{"status":3,"name":"待评价"},"delivery_doc":{"shipping_name":"暂无物流信息","shipping_time":1573722391}}
      */
 
     private int code;
@@ -50,58 +51,54 @@ public class OrderDetailBean {
 
     public static class DataBean {
         /**
-         * order_id : 673
-         * order_sn : 2019111510140363322
-         * pay_status : 0
+         * order_id : 666
+         * order_sn : 2019111417063129588
+         * user_id : 48
          * consignee : Fu
          * mobile : 15306987599
+         * zipcode : 36100
          * shipping_name :
-         * pay_name : 微信
+         * pay_name : 余额支付
          * goods_price : 1699.00
          * shipping_price : 10.00
+         * user_money : 1709.00
          * coupon_price : 0.00
          * integral : 0
+         * order_amount : 0.00
          * total_amount : 1709.00
-         * add_time : 1573784043
-         * shipping_time : 0
+         * add_time : 1573722391
          * confirm_time : 0
-         * pay_time : 0
+         * pay_time : 1573722391
          * user_note :
-         * order_goods : [{"rec_id":718,"order_id":673,"goods_id":13,"goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_num":1,"price":"1699.00","spec_key_name":"选择版本:全网通3G+32G 选择颜色:红色 套餐类型:套餐一"}]
-         * order_status_detail : 待支付
-         * delivery_doc : []
-         * pay_btn : 1
-         * cancel_btn : 1
-         * receive_btn : 0
-         * comment_btn : 0
-         * shipping_btn : 0
+         * full_address : 福建厦门市思明区梧村街道火车站
+         * order_goods : [{"goods_id":13,"goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_num":1,"goods_price":"1699.00","spec_key_name":"选择版本:全网通3G+32G 选择颜色:红色 套餐类型:官方标配","original_img":"/uploads/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png","integral":16990}]
+         * order_status_detail : {"status":3,"name":"待评价"}
+         * delivery_doc : {"shipping_name":"暂无物流信息","shipping_time":1573722391}
          */
 
         private int order_id;
         private String order_sn;
-        private int pay_status;
+        private int user_id;
         private String consignee;
         private String mobile;
+        private String zipcode;
         private String shipping_name;
         private String pay_name;
         private String goods_price;
         private String shipping_price;
+        private String user_money;
         private String coupon_price;
         private int integral;
+        private String order_amount;
         private String total_amount;
         private int add_time;
-        private int shipping_time;
         private int confirm_time;
         private int pay_time;
         private String user_note;
-        private String order_status_detail;
-        private int pay_btn;
-        private int cancel_btn;
-        private int receive_btn;
-        private int comment_btn;
-        private int shipping_btn;
+        private String full_address;
+        private OrderStatusDetailBean order_status_detail;
+        private DeliveryDocBean delivery_doc;
         private List<OrderGoodsBean> order_goods;
-        private List<?> delivery_doc;
 
         public int getOrder_id() {
             return order_id;
@@ -119,12 +116,12 @@ public class OrderDetailBean {
             this.order_sn = order_sn;
         }
 
-        public int getPay_status() {
-            return pay_status;
+        public int getUser_id() {
+            return user_id;
         }
 
-        public void setPay_status(int pay_status) {
-            this.pay_status = pay_status;
+        public void setUser_id(int user_id) {
+            this.user_id = user_id;
         }
 
         public String getConsignee() {
@@ -141,6 +138,14 @@ public class OrderDetailBean {
 
         public void setMobile(String mobile) {
             this.mobile = mobile;
+        }
+
+        public String getZipcode() {
+            return zipcode;
+        }
+
+        public void setZipcode(String zipcode) {
+            this.zipcode = zipcode;
         }
 
         public String getShipping_name() {
@@ -175,6 +180,14 @@ public class OrderDetailBean {
             this.shipping_price = shipping_price;
         }
 
+        public String getUser_money() {
+            return user_money;
+        }
+
+        public void setUser_money(String user_money) {
+            this.user_money = user_money;
+        }
+
         public String getCoupon_price() {
             return coupon_price;
         }
@@ -191,6 +204,14 @@ public class OrderDetailBean {
             this.integral = integral;
         }
 
+        public String getOrder_amount() {
+            return order_amount;
+        }
+
+        public void setOrder_amount(String order_amount) {
+            this.order_amount = order_amount;
+        }
+
         public String getTotal_amount() {
             return total_amount;
         }
@@ -205,14 +226,6 @@ public class OrderDetailBean {
 
         public void setAdd_time(int add_time) {
             this.add_time = add_time;
-        }
-
-        public int getShipping_time() {
-            return shipping_time;
-        }
-
-        public void setShipping_time(int shipping_time) {
-            this.shipping_time = shipping_time;
         }
 
         public int getConfirm_time() {
@@ -239,52 +252,28 @@ public class OrderDetailBean {
             this.user_note = user_note;
         }
 
-        public String getOrder_status_detail() {
+        public String getFull_address() {
+            return full_address;
+        }
+
+        public void setFull_address(String full_address) {
+            this.full_address = full_address;
+        }
+
+        public OrderStatusDetailBean getOrder_status_detail() {
             return order_status_detail;
         }
 
-        public void setOrder_status_detail(String order_status_detail) {
+        public void setOrder_status_detail(OrderStatusDetailBean order_status_detail) {
             this.order_status_detail = order_status_detail;
         }
 
-        public int getPay_btn() {
-            return pay_btn;
+        public DeliveryDocBean getDelivery_doc() {
+            return delivery_doc;
         }
 
-        public void setPay_btn(int pay_btn) {
-            this.pay_btn = pay_btn;
-        }
-
-        public int getCancel_btn() {
-            return cancel_btn;
-        }
-
-        public void setCancel_btn(int cancel_btn) {
-            this.cancel_btn = cancel_btn;
-        }
-
-        public int getReceive_btn() {
-            return receive_btn;
-        }
-
-        public void setReceive_btn(int receive_btn) {
-            this.receive_btn = receive_btn;
-        }
-
-        public int getComment_btn() {
-            return comment_btn;
-        }
-
-        public void setComment_btn(int comment_btn) {
-            this.comment_btn = comment_btn;
-        }
-
-        public int getShipping_btn() {
-            return shipping_btn;
-        }
-
-        public void setShipping_btn(int shipping_btn) {
-            this.shipping_btn = shipping_btn;
+        public void setDelivery_doc(DeliveryDocBean delivery_doc) {
+            this.delivery_doc = delivery_doc;
         }
 
         public List<OrderGoodsBean> getOrder_goods() {
@@ -295,48 +284,76 @@ public class OrderDetailBean {
             this.order_goods = order_goods;
         }
 
-        public List<?> getDelivery_doc() {
-            return delivery_doc;
+        public static class OrderStatusDetailBean {
+            /**
+             * status : 3
+             * name : 待评价
+             */
+
+            private int status;
+            private String name;
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
         }
 
-        public void setDelivery_doc(List<?> delivery_doc) {
-            this.delivery_doc = delivery_doc;
+        public static class DeliveryDocBean {
+            /**
+             * shipping_name : 暂无物流信息
+             * shipping_time : 1573722391
+             */
+
+            private String shipping_name;
+            private int shipping_time;
+
+            public String getShipping_name() {
+                return shipping_name;
+            }
+
+            public void setShipping_name(String shipping_name) {
+                this.shipping_name = shipping_name;
+            }
+
+            public int getShipping_time() {
+                return shipping_time;
+            }
+
+            public void setShipping_time(int shipping_time) {
+                this.shipping_time = shipping_time;
+            }
         }
 
         public static class OrderGoodsBean {
             /**
-             * rec_id : 718
-             * order_id : 673
              * goods_id : 13
              * goods_name : 【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机
              * goods_num : 1
-             * price : 1699.00
-             * spec_key_name : 选择版本:全网通3G+32G 选择颜色:红色 套餐类型:套餐一
+             * goods_price : 1699.00
+             * spec_key_name : 选择版本:全网通3G+32G 选择颜色:红色 套餐类型:官方标配
+             * original_img : /uploads/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png
+             * integral : 16990
              */
 
-            private int rec_id;
-            private int order_id;
             private int goods_id;
             private String goods_name;
             private int goods_num;
-            private String price;
+            private String goods_price;
             private String spec_key_name;
-
-            public int getRec_id() {
-                return rec_id;
-            }
-
-            public void setRec_id(int rec_id) {
-                this.rec_id = rec_id;
-            }
-
-            public int getOrder_id() {
-                return order_id;
-            }
-
-            public void setOrder_id(int order_id) {
-                this.order_id = order_id;
-            }
+            private String original_img;
+            private int integral;
 
             public int getGoods_id() {
                 return goods_id;
@@ -362,12 +379,12 @@ public class OrderDetailBean {
                 this.goods_num = goods_num;
             }
 
-            public String getPrice() {
-                return price;
+            public String getGoods_price() {
+                return goods_price;
             }
 
-            public void setPrice(String price) {
-                this.price = price;
+            public void setGoods_price(String goods_price) {
+                this.goods_price = goods_price;
             }
 
             public String getSpec_key_name() {
@@ -376,6 +393,22 @@ public class OrderDetailBean {
 
             public void setSpec_key_name(String spec_key_name) {
                 this.spec_key_name = spec_key_name;
+            }
+
+            public String getOriginal_img() {
+                return original_img;
+            }
+
+            public void setOriginal_img(String original_img) {
+                this.original_img = original_img;
+            }
+
+            public int getIntegral() {
+                return integral;
+            }
+
+            public void setIntegral(int integral) {
+                this.integral = integral;
             }
         }
     }

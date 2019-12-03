@@ -4,7 +4,8 @@ public class RequstUrlUtils {
     public static class URL{
         //请求头
         public static  String HOST="http://syapi.kuaishanghd.com";
-
+        //测试
+//        public static  String HOST="http://192.168.0.8:99/index";
         //注册
         public static String Logon=HOST+"/user/reg";
 

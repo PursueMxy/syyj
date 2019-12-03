@@ -14,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Beans.AddressBean;
 import com.zhkj.syyj.Beans.PlaceOrderBean;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.PlaceOrderContract;
 import com.zhkj.syyj.presenter.PlaceOrderPresenter;
@@ -71,6 +74,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
 
     private void InitData() {
         placeOrderPresenter.getDefaultAddress(uid,token);
+        Log.e("content",content);
         PlaceOrderBean placeOrderBean = new GsonBuilder().create().fromJson(content, PlaceOrderBean.class);
         PlaceOrderBean.DataBean data = placeOrderBean.getData();
         cartList = data.getCartList();
@@ -196,10 +200,12 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
             TextView tv_sn = inflate.findViewById(R.id.list_goods_tv_sn);
             TextView tv_price = inflate.findViewById(R.id.list_goods_tv_price);
             TextView tv_num = inflate.findViewById(R.id.list_goods_tv_num);
+            ImageView goods_img = inflate.findViewById(R.id.list_goods_img);
             tv_title.setText(cartList.get(position).getGoods_name());
             tv_sn.setText(cartList.get(position).getSpec_key_name());
             tv_price.setText("¥"+cartList.get(position).getGoods_price());
             tv_num.setText("x"+cartList.get(position).getGoods_num());
+            Glide.with(mContext).load(RequstUrlUtils.URL.HOST+cartList.get(position).getOriginal_img()).into(goods_img);
             return inflate;
         }
     }
@@ -228,7 +234,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     //订单支付返回
     public void  UpdateUI(int code,String msg){
         if (code==1){
-            Intent intent = new Intent(mContext, OrderTypeActivity.class);
+            Intent intent = new Intent(mContext, MyOrderActivity.class);
             intent.putExtra("title","待发货");
             startActivity(intent);
             finish();

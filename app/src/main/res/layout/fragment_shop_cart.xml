@@ -23,6 +23,7 @@
                 android:layout_height="@dimen/dp_35" />
 
             <TextView
+                android:id="@+id/fm_shop_cart_manage"
                 android:layout_alignParentRight="true"
                 android:text="管理"
                 android:layout_marginRight="@dimen/dp_15"
@@ -55,33 +56,54 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60">
-        <CheckBox
+
+        <ImageView
+            android:id="@+id/fm_shop_cart_img"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_round"/>
+        <TextView
+            android:layout_toRightOf="@+id/fm_shop_cart_img"
+            android:id="@+id/fm_shop_cart_cb_all"
             android:layout_marginLeft="@dimen/left"
-            style="@style/MyCheckBox"
             android:layout_centerVertical="true"
             android:textColor="@color/text_black"
             android:textSize="@dimen/sp_18"
-            android:paddingLeft="@dimen/dp_10"
             android:text="全选"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/fm_shop_cart_sunMoney"
             android:layout_marginRight="@dimen/dp_10"
-            android:layout_toLeftOf="@+id/fm_shop_cart_js"
+            android:layout_toLeftOf="@+id/fm_shop_cart_btn_settle"
             android:layout_centerVertical="true"
             android:textColor="#ffefb134"
             android:textSize="16sp"
-            android:text="合计：¥ 520"
+            android:text="合计：¥ 0.00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/fm_shop_cart_js"
+            android:id="@+id/fm_shop_cart_btn_settle"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/btn_yellow"
             android:text="结 算"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_width="@dimen/dp_93"
+            android:layout_height="@dimen/dp_40" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/fm_shop_cart_btn_delete"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_yellow_white"
+            android:text="删除"
+            android:textColor="@color/text_efb134"
             android:layout_marginRight="@dimen/dp_15"
             android:layout_width="@dimen/dp_93"
             android:layout_height="@dimen/dp_40" />

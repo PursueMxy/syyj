@@ -140,7 +140,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             TextView tv_num = inflate.findViewById(R.id.list_goods_tv_num);
             tv_title.setText(order_goods.get(position).getGoods_name());
             tv_sn.setText(order_goods.get(position).getSpec_key_name());
-            tv_price.setText("¥"+order_goods.get(position).getPrice());
+            tv_price.setText("¥"+order_goods.get(position).getGoods_price());
             tv_num.setText("x"+order_goods.get(position).getGoods_num());
             return inflate;
         }
@@ -151,7 +151,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         if (code==1){
             order_goods = data.getOrder_goods();
             myAdapter.notifyDataSetChanged();
-            tv_type.setText(data.getOrder_status_detail());
+            tv_type.setText(data.getOrder_status_detail().getName());
             tv_freight.setText(data.getShipping_price());
             tv_coupon.setText(data.getCoupon_price());
             tv_orderNumber.setText(data.getOrder_sn());

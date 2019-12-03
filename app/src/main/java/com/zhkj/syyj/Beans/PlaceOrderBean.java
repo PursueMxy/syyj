@@ -8,8 +8,8 @@ public class PlaceOrderBean {
     /**
      * code : 1
      * msg : 请求成功
-     * time : 1573715344
-     * data : {"user_money":"0.00","cartPriceInfo":{"total_fee":1709,"goods_fee":0,"goods_num":1,"shipping_fee":10},"userCartCouponList":[],"userCouponNum":0,"cartGoodsTotalNum":1,"cartList":[{"goods_id":13,"goods_sn":"TP0000013","goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_price":"1699.00","member_goods_price":1699,"original_img":"/public/upload/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png","goods_num":1,"task_id":0,"spec_key":"9_12_15","spec_key_name":"选择版本:全网通3G+32G 选择颜色:铂光色 套餐类型:官方标配","sku":"","shipping_fee":"10.00","cut_fee":0,"goods_fee":1699,"total_fee":1699}]}
+     * time : 1575359577
+     * data : {"user_money":"88037.00","cartPriceInfo":{"total_fee":29.9,"goods_fee":0,"goods_num":1,"shipping_fee":0},"userCartCouponList":[],"userCouponNum":0,"cartGoodsTotalNum":1,"cartList":[{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":269,"spec_key":"21_23_61","spec_key_name":"选择种类:选择10斤装 种类:袋装 场景:送孩子","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]}
      */
 
     private int code;
@@ -51,12 +51,12 @@ public class PlaceOrderBean {
 
     public static class DataBean {
         /**
-         * user_money : 0.00
-         * cartPriceInfo : {"total_fee":1709,"goods_fee":0,"goods_num":1,"shipping_fee":10}
+         * user_money : 88037.00
+         * cartPriceInfo : {"total_fee":29.9,"goods_fee":0,"goods_num":1,"shipping_fee":0}
          * userCartCouponList : []
          * userCouponNum : 0
          * cartGoodsTotalNum : 1
-         * cartList : [{"goods_id":13,"goods_sn":"TP0000013","goods_name":"【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机","goods_price":"1699.00","member_goods_price":1699,"original_img":"/public/upload/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png","goods_num":1,"task_id":0,"spec_key":"9_12_15","spec_key_name":"选择版本:全网通3G+32G 选择颜色:铂光色 套餐类型:官方标配","sku":"","shipping_fee":"10.00","cut_fee":0,"goods_fee":1699,"total_fee":1699}]
+         * cartList : [{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":269,"spec_key":"21_23_61","spec_key_name":"选择种类:选择10斤装 种类:袋装 场景:送孩子","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]
          */
 
         private String user_money;
@@ -116,22 +116,22 @@ public class PlaceOrderBean {
 
         public static class CartPriceInfoBean {
             /**
-             * total_fee : 1709
+             * total_fee : 29.9
              * goods_fee : 0
              * goods_num : 1
-             * shipping_fee : 10
+             * shipping_fee : 0
              */
 
-            private int total_fee;
+            private double total_fee;
             private int goods_fee;
             private int goods_num;
             private int shipping_fee;
 
-            public int getTotal_fee() {
+            public double getTotal_fee() {
                 return total_fee;
             }
 
-            public void setTotal_fee(int total_fee) {
+            public void setTotal_fee(double total_fee) {
                 this.total_fee = total_fee;
             }
 
@@ -162,38 +162,38 @@ public class PlaceOrderBean {
 
         public static class CartListBean {
             /**
-             * goods_id : 13
-             * goods_sn : TP0000013
-             * goods_name : 【套餐赠耳机】HUAWEI/华为 畅享8 Plus 全面屏手机
-             * goods_price : 1699.00
-             * member_goods_price : 1699
-             * original_img : /public/upload/goods/2018/04-17/4c67162a2a45e4c4fbfea50b64241567.png
+             * goods_id : 220
+             * goods_sn : TP0000220
+             * goods_name : 好多多
+             * goods_price : 29.90
+             * member_goods_price : 29.9
+             * original_img : /uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg
              * goods_num : 1
-             * task_id : 0
-             * spec_key : 9_12_15
-             * spec_key_name : 选择版本:全网通3G+32G 选择颜色:铂光色 套餐类型:官方标配
+             * item_id : 269
+             * spec_key : 21_23_61
+             * spec_key_name : 选择种类:选择10斤装 种类:袋装 场景:送孩子
              * sku :
-             * shipping_fee : 10.00
+             * shipping_fee : 0
              * cut_fee : 0
-             * goods_fee : 1699
-             * total_fee : 1699
+             * goods_fee : 29.9
+             * total_fee : 29.9
              */
 
             private int goods_id;
             private String goods_sn;
             private String goods_name;
             private String goods_price;
-            private int member_goods_price;
+            private double member_goods_price;
             private String original_img;
             private int goods_num;
-            private int task_id;
+            private int item_id;
             private String spec_key;
             private String spec_key_name;
             private String sku;
-            private String shipping_fee;
+            private int shipping_fee;
             private int cut_fee;
-            private int goods_fee;
-            private int total_fee;
+            private double goods_fee;
+            private double total_fee;
 
             public int getGoods_id() {
                 return goods_id;
@@ -227,11 +227,11 @@ public class PlaceOrderBean {
                 this.goods_price = goods_price;
             }
 
-            public int getMember_goods_price() {
+            public double getMember_goods_price() {
                 return member_goods_price;
             }
 
-            public void setMember_goods_price(int member_goods_price) {
+            public void setMember_goods_price(double member_goods_price) {
                 this.member_goods_price = member_goods_price;
             }
 
@@ -251,12 +251,12 @@ public class PlaceOrderBean {
                 this.goods_num = goods_num;
             }
 
-            public int getTask_id() {
-                return task_id;
+            public int getItem_id() {
+                return item_id;
             }
 
-            public void setTask_id(int task_id) {
-                this.task_id = task_id;
+            public void setItem_id(int item_id) {
+                this.item_id = item_id;
             }
 
             public String getSpec_key() {
@@ -283,11 +283,11 @@ public class PlaceOrderBean {
                 this.sku = sku;
             }
 
-            public String getShipping_fee() {
+            public int getShipping_fee() {
                 return shipping_fee;
             }
 
-            public void setShipping_fee(String shipping_fee) {
+            public void setShipping_fee(int shipping_fee) {
                 this.shipping_fee = shipping_fee;
             }
 
@@ -299,19 +299,19 @@ public class PlaceOrderBean {
                 this.cut_fee = cut_fee;
             }
 
-            public int getGoods_fee() {
+            public double getGoods_fee() {
                 return goods_fee;
             }
 
-            public void setGoods_fee(int goods_fee) {
+            public void setGoods_fee(double goods_fee) {
                 this.goods_fee = goods_fee;
             }
 
-            public int getTotal_fee() {
+            public double getTotal_fee() {
                 return total_fee;
             }
 
-            public void setTotal_fee(int total_fee) {
+            public void setTotal_fee(double total_fee) {
                 this.total_fee = total_fee;
             }
         }

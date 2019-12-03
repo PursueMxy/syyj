@@ -3,13 +3,16 @@ package com.zhkj.syyj.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Activitys.ForwardActivity;
 import com.zhkj.syyj.Activitys.ReMindActivity;
 import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.Beans.TaskListsBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 
@@ -45,5 +48,10 @@ public class TaskListAdapter extends HelperRecyclerViewAdapter<TaskListsBean.Dat
        TextView tv_content = viewHolder.getView(R.id.list_home_task_tv_content);
        TextView tv_price= viewHolder.getView(R.id.list_home_task_tv_price);
        TextView tv_rrp= viewHolder.getView(R.id.list_home_task_tv_rrp);
+       ImageView img = viewHolder.getView(R.id.list_home_task_img);
+        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+item.getOriginal_img()).into(img);
+        tv_content.setText(item.getShare_content());
+       tv_price.setText("¥ "+item.getShop_price());
+       tv_rrp.setText("¥ "+item.getMarket_price());
     }
 }

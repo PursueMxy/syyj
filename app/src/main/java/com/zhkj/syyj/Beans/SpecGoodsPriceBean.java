@@ -9,28 +9,21 @@ public class SpecGoodsPriceBean {
      * key_name : 选择版本:全网通3G+32G 选择颜色:红色 套餐类型:官方标配
      * price : 1699.00
      * cost_price : 0.00
-     * commission : 0.00
      * store_count : 92
-     * bar_code :
      * sku :
      * spec_img :
-     * prom_id : 0
-     * prom_type : 0
      */
 
     private int item_id;
     private int goods_id;
     private String key;
     private String key_name;
+
+
+    private String market_price;
     private String price;
-    private String cost_price;
-    private String commission;
     private int store_count;
-    private String bar_code;
-    private String sku;
     private String spec_img;
-    private int prom_id;
-    private int prom_type;
 
     public int getItem_id() {
         return item_id;
@@ -63,7 +56,13 @@ public class SpecGoodsPriceBean {
     public void setKey_name(String key_name) {
         this.key_name = key_name;
     }
+    public String getMarket_price() {
+        return market_price;
+    }
 
+    public void setMarket_price(String market_price) {
+        this.market_price = market_price;
+    }
     public String getPrice() {
         return price;
     }
@@ -72,21 +71,6 @@ public class SpecGoodsPriceBean {
         this.price = price;
     }
 
-    public String getCost_price() {
-        return cost_price;
-    }
-
-    public void setCost_price(String cost_price) {
-        this.cost_price = cost_price;
-    }
-
-    public String getCommission() {
-        return commission;
-    }
-
-    public void setCommission(String commission) {
-        this.commission = commission;
-    }
 
     public int getStore_count() {
         return store_count;
@@ -96,21 +80,6 @@ public class SpecGoodsPriceBean {
         this.store_count = store_count;
     }
 
-    public String getBar_code() {
-        return bar_code;
-    }
-
-    public void setBar_code(String bar_code) {
-        this.bar_code = bar_code;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
 
     public String getSpec_img() {
         return spec_img;
@@ -120,35 +89,15 @@ public class SpecGoodsPriceBean {
         this.spec_img = spec_img;
     }
 
-    public int getProm_id() {
-        return prom_id;
-    }
 
-    public void setProm_id(int prom_id) {
-        this.prom_id = prom_id;
-    }
-
-    public int getProm_type() {
-        return prom_type;
-    }
-
-    public void setProm_type(int prom_type) {
-        this.prom_type = prom_type;
-    }
-
-    public SpecGoodsPriceBean(int item_id, int goods_id, String key, String key_name, String price, String cost_price, String commission, int store_count, String bar_code, String sku, String spec_img, int prom_id, int prom_type) {
+    public SpecGoodsPriceBean(int item_id, int goods_id, String key, String key_name, String market_price, String price, int store_count, String spec_img) {
         this.item_id = item_id;
         this.goods_id = goods_id;
         this.key = key;
         this.key_name = key_name;
+        this.market_price = market_price;
         this.price = price;
-        this.cost_price = cost_price;
-        this.commission = commission;
         this.store_count = store_count;
-        this.bar_code = bar_code;
-        this.sku = sku;
         this.spec_img = spec_img;
-        this.prom_id = prom_id;
-        this.prom_type = prom_type;
     }
 }

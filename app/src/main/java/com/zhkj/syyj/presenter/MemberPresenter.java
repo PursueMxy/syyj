@@ -27,9 +27,7 @@ public class MemberPresenter implements MemberContract.Presenter {
         UserLevelBean userLevelBean = new GsonBuilder().create().fromJson(content, UserLevelBean.class);
         if (userLevelBean.getCode()==1){
             UserLevelBean.DataBean data = userLevelBean.getData();
-            List<UserLevelBean.DataBean.LevelBean> level = data.getLevel();
-            UserLevelBean.DataBean.UserBean user = data.getUser();
-            mView.UpdateUI(userLevelBean.getCode(),userLevelBean.getMsg(),level,user);
+            mView.UpdateUI(userLevelBean.getCode(),userLevelBean.getMsg(),data);
         }
     }
 }

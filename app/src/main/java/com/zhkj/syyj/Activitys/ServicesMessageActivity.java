@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.zhkj.syyj.Adapters.ServicesMessageAdapter;
+import com.zhkj.syyj.Beans.MessageNoticeBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.ServicesMessageContract;
@@ -118,6 +119,10 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void UpdateUI(int code,String msg, List<MessageNoticeBean.DataBean> data){
 
     }
 }

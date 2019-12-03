@@ -11,7 +11,7 @@ public interface MemberContract {
     }
 
     interface View {
-        void UpdateUI(int code, String msg, List<UserLevelBean.DataBean.LevelBean> level,UserLevelBean.DataBean.UserBean user);
+        void UpdateUI(int code, String msg,UserLevelBean.DataBean data);
     }
 
     interface Presenter {

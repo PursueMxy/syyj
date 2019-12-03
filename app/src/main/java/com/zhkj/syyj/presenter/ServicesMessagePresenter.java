@@ -7,6 +7,8 @@ import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.contract.ServicesMessageContract;
 import com.zhkj.syyj.model.ServicesMessageModel;
 
+import java.util.List;
+
 public class ServicesMessagePresenter implements ServicesMessageContract.Presenter {
 
     private ServicesMessageContract.View mView;
@@ -26,7 +28,8 @@ public class ServicesMessagePresenter implements ServicesMessageContract.Present
         PublicResultBean publicResultBean = gson.fromJson(content, PublicResultBean.class);
         if (publicResultBean.getCode()==1){
             MessageNoticeBean messageNoticeBean = gson.fromJson(content, MessageNoticeBean.class);
-            MessageNoticeBean.DataBean data = messageNoticeBean.getData();
+            List<MessageNoticeBean.DataBean> data = messageNoticeBean.getData();
+            mView.UpdateUI(messageNoticeBean.getCode(),messageNoticeBean.getMsg(),data);
         }
     }
 

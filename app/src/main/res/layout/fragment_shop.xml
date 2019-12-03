@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ShopFragment">
+
+  <LinearLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:text="商城"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/sp_22"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_35" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/fm_shop_rl_search"
+                android:layout_marginTop="@dimen/dp_17"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_37">
+                <TextView
+                    android:id="@+id/fm_shop_edt_content"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:background="@drawable/bg_search"
+                    android:textColor="#ff949397"
+                    android:textSize="12sp"
+                    android:layout_toRightOf="@+id/home_img_logo_name"
+                    android:drawableLeft="@mipmap/icon_search"
+                    android:gravity="center|left"
+                    android:hint="请输入搜索内容"
+                    android:layout_width="@dimen/dp_295"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/fm_shop_tv_search"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_12"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="搜索"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp"
+                    />
+            </RelativeLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fm_shop_ll_two_rec"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fm_shop_rec_left"
+                    android:layout_width="@dimen/dp_79"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/text_fdfdfd" />
+
+                <FrameLayout
+                    android:layout_width="@dimen/dp_280"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fm_shop_rec_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </FrameLayout>
+            </LinearLayout>
+           <LinearLayout
+               android:background="@color/white"
+               android:orientation="horizontal"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/fm_shop_recycler_left"
+                   android:layout_width="@dimen/dp_79"
+                   android:clickable="true"
+                   android:focusableInTouchMode="true"
+                   android:focusable="true"
+                   android:layout_height="match_parent"
+                  />
+
+               <View
+                   android:layout_width="@dimen/dp_1"
+                   android:layout_height="match_parent"
+                   android:background="@color/text_fdfdfd" />
+
+               <com.zhouyou.recyclerview.XRecyclerView
+                   android:id="@+id/fm_shop_right_xrecycler"
+                   android:layout_width="@dimen/dp_280"
+                   android:layout_height="match_parent"/>
+           </LinearLayout>
+
+  </LinearLayout>
+
+</FrameLayout>

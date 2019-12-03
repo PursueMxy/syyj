@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yyydjk.library.BannerLayout
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:id="@+id/fm_shop_top_banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_120"
+        app:autoPlayDuration="5000"
+        app:indicatorMargin="@dimen/dp_10"
+        app:indicatorPosition="centerBottom"
+        app:indicatorShape="oval"
+        app:indicatorSpace="5dp"
+        app:scrollDuration="1100"
+        app:selectedIndicatorColor="@color/text_efb134"
+        app:selectedIndicatorHeight="7dp"
+        app:selectedIndicatorWidth="7dp"
+        app:unSelectedIndicatorColor="@color/white"
+        app:unSelectedIndicatorHeight="7dp"
+        app:unSelectedIndicatorWidth="7dp" />
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EF9F20</color>
+    <color name="colorPrimaryDark">#EF9F20</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="text_black">#ff040000</color>
+    <color name="text_efb134">#ffefb134</color>
+    <color name="text_white">#ffffffff</color>
+    <color name="text_949397">#ff949397</color>
+    <color name="text_fdfdfd">#BEB7B7</color>
+    <color name="e99415">#ffe99415</color>
+    <color name="tab_normal_color">#4E4D52</color>
+    <color name="tab_selected_color">#E0BD85</color>
+    <color name="tab_e6e6e6">#e6e6e6</color>
+    <drawable name="cut_off_rule">#e6e6e6</drawable>
+    <color name="bg_fafafa">#FFFAFAFA</color>
+
+    <!--白色  标题 背景-->
+    <color name="colorBackground">#ffffff</color>
+    <!--蓝色  选中下划线 -->
+    <color name="colorLineChoosed">#33B5E5</color>
+    <!--半透明蓝色  选中下划线 阴影-->
+    <color name="colorLineChoosedShadow">#8833B5E5</color>
+    <!--灰色  未选中下划线 -->
+    <color name="colorLineDefault">#FFAAAAAA</color>
+    <color name="v333333">#333333</color>
+    <color name="ff5000">#ff5000</color>
+    <color name="v666666">#666666</color>
+    <color name="veeeeee">#eeeeee</color>
+    <dimen name="top_high">@dimen/dp_45</dimen>
+    <dimen name="left">@dimen/dp_15</dimen>
+    <dimen name="right">@dimen/dp_15</dimen>
+</resources>

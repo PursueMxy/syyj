@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.yyydjk.library.BannerLayout
+        android:id="@+id/fm_home_banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_201"
+        app:autoPlayDuration="5000"
+        app:indicatorMargin="@dimen/dp_54"
+        app:indicatorPosition="centerBottom"
+        app:indicatorShape="oval"
+        app:indicatorSpace="5dp"
+        app:scrollDuration="1100"
+        app:selectedIndicatorColor="@color/text_efb134"
+        app:selectedIndicatorHeight="7dp"
+        app:selectedIndicatorWidth="7dp"
+        app:unSelectedIndicatorColor="@color/white"
+        app:unSelectedIndicatorHeight="7dp"
+        app:unSelectedIndicatorWidth="7dp" />
+</RelativeLayout>

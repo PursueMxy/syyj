@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_auditing"
+    android:orientation="vertical"
+    tools:context=".Activitys.AuditingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35">
+        <ImageView
+            android:src="@mipmap/icon_arrow_left"
+            android:id="@+id/auditing_img_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="用户信息审核中"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_22"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35" />
+    </RelativeLayout>
+    <TextView
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_404"
+        android:text="用户信息审核中"
+        android:textColor="#ffffffff"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="等信息审核通过后即可登录"
+        android:textColor="#ffffffff"
+        android:textSize="12sp"
+        />
+    <Button
+        android:id="@+id/auditing_btn_back"
+        android:text="返回"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/e99415"
+        android:layout_marginLeft="@dimen/dp_34"
+        android:layout_marginRight="@dimen/dp_34"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/btn_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_46" />
+</LinearLayout>

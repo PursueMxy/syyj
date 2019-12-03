@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><!--<shape xmlns:android="http://schemas.android.com/apk/res/android">--><!--<stroke--><!--android:width="1dp"--><!--android:color="@color/divider_color" />--><!--<solid android:color="@color/pink_color" />--><!--<corners android:radius="4dp" />--><!--</shape>-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 标签选中时的文字颜色 -->
+    <item android:color="@color/white" android:state_selected="true" />
+    <!-- 标签的正常文字颜色 -->
+    <item android:color="@color/text_black" />
+</selector>

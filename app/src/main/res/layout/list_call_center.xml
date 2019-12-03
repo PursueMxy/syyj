@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+    android:id="@+id/list_callcenter_left"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/list_callcenter_left_img_head"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:src="@mipmap/icon_headportrait"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32" />
+
+    <TextView
+        android:id="@+id/list_callcenter_left_tv_message"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/text_black"
+        android:text="1111111"
+        android:background="@color/white"
+        android:layout_toRightOf="@+id/list_callcenter_left_img_head"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+  </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/list_callcenter_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:id="@+id/list_callcenter_right_img_head"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:src="@mipmap/icon_headportrait"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32" />
+
+        <TextView
+              android:id="@+id/list_callcenter_right_tv_message"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:padding="@dimen/dp_10"
+            android:textSize="@dimen/sp_13"
+            android:textColor="@color/text_black"
+            android:text="1111111"
+            android:background="@color/white"
+            android:layout_toLeftOf="@+id/list_callcenter_right_img_head"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <TextView
+      android:id="@+id/list_shopping_address_tv_default"
+      android:layout_margin="@dimen/dp_10"
+      android:paddingTop="@dimen/dp_5"
+      android:paddingBottom="@dimen/dp_5"
+      android:paddingLeft="@dimen/dp_10"
+      android:paddingRight="@dimen/dp_10"
+      android:textSize="@dimen/sp_14"
+      android:background="@drawable/btn_default"
+      android:textColor="@color/text_efb134"
+      android:text="默认"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+
+     <TextView
+         android:id="@+id/list_shopping_address_tv_name"
+         android:padding="@dimen/dp_2"
+         android:layout_alignTop="@+id/list_shopping_address_tv_default"
+         android:text="颜"
+         android:textSize="@dimen/sp_17"
+         android:textColor="@color/text_black"
+         android:layout_toRightOf="@+id/list_shopping_address_tv_default"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/list_shopping_address_tv_address"
+        android:layout_marginTop="@dimen/dp_15"
+        android:padding="@dimen/dp_2"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_below="@+id/list_shopping_address_tv_default"
+        android:text="XX省XX市XX县"
+        android:textSize="@dimen/sp_17"
+        android:textColor="@color/text_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+       <CheckBox
+           android:id="@+id/list_shopping_address_cb_default"
+           android:paddingLeft="@dimen/dp_10"
+           style="@style/MyCheckBox"
+           android:layout_alignTop="@+id/list_shopping_address_tv_delete"
+           android:textSize="@dimen/sp_12"
+           android:text="设为默认"
+           android:layout_marginLeft="@dimen/dp_10"
+           android:layout_marginBottom="@dimen/dp_20"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/list_shopping_address_tv_delete"
+        android:drawablePadding="@dimen/dp_10"
+        android:drawableLeft="@mipmap/icon_delete"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/text_black"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:text="删除"
+        android:layout_marginTop="@dimen/dp_32"
+        android:layout_below="@+id/list_shopping_address_tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/list_shopping_address_tv_update"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_toLeftOf="@+id/list_shopping_address_tv_delete"
+        android:drawablePadding="@dimen/dp_10"
+        android:drawableLeft="@mipmap/icon_edit"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/text_black"
+        android:layout_marginRight="@dimen/dp_20"
+        android:text="编辑"
+        android:layout_marginTop="@dimen/dp_32"
+        android:layout_below="@+id/list_shopping_address_tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

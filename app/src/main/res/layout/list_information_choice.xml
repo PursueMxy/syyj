@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_white"
+    android:layout_marginTop="@dimen/dp_10"
+    android:layout_width="@dimen/dp_330"
+    android:layout_height="@dimen/dp_110">
+    <ImageView
+        android:id="@+id/list_information_choice_img"
+        android:src="@mipmap/icon_home_rel"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/dp_107"
+        android:layout_height="@dimen/dp_90" />
+    <TextView
+        android:id="@+id/list_information_choice_tv_title"
+        android:layout_alignTop="@+id/list_information_choice_img"
+        android:text="金价飙涨吸引各路资金涌入金价飙涨吸引各路资金涌入"
+        android:textColor="#ff040000"
+        android:textSize="14sp"
+        android:lines="2"
+        android:ellipsize="end"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@id/list_information_choice_img"
+        android:layout_width="@dimen/dp_193"
+        android:layout_height="@dimen/dp_48" />
+    <TextView
+        android:id="@+id/list_information_choice_tv_content"
+        android:layout_below="@+id/list_information_choice_tv_title"
+        android:text="自今年5月以来，随着全球金价快速上涨并创下6年新高"
+        android:textColor="#ff949397"
+        android:textSize="12sp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@id/list_information_choice_img"
+        android:layout_width="@dimen/dp_193"
+        android:layout_height="@dimen/dp_17" />
+    <TextView
+        android:id="@+id/list_information_choice_tv_time"
+        android:layout_below="@+id/list_information_choice_tv_content"
+        android:text="2019-09-10 14:50:05"
+        android:textColor="#ff949397"
+        android:textSize="12sp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@id/list_information_choice_img"
+        android:layout_width="@dimen/dp_193"
+        android:layout_height="@dimen/dp_17" />
+</RelativeLayout>

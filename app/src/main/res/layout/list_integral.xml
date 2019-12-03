@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_160"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+<ImageView
+    android:id="@+id/list_integral_img"
+    android:src="@mipmap/icon_integral_item"
+    android:layout_width="@dimen/dp_160"
+    android:layout_height="@dimen/dp_115" />
+    <TextView
+        android:id="@+id/list_integral_tv_title"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_43"
+        android:text="商品标题商品标题商品标题"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/sp_14"
+        />
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dp_2"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/list_integral_tv_price"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥ 99.00"
+            android:textColor="@color/text_efb134"
+            android:textSize="@dimen/sp_14"
+            />
+        <Button
+            android:id="@+id/list_integral_btn_redeem_now"
+            android:background="@drawable/btn_yellow_white"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_alignParentRight="true"
+            android:text="立即兑换"
+            android:textColor="@color/text_efb134"
+            android:textSize="@dimen/sp_10"
+            android:layout_width="@dimen/dp_58"
+            android:layout_height="@dimen/dp_19" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.zhkj.syyj"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+
+            annotationProcessorOptions {
+
+                includeCompileClasspath = true
+            }
+        }
+
+        defaultConfig {
+            ndk {
+                // 设置支持的SO库架构
+                abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            }
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    //底部按钮
+    implementation 'com.github.chaychan:BottomBarLayout:1.2.0'
+
+    //recyclerview
+    implementation 'com.zhouyou:easyrecyclerview:1.0.5'
+
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    implementation 'com.jakewharton:butterknife:5.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+    //图片选择框框
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+
+    //bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    //权限申请框架
+    implementation 'com.hjq:xxpermissions:6.0'
+
+    implementation 'com.lzy.net:okgo:3.0.4'
+
+    //轮播图
+    implementation 'com.github.dongjunkun:BannerLayout:1.0.6'
+
+    implementation 'org.sufficientlysecure:html-textview:3.8'
+
+}

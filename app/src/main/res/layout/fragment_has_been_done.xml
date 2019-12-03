@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.HasBeenDoneFragment">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+       <com.zhouyou.recyclerview.XRecyclerView
+           android:layout_marginTop="@dimen/dp_20"
+           android:layout_marginLeft="@dimen/dp_15"
+           android:layout_marginRight="@dimen/dp_15"
+           android:id="@+id/fm_has_been_done_recyclerView"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+       </com.zhouyou.recyclerview.XRecyclerView>
+   </LinearLayout>
+
+</FrameLayout>

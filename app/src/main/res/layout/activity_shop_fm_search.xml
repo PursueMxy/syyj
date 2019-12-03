@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activitys.ShopFmSearchActivity">
+    <RelativeLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_high">
+
+        <ImageView
+            android:src="@mipmap/icon_arrow_left"
+            android:id="@+id/ShopFmSearch_img_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40" />
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="搜索"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_22"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60">
+        <EditText
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:id="@+id/ShopFmSearch_edt_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:background="@drawable/bg_search"
+            android:textColor="#ff949397"
+            android:textSize="12sp"
+            android:layout_toRightOf="@+id/home_img_logo_name"
+            android:drawableLeft="@mipmap/icon_search"
+            android:gravity="center|left"
+            android:hint="请输入搜索内容"
+            android:layout_width="@dimen/dp_295"
+            android:layout_height="@dimen/dp_36" />
+
+        <TextView
+            android:id="@+id/ShopFmSearch_tv_search"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_12"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索"
+            android:textColor="#ffffffff"
+            android:textSize="16sp"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ShopFmSearch_ll_xre"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/ShopFmSearch_tv_search_null"
+            android:visibility="gone"
+            android:drawablePadding="@dimen/dp_17"
+            android:layout_marginTop="@dimen/dp_200"
+            android:drawableTop="@mipmap/icon_unhappy"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="@dimen/dp_176"
+            android:layout_height="wrap_content"
+            android:text="没有找到相关的商品信息请换一个关键词试试吧"
+            android:textColor="#ff949397"
+            android:textSize="16sp"
+            />
+        <com.zhouyou.recyclerview.XRecyclerView
+            android:id="@+id/ShopFmSearch_xRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

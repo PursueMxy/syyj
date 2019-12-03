@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+   <TextView
+       android:id="@+id/list_home_task_tv_content"
+       android:layout_margin="@dimen/dp_10"
+       android:layout_width="180dp"
+       android:layout_height="58dp"
+       android:lines="3"
+       android:ellipsize="end"
+       android:text="任务内容文案任务内容文案任务内容文案任务内容文案任务内容文案任务内容"
+       android:textColor="#ff040000"
+       android:textSize="14sp" />
+    <TextView
+        android:id="@+id/list_home_task_tv_detail"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_below="@+id/list_home_task_tv_content"
+        android:layout_width="66dp"
+        android:layout_height="16dp"
+        android:text="查看详情>>"
+        android:textColor="#ffefb134"
+        android:textSize="12sp"
+        />
+
+       <RelativeLayout
+           android:id="@+id/list_home_task_rel_price"
+           android:layout_marginLeft="@dimen/dp_10"
+           android:layout_marginTop="@dimen/dp_27"
+           android:layout_below="@+id/list_home_task_tv_detail"
+           android:background="@mipmap/icon_list_task_price"
+           android:layout_width="@dimen/dp_103"
+           android:layout_height="@dimen/dp_20">
+           <TextView
+               android:id="@+id/list_home_task_tv_lsj"
+               android:layout_marginLeft="@dimen/dp_5"
+               android:layout_centerVertical="true"
+               android:layout_width="52dp"
+               android:layout_height="14dp"
+               android:text="建议零售价"
+               android:textColor="#ffffffff"
+               android:textSize="10sp"
+               />
+           <TextView
+               android:id="@+id/list_home_task_tv_rrp"
+               android:layout_marginLeft="@dimen/dp_10"
+               android:layout_toRightOf="@+id/list_home_task_tv_lsj"
+               android:layout_width="40dp"
+               android:layout_height="14dp"
+               android:layout_centerVertical="true"
+               android:text="¥19.90"
+               android:textColor="#ff040000"
+               android:textSize="10sp"
+               />
+
+       </RelativeLayout>
+    <TextView
+        android:id="@+id/list_home_task_tv_price"
+        android:layout_marginTop="@dimen/dp_9"
+        android:layout_below="@id/list_home_task_rel_price"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥9.90"
+        android:textColor="#fffc295c"
+        android:textSize="18sp"
+        />
+      
+    <ImageView
+        android:id="@+id/list_home_task_img"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_home_rel"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_108" />
+
+    <Button
+        android:id="@+id/list_home_task_btn_setReMind"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_below="@+id/list_home_task_img"
+        android:layout_width="@dimen/dp_73"
+        android:layout_height="@dimen/dp_28"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_93"
+        android:background="@drawable/btn_yellow_white"
+        android:text="设置提示"
+        android:textColor="#ffefb134"
+        android:textSize="@dimen/sp_12" />
+
+    <Button
+        android:id="@+id/list_home_task_btn_forward"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_below="@+id/list_home_task_img"
+        android:layout_width="@dimen/dp_73"
+        android:layout_height="@dimen/dp_28"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/btn_yellow"
+        android:text="转发卖货"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/sp_12" />
+</RelativeLayout>

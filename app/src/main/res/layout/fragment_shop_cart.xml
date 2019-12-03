@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ShopCartFragment">
+    <LinearLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35">
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:text="购物车"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_22"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_35" />
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:text="管理"
+                android:layout_marginRight="@dimen/dp_15"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_22"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_35" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginTop="@dimen/dp_18"
+            android:background="@drawable/btn_top_white"
+            android:layout_marginBottom="@dimen/dp_60"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+         <com.zhouyou.recyclerview.XRecyclerView
+             android:id="@+id/fm_shop_cart_recyclerView"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+         </com.zhouyou.recyclerview.XRecyclerView>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60">
+        <CheckBox
+            android:layout_marginLeft="@dimen/left"
+            style="@style/MyCheckBox"
+            android:layout_centerVertical="true"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/sp_18"
+            android:paddingLeft="@dimen/dp_10"
+            android:text="全选"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_toLeftOf="@+id/fm_shop_cart_js"
+            android:layout_centerVertical="true"
+            android:textColor="#ffefb134"
+            android:textSize="16sp"
+            android:text="合计：¥ 520"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/fm_shop_cart_js"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_yellow"
+            android:text="结 算"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_width="@dimen/dp_93"
+            android:layout_height="@dimen/dp_40" />
+    </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

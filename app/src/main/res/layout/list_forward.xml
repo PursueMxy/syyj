@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+  <ImageView
+      android:id="@+id/list_forward_img"
+      android:scaleType="fitXY"
+      android:src="@mipmap/icon_home_rel"
+      android:layout_width="@dimen/dp_103"
+      android:layout_height="@dimen/dp_86" />
+</RelativeLayout>

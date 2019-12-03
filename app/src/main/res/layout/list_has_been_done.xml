@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/list_has_been_done_img"
+        android:layout_margin="@dimen/dp_10"
+        android:src="@mipmap/icon_home_rel"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_90" />
+    <TextView
+        android:layout_alignTop="@+id/list_has_been_done_img"
+        android:layout_toRightOf="@+id/list_has_been_done_img"
+        android:text="商品名称商品名称商品名称商品名称商品名称商品名称......"
+        android:textColor="#ff040000"
+        android:textSize="14sp"
+        android:lines="3"
+        android:ellipsize="end"
+        android:id="@+id/list_has_been_done_tv_content"
+        android:layout_width="@dimen/dp_192"
+        android:layout_height="@dimen/dp_44" />
+
+    <TextView
+        android:id="@+id/list_has_been_done_tv_price"
+        android:layout_toRightOf="@+id/list_has_been_done_img"
+        android:layout_alignBottom="@+id/list_has_been_done_img"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:text="¥ 23.00"
+        android:textColor="#ffefb134"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/list_has_been_done_tv_placeOrder"
+        android:background="@color/e99415"
+        android:layout_alignBottom="@+id/list_has_been_done_img"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/dp_13"
+        android:paddingRight="@dimen/dp_13"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下单"
+        android:textColor="#ffffffff"
+        android:textSize="14sp"
+        />
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activitys.CouponActivity">
+    <RelativeLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_high">
+        <ImageView
+            android:id="@+id/coupon_img_back"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_arrow_left"
+            android:layout_width="@dimen/dp_11"
+            android:layout_height="@dimen/dp_18" />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="优惠券中心"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_22"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/coupon_img_shopping_broker"
+        android:src="@mipmap/icon_coupon_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_169" />
+
+    <RadioGroup
+        android:background="@color/white"
+        android:id="@+id/coupon_radioGroup"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+        <RadioButton
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/sp_15"
+            android:id="@+id/coupon_radiobutton_whole"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_50"
+            android:layout_weight="1"
+            android:background="@drawable/myorder_choosed_color"
+            android:button="@null"
+            android:gravity="center"
+            android:text="全部"/>
+
+        <RadioButton
+            android:id="@+id/coupon_radiobutton_obligation"
+            android:textColor="@color/text_fdfdfd"
+            android:textSize="@dimen/sp_15"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_50"
+            android:layout_weight="1"
+            android:background="@drawable/myorder_nochoosed_color"
+            android:button="@null"
+            android:gravity="center"
+            android:text="未使用"/>
+        <RadioButton
+            android:id="@+id/coupon_radiobutton_to_bo_shipped"
+            android:textColor="@color/text_fdfdfd"
+            android:textSize="@dimen/sp_15"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_50"
+            android:layout_weight="1"
+            android:background="@drawable/myorder_nochoosed_color"
+            android:button="@null"
+            android:gravity="center"
+            android:text="已使用"/>
+
+        <RadioButton
+            android:id="@+id/coupon_radiobutton_to_bo_received"
+            android:textColor="@color/text_fdfdfd"
+            android:textSize="@dimen/sp_15"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_50"
+            android:layout_weight="1"
+            android:background="@drawable/myorder_nochoosed_color"
+            android:button="@null"
+            android:gravity="center"
+            android:text="已过期"/>
+    </RadioGroup>
+
+    <com.zhouyou.recyclerview.XRecyclerView
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:id="@+id/coupon_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.zhouyou.recyclerview.XRecyclerView>
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/sp_16"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
+        android:id="@+id/list_right_item_tv_type_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.zhkj.syyj.CustView.MyGridView
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@+id/list_right_item_tv_type_name"
+        android:id="@+id/list_right_item_grid"
+        android:numColumns="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/list_system_message_title"
+        android:layout_toLeftOf="@+id/list_system_message_time"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="秒杀专区暂时下线公告"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/sp_14"
+        />
+    <TextView
+        android:id="@+id/list_system_message_time"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_19"
+        android:layout_marginTop="@dimen/dp_22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="今天 10:00"
+        android:textColor="#ff949397"
+        android:textSize="@dimen/sp_12"
+        />
+
+    <TextView
+        android:id="@+id/list_system_message_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_53"
+        android:lines="3"
+        android:text="尊敬的用户，为了给您带来更好的体验，秒杀专区业务将于2017年4月26日22：00-2017年4月27日09:00期间进行"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_13"
+        android:layout_below="@+id/list_system_message_content"
+        android:background="@color/colorLineDefault"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <TextView
+        android:id="@+id/list_system_message_checkdtl"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_below="@+id/list_system_message_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_23"
+        android:text="查看详情"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/list_system_message_content"
+        android:layout_marginTop="@dimen/dp_23"
+        android:src="@mipmap/icon_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

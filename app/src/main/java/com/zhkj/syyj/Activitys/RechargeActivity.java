@@ -15,7 +15,6 @@ import android.widget.Switch;
 import com.zhkj.syyj.R;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class RechargeActivity extends AppCompatActivity implements View.OnClickListener {

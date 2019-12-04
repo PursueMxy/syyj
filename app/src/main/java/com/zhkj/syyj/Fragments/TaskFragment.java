@@ -40,6 +40,7 @@ import com.zhkj.syyj.Adapters.TaskTableAdapter;
 import com.zhkj.syyj.Beans.DoneListBean;
 import com.zhkj.syyj.Beans.TaskCategoryBean;
 import com.zhkj.syyj.Beans.TaskListsBean;
+import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
@@ -284,4 +285,5 @@ public class TaskFragment extends Fragment {
                     }
                 });
     }
+
 }

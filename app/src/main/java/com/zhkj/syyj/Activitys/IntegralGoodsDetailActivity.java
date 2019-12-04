@@ -26,13 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class IntegralGoodsDetailActivity extends AppCompatActivity {
 
-  @InjectView(R.id.integral_detail_goods_noScrollListView)
+  @BindView(R.id.integral_detail_goods_noScrollListView)
     NoScrollListView noScrollListView;
     private Context mContext;
     private MyAdapter myAdapter;
@@ -51,7 +51,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_integral_goods_detail);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         InitUI();
     }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,20 +16,24 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.CouponAdapter;
+import com.zhkj.syyj.Beans.CouponBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.contract.CouponContract;
+import com.zhkj.syyj.presenter.CouponPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
 import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CouponActivity extends AppCompatActivity implements View.OnClickListener {
+public class CouponActivity extends AppCompatActivity implements View.OnClickListener, CouponContract.View {
 
     private Context mContext;
     private XRecyclerView mRecyclerView;
-    private List<String> list=new ArrayList<>();
+    private List<CouponBean.DataBean> list=new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private CouponAdapter couponAdapter;
     private ImageView img_shopping_broker;
@@ -36,21 +41,26 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     private RadioButton radiobutton_obligation;
     private RadioButton radiobutton_to_bo_shipped;
     private RadioButton radiobutton_to_bo_received;
+    private CouponPresenter couponPresenter;
+    private String token;
+    private String uid;
+    private String type="";
+    private int page=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon);
         mContext = getApplicationContext();
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        token = share.getString("token", "");
+        uid = share.getString("uid", "");
         InitUI();
+        couponPresenter = new CouponPresenter(this);
+        couponPresenter.GetCoupon(uid,token,type,page);
     }
 
     private void InitUI() {
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
         findViewById(R.id.coupon_img_back).setOnClickListener(this);
         img_shopping_broker = findViewById(R.id.coupon_img_shopping_broker);
         img_shopping_broker.setOnClickListener(this);
@@ -87,7 +97,9 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
         couponAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Object item, int position) {
-                startActivity(new Intent(mContext,CouponDetailActivity.class));
+                Intent intent = new Intent(mContext, CouponDetailActivity.class);
+                intent.putExtra("Cid",list.get(position).getCid()+"");
+                startActivity(intent);
             }
         });
        RadioGroup coupon_radioGroup= findViewById(R.id.coupon_radioGroup);
@@ -100,6 +112,8 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.coupon_radiobutton_obligation:
+                        type="0";
+                        couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_choosed_color);
@@ -110,6 +124,8 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.coupon_radiobutton_to_bo_shipped:
+                        type="1";
+                        couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -120,6 +136,8 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.coupon_radiobutton_to_bo_received:
+                        type="2";
+                        couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -130,6 +148,8 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_efb134));
                         break;
                     case R.id.coupon_radiobutton_whole:
+                        type="";
+                        couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -165,5 +185,16 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void UpdateUI(int code ,String msg,List<CouponBean.DataBean> data){
+        list=data;
+        couponAdapter.setListAll(list);
+        couponAdapter.notifyDataSetChanged();
     }
 }

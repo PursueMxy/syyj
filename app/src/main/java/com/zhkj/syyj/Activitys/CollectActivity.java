@@ -2,50 +2,87 @@ package com.zhkj.syyj.Activitys;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.zhkj.syyj.Adapters.CollectAdapter;
+import com.zhkj.syyj.Beans.CollectListBean;
+import com.zhkj.syyj.Beans.LiteCollectBean;
+import com.zhkj.syyj.Beans.LiteGoodsCartBean;
+import com.zhkj.syyj.Fragments.ShopCartFragment;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.ToastUtils;
+import com.zhkj.syyj.contract.CollectContract;
+import com.zhkj.syyj.presenter.CollectPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectActivity extends AppCompatActivity implements View.OnClickListener {
+public class CollectActivity extends AppCompatActivity implements View.OnClickListener, CollectContract.View {
 
     private XRecyclerView mRecyclerView;
-    private List<String> list=new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private CollectAdapter collectAdapter;
     private Context mContext;
     private List<String> addlist=new ArrayList<>();
+    private CollectPresenter collectPresenter;
+    private String uid;
+    private String token;
+    private int page=0;
+    private List<LiteCollectBean> liteCollectBeanList=new ArrayList<>();
+    private TextView tv_manage;
+    private Button btn_delete;
+    private LocalBroadcastManager localBroadcastManager;
+    private IntentFilter intentFilter;
+    /**
+     * 发送本地广播的action
+     */
+    public static final String LOCAL_BROADCAST = "com.zhkj.syyj.LOCAL_BROADCAST_COLLECT";
+    private LocalReceiver localReceiver;
+    private List<LiteCollectBean> liteCollectDeleteList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
         mContext = getApplicationContext();
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
         InitUI();
+        collectPresenter = new CollectPresenter(this);
+        collectPresenter.GetCollectList(uid,token,page);
     }
 
     private void InitUI() {
-        list.add("102");
-        list.add("112");
-        list.add("122");
-        list.add("132");
-        list.add("142");
-        list.add("152");
-        list.add("162");
-        list.add("172");
+        //获取LocalBroadcastManager   本地广播管理者实例
+        localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
+        localReceiver = new LocalReceiver();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(LOCAL_BROADCAST);   //添加action
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
         findViewById(R.id.collect_img_back).setOnClickListener(this);
+        findViewById(R.id.collect_tv_manage).setOnClickListener(this);
+        btn_delete = findViewById(R.id.collect_btn_delete);
+        btn_delete.setOnClickListener(this);
+        tv_manage = findViewById(R.id.collect_tv_manage);
         mRecyclerView = findViewById(R.id.collect_recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mLayoutManager = new LinearLayoutManager(mContext);
@@ -60,23 +97,23 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onLoadMore() {
-                addlist.add("112");
-                addlist.add("113");
-                addlist.add("114");
-                addlist.add("115");
-                addlist.add("116");
-                addlist.add("117");
-                collectAdapter.addItemsToLast(addlist);
-                collectAdapter.notifyDataSetChanged();
-                //加载更多
+//                addlist.add("112");
+//                addlist.add("113");
+//                addlist.add("114");
+//                addlist.add("115");
+//                addlist.add("116");
+//                addlist.add("117");
+//                collectAdapter.addItemsToLast(addlist);
+//                collectAdapter.notifyDataSetChanged();
+//                //加载更多
                 mRecyclerView.loadMoreComplete();//加载动画完成
-                if(addlist.size()>5) {
+//                if(addlist.size()>5) {
                 mRecyclerView.setNoMore(true);//数据加载完成
-                }
+//                }
             }
         });
         mRecyclerView.setAdapter(collectAdapter);
-        collectAdapter.setListAll(list);
+        collectAdapter.setListAll(liteCollectBeanList);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -87,7 +124,6 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
                         , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
             }
         });
-        findViewById(R.id.collect_tv_manage).setOnClickListener(this);
     }
 
     @Override
@@ -98,10 +134,39 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.collect_tv_manage:
+                String manage = tv_manage.getText().toString();
+                if (manage.equals("管理")) {
+                    LiteCollectBean liteCollectBean = new LiteCollectBean();
+                    liteCollectBean.setIsShow("true");
+                    liteCollectBean.setCollect_slt("false");
+                    liteCollectBean.updateAll();
+                    liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
+                    collectAdapter.setListAll(liteCollectBeanList);
+                    collectAdapter.notifyDataSetChanged();
+                    btn_delete.setVisibility(View.VISIBLE);
+                    tv_manage.setText("完成");
+                }else if (manage.equals("完成")){
+                    LiteCollectBean liteCollectBean = new LiteCollectBean();
+                    liteCollectBean.setIsShow("false");
+                    liteCollectBean.updateAll();
+                    liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
+                    collectAdapter.setListAll(liteCollectBeanList);
+                    collectAdapter.notifyDataSetChanged();
+                    tv_manage.setText("管理");
+                    btn_delete.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.collect_btn_delete:
+                liteCollectDeleteList = LitePal.where("collect_slt='true'").find(LiteCollectBean.class);
+                DeleteCollect();
                 break;
                 default:
                     break;
         }
+    }
+
+    private void DeleteCollect() {
+
     }
 
     @Override
@@ -112,4 +177,51 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void UpdateUI(int code ,String msg,List<CollectListBean.DataBean> data){
+      if (code==1){
+          LitePal.deleteAll(LiteCollectBean.class);
+          for (int  a=0;a<data.size();a++){
+              LiteCollectBean liteCollectBean = new LiteCollectBean();
+              liteCollectBean.setCollect_id(data.get(a).getCollect_id());
+              liteCollectBean.setGoods_id(data.get(a).getGoods_id());
+              liteCollectBean.setGoods_name(data.get(a).getGoods_name());
+              liteCollectBean.setOriginal_img(data.get(a).getOriginal_img());
+              liteCollectBean.setShop_price(data.get(a).getShop_price());
+              liteCollectBean.setCollect_slt("false");
+              liteCollectBean.setIsShow("false");
+              liteCollectBean.save();
+          }
+          liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
+          collectAdapter.setListAll(liteCollectBeanList);
+          collectAdapter.notifyDataSetChanged();
+      }else {
+          ToastUtils.showToast(mContext,msg);
+      }
+    }
+
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(!action.equals(LOCAL_BROADCAST)){
+                return ;
+            }
+            boolean queryCity = intent.getBooleanExtra("collect",false);  //判断是否需要调用查询城市
+            //如果是接收到需要查询城市信息的广播   则去执行该方法
+            if(queryCity){
+                liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
+                collectAdapter.setListAll(liteCollectBeanList);
+                collectAdapter.notifyDataSetChanged();
+            }
+
+        }
+    }
+
+
 }

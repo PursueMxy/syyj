@@ -114,11 +114,21 @@ public class RequstUrlUtils {
         //订单详情
         public static String OrderDetail=HOST+"/order/orderDetail";
 
-        //我的收藏
+        //收藏/取消
         public static String GoodsCollectGoods=HOST+"/goods/collectGoods";
+
+        //我的收藏
+        public static String CollectList=HOST+"/user/collectList";
 
         //购物车列表
         public static String CartIndex=HOST+"/cart/index";
+
+        //优惠券列表
+        public static String UserCouponList=HOST+"/coupon/userCouponList";
+
+        //优惠券详情
+        public static String CouponDetail=HOST+"/coupon/detail";
+
 
     }
 }

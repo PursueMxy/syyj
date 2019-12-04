@@ -37,10 +37,10 @@
         android:layout_toRightOf="@+id/myorder_item_detail_img"
         android:layout_alignBottom="@+id/myorder_item_detail_img"
         android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:text="¥ 23.00"
         android:textColor="#ffefb134"
-        android:textSize="14sp"
+        android:textSize="16sp"
         />
 
      <TextView
@@ -91,6 +91,7 @@
             android:layout_below="@+id/item_shopping_tv_goods_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+          <!-- 待付款  -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/item_shopping_ll_obligation"
@@ -120,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
         </LinearLayout>
+         <!-- 已发货  -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/item_shopping_ll_tobe_received"
@@ -149,6 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
         </LinearLayout>
+         <!-- 待评价  -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/item_shopping_ll_orderDone"
@@ -178,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
         </LinearLayout>
+        <!-- 已完成  -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/item_shopping_ll_cancel_order"

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.zhkj.syyj.Activitys.CollectActivity;
 import com.zhkj.syyj.Beans.LiteGoodsCartBean;
 import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.Fragments.ShopCartFragment;
@@ -43,7 +44,6 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<LiteGoodsCartBean
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         final Intent intent = new Intent(ShopCartFragment.LOCAL_BROADCAST);
         ImageView shopcart_img = viewHolder.getView(R.id.list_fm_shopcart_img);
-        Log.e("更新",GoodsNum+data.getGoods_name());
         Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img()).into(shopcart_img);
         TextView tv_content = viewHolder.getView(R.id.list_fm_shopcart_tv_content);
         tv_content.setText(data.getGoods_name()+"");

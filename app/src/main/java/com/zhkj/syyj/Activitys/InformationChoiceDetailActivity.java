@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -14,13 +15,10 @@ import com.zhkj.syyj.contract.InformationChoiceDetailContract;
 import com.zhkj.syyj.presenter.InformationChoiceDetailPresenter;
 import com.zhkj.syyj.presenter.InformationChoicePresenter;
 
-import butterknife.InjectView;
 
 public class InformationChoiceDetailActivity extends AppCompatActivity implements View.OnClickListener, InformationChoiceDetailContract.View {
 
     private TextView tv_title;
-    private TextView tv_time;
-    private TextView tv_connect;
     private InformationChoiceDetailPresenter informationChoiceDetailPresenter;
 
     @Override
@@ -37,8 +35,6 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
     private void InitUI() {
         findViewById(R.id.information_choice_detail_img_back).setOnClickListener(this);
         tv_title = findViewById(R.id.information_choice_detail_tv_title);
-        tv_time = findViewById(R.id.information_choice_detail_tv_time);
-        tv_connect = findViewById(R.id.information_choice_detail_tv_connect);
     }
 
     @Override
@@ -70,9 +66,10 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
         int code = newsDetailBean.getCode();
         if (code==1){
             NewsDetailBean.DataBean data = newsDetailBean.getData();
-            tv_title.setText(data.getTitle());
-            tv_connect.setText(data.getContent());
-            tv_time.setText(data.getAdd_time());
+            tv_title.setText(Html.fromHtml(data.getContent()));
         }
     }
+
+
 }
+

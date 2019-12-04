@@ -235,7 +235,7 @@
                     android:layout_marginLeft="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_20"
                     android:layout_below="@+id/goods_detail_tv_appraise"
-                    android:src="@mipmap/icon_headportrait"
+                    android:src="@mipmap/spyj_logo"
                     android:layout_width="@dimen/dp_54"
                     android:layout_height="@dimen/dp_54" />
 
@@ -247,7 +247,7 @@
                     android:layout_toRightOf="@+id/goods_detail_img_appraise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Amelia Jones"
+                    android:text=""
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/sp_14"
                     />
@@ -262,7 +262,7 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     android:lines="2"
                     android:maxLines="2"
-                    android:text="商品评价商品评价商品评价商品评价商品评价商品评......哈哈哈"
+                    android:text=""
                     android:textColor="#ff040000"
                     android:textSize="12sp"
                     />

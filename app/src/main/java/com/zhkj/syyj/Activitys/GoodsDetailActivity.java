@@ -118,6 +118,9 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private int ThreeType;
     private int FourType;
     private int FiveType;
+    private int isCollect=0;
+    private ImageView img_collect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,6 +168,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.goods_detail_tv_view_all_appraise).setOnClickListener(this);
         findViewById(R.id.goods_detail_btn_buynow).setOnClickListener(this);
         findViewById(R.id.goods_detail_img_collectGoods).setOnClickListener(this);
+        img_collect = findViewById(R.id.goods_detail_img_collectGoods);
         scrollView = findViewById(R.id.goods_detail_scrollView);
         img_appraise = findViewById(R.id.goods_detail_img_appraise);
         tv_appraise_name = findViewById(R.id.goods_detail_tv_appraise_name);
@@ -394,6 +398,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             market_price = jsonObject.getString("market_price");
             String sales_sum= jsonObject.getString("sales_sum");
             String share_imgs = jsonObject.getString("share_imgs");
+            isCollect = jsonObject.getInt("isCollect");
             String comment_statistics = jsonObject.getString("comment_statistics");
             JosnStatistics(comment_statistics);
             //轮播图
@@ -430,6 +435,13 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             for (int a = 0; a< specList.size(); a++){
                 String name = specList.get(a).getName();
             }
+            //是否收藏
+            if (isCollect==0){
+                img_collect.setImageResource(R.mipmap.icon_collect);
+            }else if (isCollect==1){
+                img_collect.setImageResource(R.mipmap.icon_collect_select);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -447,6 +459,9 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             tv_appraise_name.setText(nickname);
             tv_appraise_content.setText(content);
             Glide.with(mContext).load(RequstUrlUtils.URL.HOST+headimg).into(img_appraise);
+            tv_appraise_name.setVisibility(View.GONE);
+            tv_appraise_content.setText(View.GONE);
+            img_appraise.setVisibility(View.GONE);
         }catch (Exception e){
 
         }
@@ -496,6 +511,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
 
    //返回通知
     public void UpdateUI(int code,String msg){
+        goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
         ToastUtils.showToast(mContext,msg);
     }
 

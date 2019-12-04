@@ -36,6 +36,7 @@ import com.zhkj.syyj.Activitys.ReMindActivity;
 import com.zhkj.syyj.Adapters.ShopChoiceAdapter;
 import com.zhkj.syyj.Beans.HomeIndexBean;
 import com.zhkj.syyj.Beans.Products;
+import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.GlideImageLoader;
 import com.zhkj.syyj.CustView.NoScrollListView;
@@ -251,7 +252,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             tv_price.setText(taskList.get(i).getShop_price());
             ImageView task_img = inflate.findViewById(R.id.list_home_task_img);
             Glide.with(mContext).load(RequstUrlUtils.URL.HOST+taskList.get(i).getOriginal_img()).into(task_img);
-            inflate.findViewById(R.id.list_home_task_btn_forward).setOnClickListener(new View.OnClickListener() {
+            inflate.findViewById(R.id.list_home_task_tv_detail).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ForwardActivity.class);
@@ -270,9 +271,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent);
                 }
             });
+            inflate.findViewById(R.id.list_home_task_btn_forward).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WechatDialog();
+                }
+            });
 
             return inflate;
         }
+    }
+
+    //转发朋友圈
+    public void  WechatDialog(){
+        final BottomDialog bottomDialog = new BottomDialog(mContext, R.style.ActionSheetDialogStyle);
+        View inflate = LayoutInflater.from(mContext).inflate(R.layout.dialog_forward_moments, null);
+        inflate.findViewById(R.id.dialog_forward_btn_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomDialog.dismiss();
+            }
+        });
+        bottomDialog.setContentView(inflate);
+        bottomDialog.show();
     }
 
     private String imageTranslateUri(int resId) {

@@ -121,14 +121,14 @@
 
       </LinearLayout>
       <RelativeLayout
-          android:id="@+id/rl_no_contant"
+          android:id="@+id/my_order_rl_no_contant"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerInParent="true"
           android:visibility="gone">
 
           <ImageView
-              android:id="@+id/iv_no_contant"
+              android:id="@+id/my_order_iv_no_contant"
               android:layout_width="100dp"
               android:layout_height="100dp"
               android:layout_centerHorizontal="true"
@@ -138,7 +138,7 @@
           <TextView
               android:layout_width="200dp"
               android:layout_height="wrap_content"
-              android:layout_below="@+id/iv_no_contant"
+              android:layout_below="@+id/my_order_iv_no_contant"
               android:layout_marginTop="20dp"
               android:gravity="center"
               android:text="订单竟然是空的，快去下单充实自己吧！"

@@ -13,19 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Activitys.OrderDetailActivity;
 import com.zhkj.syyj.Beans.OrderBean;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class MyOrderAdapter extends BaseExpandableListAdapter {
 
@@ -149,7 +151,22 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.VISIBLE);
-        }else if (order_status_detail.getStatus()==5){
+        }else if (order_status_detail.getStatus()==3){
+            childViewHolder.ll_obligation.setVisibility(View.GONE);
+            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+            childViewHolder.ll_orderDone.setVisibility(View.GONE);
+            childViewHolder.ll_cancel_order.setVisibility(View.VISIBLE);
+        }else if (order_status_detail.getStatus()==4){
+            childViewHolder.ll_obligation.setVisibility(View.GONE);
+            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+        } else if (order_status_detail.getStatus()==5){
+            childViewHolder.ll_obligation.setVisibility(View.GONE);
+            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+        }else if (order_status_detail.getStatus()==6){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
@@ -170,6 +187,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_price.setText("¥ "+datasBean.getOrder_goods().get(childPosition).getGoods_price());
         childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
         childViewHolder.tv_total_amount.setText("¥"+datasBean.getTotal_amount());
+        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+datasBean.getOrder_goods().get(childPosition).getOriginal_img()).into(childViewHolder.img_item);
         return convertView;
     }
 
@@ -179,43 +197,43 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
     }
 
     static class GroupViewHolder {
-        @InjectView(R.id.myorder_item_top_tv_typename)
+        @BindView(R.id.myorder_item_top_tv_typename)
                 TextView tv_typename;
-        @InjectView(R.id.myorder_item_orderNumber)
+        @BindView(R.id.myorder_item_orderNumber)
                 TextView tv_orderNumeber;
         GroupViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 
     static class ChildViewHolder {
         //产品图片
-        @InjectView(R.id.myorder_item_detail_img)
+        @BindView(R.id.myorder_item_detail_img)
         ImageView img_item;
-        @InjectView(R.id.myorder_item_detail_tv_title)
+        @BindView(R.id.myorder_item_detail_tv_title)
         TextView tv_title;
-        @InjectView(R.id.myorder_item_detail_tv_price)
+        @BindView(R.id.myorder_item_detail_tv_price)
         TextView tv_price;
-        @InjectView(R.id.myorder_item_detail_tv_model)
+        @BindView(R.id.myorder_item_detail_tv_model)
         TextView tv_model;
-        @InjectView(R.id.myorder_item_detail_tv_num)
+        @BindView(R.id.myorder_item_detail_tv_num)
         TextView tv_num;
-         @InjectView(R.id.item_shopping_tv_goods_num)
+         @BindView(R.id.item_shopping_tv_goods_num)
          TextView tv_goods_num;
-         @InjectView(R.id.item_shopping_tv_goods_total_amount)
+         @BindView(R.id.item_shopping_tv_goods_total_amount)
          TextView tv_total_amount;
-        @InjectView(R.id.myorder_item_bottom_rl)
+        @BindView(R.id.myorder_item_bottom_rl)
          RelativeLayout myorder_item_bottom_rl;
-        @InjectView(R.id.item_shopping_ll_obligation)
+        @BindView(R.id.item_shopping_ll_obligation)
         LinearLayout ll_obligation;
-        @InjectView(R.id.item_shopping_ll_cancel_order)
+        @BindView(R.id.item_shopping_ll_cancel_order)
         LinearLayout ll_cancel_order;
-        @InjectView(R.id.item_shopping_ll_tobe_received)
+        @BindView(R.id.item_shopping_ll_tobe_received)
         LinearLayout ll_tobe_received;
-        @InjectView(R.id.item_shopping_ll_orderDone)
+        @BindView(R.id.item_shopping_ll_orderDone)
         LinearLayout ll_orderDone;
         ChildViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

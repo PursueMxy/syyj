@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class PlaceOrderIntegralActivity extends AppCompatActivity {
 
-    @InjectView(R.id.place_order_integral_noScrollListView)
+    @BindView(R.id.place_order_integral_noScrollListView)
     NoScrollListView noScrollListView;
     private Context mContext;
     private MyAdapter myAdapter;
@@ -34,7 +34,7 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order_integral);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         InitUI();
     }
 

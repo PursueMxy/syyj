@@ -35,16 +35,12 @@ import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener, MyOrderContract.View {
 
 
-    @InjectView(R.id.iv_no_contant)
-    ImageView ivNoContant;
-    @InjectView(R.id.rl_no_contant)
-    RelativeLayout rlNoContant;
 
     private List<OrderListBean.DataBean> datas=new ArrayList<>();
     private Context mContext;
@@ -55,6 +51,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton radiobutton_to_bo_shipped;
     private RadioButton radiobutton_obligation;
     private ExpandableListView elvShoppingCar;
+    private  ImageView ivNoContant;
+    private  RelativeLayout rlNoContant;
     private String titleName;
     private MyOrderPresenter myOrderPresenter;
     private String uid;
@@ -72,10 +70,19 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = getIntent();
         titleName = intent.getStringExtra("title");
         InitUI();
-        ButterKnife.inject(this);
         initExpandableListView();
         initData();
-        myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+        if (titleName.equals("全部")) {
+            myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+        }else if (titleName.equals("待付款")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
+        }else if (titleName.equals("待发货")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
+        }else if (titleName.equals("待收货")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
+        }else if (titleName.equals("已完成")){
+            myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
+        }
     }
 
     private void InitUI() {
@@ -87,6 +94,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         radiobutton_to_bo_shipped = findViewById(R.id.my_order_radiobutton_to_bo_shipped);
         radiobutton_to_bo_received = findViewById(R.id.my_order_radiobutton_to_bo_received);
         radiobutton_confirm = findViewById(R.id.my_order_radiobutton_confirm);
+        rlNoContant= findViewById(R.id.my_order_rl_no_contant);
+        ivNoContant = findViewById(R.id.my_order_iv_no_contant);
         my_order_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -173,7 +182,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     private void RadioGroupUI() {
         if (titleName.equals("待付款")) {
-            datas.clear();
             myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
             radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -185,8 +193,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
             radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
-        }else if (titleName.equals("待发货")){
-            datas.clear();
+        }
+        else if (titleName.equals("待发货")){
             myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
             radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -198,8 +206,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
             radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
-        }else if (titleName.equals("待收货")){
-            datas.clear();
+        }
+        else if (titleName.equals("待收货")){
             myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
             radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -211,8 +219,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_efb134));
             radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
-        }else if (titleName.equals("已完成")){
-            datas.clear();
+        }
+        else if (titleName.equals("已完成")){
             myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
             radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -224,8 +232,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
             radiobutton_confirm.setBackgroundResource(R.drawable.myorder_choosed_color);
             radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_efb134));
-        }else {
-            datas.clear();
+        }
+        else {
             myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
             radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
             radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
@@ -281,7 +289,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                     return true;
                 }
             });
-
             rlNoContant.setVisibility(View.GONE);
             elvShoppingCar.setVisibility(View.VISIBLE);
         } else {
@@ -380,12 +387,14 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     //解析数据
     public void UpdateJson(int code,String msg,String data) {
+        datas.clear();
         if (code == 1) {
                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
                 datas = orderListBean.getData();
-                initExpandableListViewData(datas);
-                myOrderAdapter.notifyDataSetChanged();
         }
+        initExpandableListViewData(datas);
+        myOrderAdapter.notifyDataSetChanged();
+        myOrderAdapter.notifyDataSetChanged();
     }
 
     @Override

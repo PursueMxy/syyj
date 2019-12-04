@@ -9,53 +9,67 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.bumptech.glide.Glide;
+import com.zhkj.syyj.Activitys.CollectActivity;
 import com.zhkj.syyj.Activitys.ShoppingAddressUpdateActivity;
+import com.zhkj.syyj.Beans.LiteCollectBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 
-public class CollectAdapter extends HelperRecyclerViewAdapter<String> {
+public class CollectAdapter extends HelperRecyclerViewAdapter<LiteCollectBean> {
+    private final Intent intent;
+    private final LocalBroadcastManager localBroadcastManager;
     public Context context;
-    private CheckBox cb_child;
-    private  int buy_number=0;
 
     public CollectAdapter(Context context) {
-        super(context, R.layout.item_shopping_car_child);
+        super(context, R.layout.list_collect_item);
         this.context=context;
+        intent = new Intent(CollectActivity.LOCAL_BROADCAST);
+        localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
     }
 
 
     @Override
-    protected void HelperBindData(HelperRecyclerViewHolder viewHolder, final int position, String item) {
-        String data = getData(position);
-        TextView tv_number = viewHolder.getView(R.id.item_shopping_car_tv_buy_number);
-        TextView tv_price_value = viewHolder.getView(R.id.item_shopping_car_tv_price_value);
-        ImageView img = viewHolder.getView(R.id.item_shopping_car_image);
-        TextView tv_name = viewHolder.getView(R.id.item_shopping_car_tv_name);
-        TextView tv_price_key = viewHolder.getView(R.id.item_shopping_car_tv_price_key);
-        ImageView img_add = viewHolder.getView(R.id.item_shopping_car_img_add);
-        ImageView img_subtract = viewHolder.getView(R.id.item_shopping_car_img_subtract);
-        cb_child = viewHolder.getView(R.id.cb_child);
-        cb_child.setOnClickListener(new View.OnClickListener() {
+    protected void HelperBindData(HelperRecyclerViewHolder viewHolder, final int position, LiteCollectBean item) {
+        LiteCollectBean data = getData(position);
+        ImageView item_img = viewHolder.getView(R.id.list_collect_item_img);
+        ImageView img_slt = viewHolder.getView(R.id.list_collect_item_img_slt);
+        TextView tv_content = viewHolder.getView(R.id.list_collect_item_tv_content);
+        TextView tv_price = viewHolder.getView(R.id.list_collect_item_tv_price);
+        TextView tv_spec_key_name = viewHolder.getView(R.id.list_collect_item_tv_spec_key_name);
+        if (data.getIsShow().equals("true")){
+            img_slt.setVisibility(View.VISIBLE);
+        }else {
+            img_slt.setVisibility(View.GONE);
+        }
+        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img()).into(item_img);
+        tv_content.setText(data.getGoods_name());
+        tv_price.setText("¥ "+data.getShop_price());
+        tv_spec_key_name.setText("");
+        if (data.getCollect_slt().equals("true")){
+            img_slt.setImageResource(R.mipmap.icon_round_select);
+        }else if (data.getCollect_slt().equals("false")){
+            img_slt.setImageResource(R.mipmap.icon_round);
+        }
+        img_slt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("点击了","是的"+position);
-            }
-        });
-        tv_number.setText(position+"");
-        tv_price_value.setText(data);
-        img_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buy_number++;
-            }
-        });
-        img_subtract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (buy_number>0){
-                    buy_number--;
+
+                if (data.getCollect_slt().equals("false")){
+                    LiteCollectBean liteCollectBean = new LiteCollectBean();
+                    liteCollectBean.setCollect_slt("true");
+                    liteCollectBean.updateAll("collect_id="+data.getCollect_id());
+                }else if (data.getCollect_slt().equals("true")){
+                    LiteCollectBean liteCollectBean = new LiteCollectBean();
+                    liteCollectBean.setCollect_slt("false");
+                    liteCollectBean.updateAll("collect_id="+data.getCollect_id());
                 }
+                intent.putExtra("collect", true);   //通知fragment,让它去调用queryCity()方法
+                localBroadcastManager.sendBroadcast(intent);
             }
         });
     }

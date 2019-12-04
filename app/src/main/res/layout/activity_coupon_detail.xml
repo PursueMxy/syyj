@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:id="@+id/coupon_tv_title"
+            android:id="@+id/coupon_detail_tv_title"
             android:gravity="center"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_width="match_parent"

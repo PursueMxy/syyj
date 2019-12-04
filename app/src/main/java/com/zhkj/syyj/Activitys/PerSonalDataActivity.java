@@ -37,16 +37,16 @@ import java.io.File;
 import java.util.List;
 import java.util.zip.ZipFile;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class PerSonalDataActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1024;
     private Context mContext;
-    @InjectView(R.id.personal_data_img_head)
+    @BindView(R.id.personal_data_img_head)
     ImageView img_head;
-    @InjectView(R.id.personal_data_tv_mobile)
+    @BindView(R.id.personal_data_tv_mobile)
     TextView tv_mobile;
     private String headimg;
     private String mobile;
@@ -56,7 +56,7 @@ public class PerSonalDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_per_sonal_data);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         headimg= share.getString("headimg", "");
         mobile = share.getString("mobile", "");

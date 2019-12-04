@@ -55,31 +55,31 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.zip.ZipFile;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class UpdateUserActivity extends AppCompatActivity implements UpdateMobileContract.View, UpdateUserContract.View {
     private static final int REQUEST_CODE = 1024;
-    @InjectView(R.id.update_user_img_head)
+    @BindView(R.id.update_user_img_head)
      ImageView img_head;
-    @InjectView(R.id.up_user_radioGroup)
+    @BindView(R.id.up_user_radioGroup)
     RadioGroup radioGroup;
-    @InjectView(R.id.up_user_radioBtn_man)
+    @BindView(R.id.up_user_radioBtn_man)
     RadioButton radiobtn_man;
-    @InjectView(R.id.up_user_radioBtn_girl)
+    @BindView(R.id.up_user_radioBtn_girl)
     RadioButton radiobtn_girl;
-    @InjectView(R.id.up_user_edt_userId)
+    @BindView(R.id.up_user_edt_userId)
     EditText edt_userId;
-    @InjectView(R.id.up_user_edt_userName)
+    @BindView(R.id.up_user_edt_userName)
     EditText edt_userName;
-    @InjectView(R.id.up_user_tv_address)
+    @BindView(R.id.up_user_tv_address)
     TextView tv_address;
-    @InjectView(R.id.up_user_edt_vocation)
+    @BindView(R.id.up_user_edt_vocation)
     EditText edt_vocation;
-    @InjectView(R.id.up_user_edt_wechatNumber)
+    @BindView(R.id.up_user_edt_wechatNumber)
     EditText edt_wechatNumber;
-    @InjectView(R.id.up_user_tv_birthday)
+    @BindView(R.id.up_user_tv_birthday)
     TextView tv_birthday;
 
     private Context mContext;
@@ -99,7 +99,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_user);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         InitUI();
         SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         token = share.getString("token", "");

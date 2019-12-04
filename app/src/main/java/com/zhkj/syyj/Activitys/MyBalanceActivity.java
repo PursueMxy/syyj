@@ -24,14 +24,13 @@ import com.zhkj.syyj.presenter.MyBalancePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 public class MyBalanceActivity extends AppCompatActivity implements View.OnClickListener, MyBalanceContract.View {
-    @InjectView(R.id.my_balance_btn_recharge)
+    @BindView(R.id.my_balance_btn_recharge)
     Button btn_recharge;
-    @InjectView(R.id.my_balance_btn_cash_out)
+    @BindView(R.id.my_balance_btn_cash_out)
     Button btn_cash_out;
     private Context mContext;
     private ListView balance_list;
@@ -49,7 +48,7 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_balance);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         btn_recharge.setOnClickListener(this);
         btn_cash_out.setOnClickListener(this);
         share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);

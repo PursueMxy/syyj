@@ -24,6 +24,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.yyydjk.library.BannerLayout;
+import com.zhkj.syyj.Activitys.GoodsListActivity;
 import com.zhkj.syyj.Activitys.ShopFmSearchActivity;
 import com.zhkj.syyj.Adapters.FmShopAdapter;
 import com.zhkj.syyj.Adapters.OnItemClickListener;
@@ -35,6 +36,7 @@ import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
+import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

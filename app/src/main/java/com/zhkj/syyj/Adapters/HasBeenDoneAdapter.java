@@ -26,7 +26,7 @@ public class HasBeenDoneAdapter extends HelperRecyclerViewAdapter<DoneListBean.D
         TextView tv_content = viewHolder.getView(R.id.list_has_been_done_tv_content);
         TextView tv_placeOrder = viewHolder.getView(R.id.list_has_been_done_tv_placeOrder);
         TextView tv_price = viewHolder.getView(R.id.list_has_been_done_tv_price);
-        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img());
+        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img()).into(has_been_done_img);
         tv_content.setText(data.getShare_content());
         tv_price.setText("¥ "+data.getShop_price());
         tv_placeOrder.setOnClickListener(new View.OnClickListener() {

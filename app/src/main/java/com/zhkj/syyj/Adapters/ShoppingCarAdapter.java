@@ -19,8 +19,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * 购物车的adapter
@@ -258,15 +258,15 @@ public class ShoppingCarAdapter extends BaseExpandableListAdapter {
     }
 
     static class GroupViewHolder {
-        @InjectView(R.id.iv_select)
+        @BindView(R.id.iv_select)
         ImageView ivSelect;
-        @InjectView(R.id.tv_store_name)
+        @BindView(R.id.tv_store_name)
         TextView tvStoreName;
-        @InjectView(R.id.ll)
+        @BindView(R.id.ll)
         LinearLayout ll;
 
         GroupViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 
@@ -419,29 +419,29 @@ public class ShoppingCarAdapter extends BaseExpandableListAdapter {
     }
 
     static class ChildViewHolder {
-        @InjectView(R.id.iv_select)
+        @BindView(R.id.iv_select)
         ImageView ivSelect;
-        @InjectView(R.id.item_shopping_car_image)
+        @BindView(R.id.item_shopping_car_image)
         ImageView ivPhoto;
-        @InjectView(R.id.item_shopping_car_tv_name)
+        @BindView(R.id.item_shopping_car_tv_name)
         TextView tvName;
-        @InjectView(R.id.item_shopping_car_tv_price_key)
+        @BindView(R.id.item_shopping_car_tv_price_key)
         TextView tvPriceKey;
-        @InjectView(R.id.item_shopping_car_tv_price_value)
+        @BindView(R.id.item_shopping_car_tv_price_value)
         TextView tvPriceValue;
-        @InjectView(R.id.item_shopping_car_img_subtract)
+        @BindView(R.id.item_shopping_car_img_subtract)
         ImageView ivEditSubtract;
-        @InjectView(R.id.item_shopping_car_tv_buy_number)
+        @BindView(R.id.item_shopping_car_tv_buy_number)
         TextView tvEditBuyNumber;
-        @InjectView(R.id.item_shopping_car_img_add)
+        @BindView(R.id.item_shopping_car_img_add)
         ImageView ivEditAdd;
-        @InjectView(R.id.view_last)
+        @BindView(R.id.view_last)
         View viewLast;
-        @InjectView(R.id.view_bottom_rl)
+        @BindView(R.id.view_bottom_rl)
         RelativeLayout view_bottom_rl;
 
         ChildViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

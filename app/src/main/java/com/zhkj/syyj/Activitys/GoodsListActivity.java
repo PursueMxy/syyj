@@ -21,6 +21,7 @@ import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.GoodsListContract;
 import com.zhkj.syyj.presenter.GoodsListPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
+import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
     private String id;
     private String name;
     private GoodsListPresenter goodsListPresenter;
-    List<GoodsListBean.DataBean> data=new ArrayList<>();
+    List<GoodsListBean.DataBean> data_list=new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private Context mContext;
     private GoodsListAdapter goodsListAdapter;
@@ -74,7 +75,7 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
             }
         });
         mRecyclerView.setAdapter(goodsListAdapter);
-        goodsListAdapter.setListAll(data);
+        goodsListAdapter.setListAll(data_list);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -83,6 +84,14 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
                         , 0
                         , 0
                         , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
+            }
+        });
+        goodsListAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Object item, int position) {
+                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                intent.putExtra("goods_id",data_list.get(position).getGoods_id()+"");
+                startActivity(intent);
             }
         });
     }
@@ -109,7 +118,8 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void UpdateUI(int code, String msg, List<GoodsListBean.DataBean> data){
-        goodsListAdapter.setListAll(data);
+        data_list=data;
+        goodsListAdapter.setListAll(data_list);
         mRecyclerView.setAdapter(goodsListAdapter);
     }
 }

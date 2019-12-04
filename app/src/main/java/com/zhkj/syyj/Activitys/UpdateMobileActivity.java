@@ -18,32 +18,32 @@ import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.UpdateMobileContract;
 import com.zhkj.syyj.presenter.UpdateMobilePresenter;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 
 public class UpdateMobileActivity extends AppCompatActivity implements UpdateMobileContract.View {
 
-    @InjectView(R.id.update_mobile_tv_new)
+    @BindView(R.id.update_mobile_tv_new)
     TextView tv_new;
-    @InjectView(R.id.update_mobile_tv_primary)
+    @BindView(R.id.update_mobile_tv_primary)
     TextView tv_primary;
-    @InjectView(R.id.update_mobile_ll_new)
+    @BindView(R.id.update_mobile_ll_new)
     LinearLayout ll_new;
-    @InjectView(R.id.update_mobile_ll_primary)
+    @BindView(R.id.update_mobile_ll_primary)
     LinearLayout ll_primary;
-    @InjectView(R.id.update_mobile_tv_phone)
+    @BindView(R.id.update_mobile_tv_phone)
     TextView tv_phone;
-    @InjectView(R.id.update_mode_tv_mobile_code)
+    @BindView(R.id.update_mode_tv_mobile_code)
     TextView tv_mobile_code;
-    @InjectView(R.id.update_mode_new_tv_mobile_code)
+    @BindView(R.id.update_mode_new_tv_mobile_code)
     TextView new_tv_mobile_code;
-    @InjectView(R.id.update_mobile_new_edt_mobile)
+    @BindView(R.id.update_mobile_new_edt_mobile)
     EditText new_edt_mobile;
-    @InjectView(R.id.update_mobile_edt_mobile_code)
+    @BindView(R.id.update_mobile_edt_mobile_code)
     EditText edt_mobile_code;
-    @InjectView(R.id.update_mobile_new_edt_mobile_code)
+    @BindView(R.id.update_mobile_new_edt_mobile_code)
     EditText new_edt_mobile_code;
     private Context mContext;
     private SharedPreferences share;
@@ -64,7 +64,7 @@ public class UpdateMobileActivity extends AppCompatActivity implements UpdateMob
         mobile = share.getString("mobile", "");
         token = share.getString("token", "");
         uid = share.getString("uid", "");
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         tv_phone.setText(MxyUtils.settingphone(mobile));
         updateMobilePresenter = new UpdateMobilePresenter(this);
     }

@@ -84,7 +84,6 @@
         android:layout_height="@dimen/dp_110">
         <ImageView
             android:id="@+id/home_choice_img"
-            android:src="@mipmap/icon_home_rel"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_centerVertical="true"
             android:layout_width="@dimen/dp_107"

@@ -1,15 +1,18 @@
 package com.zhkj.syyj.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.zhkj.syyj.Activitys.GoodsListActivity;
 import com.zhkj.syyj.Beans.CategoryListBean;
 import com.zhkj.syyj.Beans.GoodsListBean;
 import com.zhkj.syyj.CustView.CircleImageView;
@@ -43,6 +46,15 @@ public class FmShopAdapter extends HelperRecyclerViewAdapter<CategoryListBean.Da
         sub_menu = item.getSub_menu();
         MyAdapter myAdapter = new MyAdapter();
         item_type_grid.setAdapter(myAdapter);
+        item_type_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(mContext, GoodsListActivity.class);
+                intent.putExtra("id",sub_menu.get(position).getId()+"");
+                intent.putExtra("name",sub_menu.get(position).getName());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

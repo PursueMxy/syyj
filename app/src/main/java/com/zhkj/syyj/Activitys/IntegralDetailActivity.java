@@ -22,13 +22,13 @@ import com.zhouyou.recyclerview.XRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class IntegralDetailActivity extends AppCompatActivity implements IntegralDetailContract.View {
 
-    @InjectView(R.id.integral_detail_recyclerView)
+    @BindView(R.id.integral_detail_recyclerView)
     XRecyclerView mRecyclerView;
     private Context mContext;
     private List<String> list=new ArrayList<>();
@@ -44,7 +44,7 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_integral_detail);
         mContext = getApplicationContext();
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         SharedPreferences share = mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         token = share.getString("token", "");
         uid = share.getString("uid", "");

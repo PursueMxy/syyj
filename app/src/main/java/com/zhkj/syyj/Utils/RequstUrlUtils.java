@@ -27,6 +27,12 @@ public class RequstUrlUtils {
         //个人中心
         public static String Index=HOST+"/user/index";
 
+        //修改个人信息
+        public static String UserInfo=HOST+"/user/userInfo";
+
+        //个人信息
+        public static String User=HOST+"/user/user";
+
         //商城分类
         public static String CategoryList=HOST+"/goods/categoryList";
 
@@ -117,6 +123,9 @@ public class RequstUrlUtils {
         //收藏/取消
         public static String GoodsCollectGoods=HOST+"/goods/collectGoods";
 
+        //收藏列表取消收藏
+        public static String CancelCollect=HOST+"/user/cancelCollect";
+
         //我的收藏
         public static String CollectList=HOST+"/user/collectList";
 
@@ -129,6 +138,26 @@ public class RequstUrlUtils {
         //优惠券详情
         public static String CouponDetail=HOST+"/coupon/detail";
 
+        //积分商城分类
+        public static String IntegralCategory=HOST+"/goods/integralCategory";
+
+        //积分商城列表
+        public static String IntegralMall=HOST+"/goods/integralMall";
+
+        //积分商城详情
+        public static String IntegraDetail=HOST+"/goods/integraDetail";
+
+        //积分立即兑换
+        public static String BuyIntegralGoods=HOST+"/cart/buyIntegralGoods";
+
+        //积分订单提交
+        public static String Integral=HOST+"/cart/integral";
+
+        //购物车商品数量加减
+        public static String ChangeNum=HOST+"/cart/changeNum";
+
+        // 更新购物车，并返回计算结果
+        public static String AsyncUpdateCart=HOST+"/cart/asyncUpdateCart";
 
     }
 }

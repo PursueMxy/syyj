@@ -55,7 +55,6 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     private ShopCartAdapter shopCartAdapter;
     private String uid;
     private String token;
-    private List<LiteGoodsCartBean> liteGoodsCartBeanList=new ArrayList<>();
     private LocalBroadcastManager localBroadcastManager;
     private IntentFilter intentFilter;
     /**
@@ -63,7 +62,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
      */
     public static final String LOCAL_BROADCAST = "com.zhkj.syyj.LOCAL_BROADCAST";
     private LocalReceiver localReceiver;
-    private List<LiteGoodsCartBean> goodsCartTrueList=new ArrayList<>();
+    private List<CarGoodsBean.DataBean> goodsCartTrueList=new ArrayList<>();
     private TextView tv_sumMoney;
     private boolean SLT_All=false;
     private ImageView img_all;
@@ -98,26 +97,13 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                     public void onSuccess(Response<String> response) {
                         LitePal.deleteAll(LiteGoodsCartBean.class);
                         CarGoodsBean carGoodsBean = new GsonBuilder().create().fromJson(response.body(), CarGoodsBean.class);
-                        if (carGoodsBean.getCode()==1){
+                        goodsCartTrueList.clear();
+                        if (carGoodsBean.getCode()==1) {
                             List<CarGoodsBean.DataBean> data = carGoodsBean.getData();
-                            for (int a=0;a<data.size();a++){
-                                LiteGoodsCartBean liteGoodsCartBean = new LiteGoodsCartBean();
-                                liteGoodsCartBean.setGoods_cart_id(data.get(a).getId());
-                                liteGoodsCartBean.setGoods_id(data.get(a).getGoods_id());
-                                liteGoodsCartBean.setGoods_name(data.get(a).getGoods_name());
-                                liteGoodsCartBean.setGoods_price(data.get(a).getGoods_price());
-                                liteGoodsCartBean.setGoods_num(data.get(a).getGoods_num());
-                                liteGoodsCartBean.setItem_id(data.get(a).getItem_id());
-                                liteGoodsCartBean.setSpec_key_name(data.get(a).getSpec_key_name());
-                                liteGoodsCartBean.setOriginal_img(data.get(a).getOriginal_img());
-                                liteGoodsCartBean.setSelected(data.get(a).getSelected());
-                                liteGoodsCartBean.setSlt_goods("false");
-                                liteGoodsCartBean.save();
-                            }
-                            liteGoodsCartBeanList = LitePal.findAll(LiteGoodsCartBean.class);
-                            shopCartAdapter.setListAll(liteGoodsCartBeanList);
-                            shopCartAdapter.notifyDataSetChanged();
+                            goodsCartTrueList=data;
                         }
+                        shopCartAdapter.setListAll(goodsCartTrueList);
+                        shopCartAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -156,7 +142,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                 mRecyclerView.setNoMore(true);//数据加载完成
             }
         });
-        shopCartAdapter.setListAll(liteGoodsCartBeanList);
+        shopCartAdapter.setListAll(goodsCartTrueList);
         mRecyclerView.setAdapter(shopCartAdapter);
         TextView cb_all = inflate.findViewById(R.id.fm_shop_cart_cb_all);
         img_all = inflate.findViewById(R.id.fm_shop_cart_img);
@@ -176,7 +162,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                     SLT_All=!SLT_All;
                     img_all.setImageResource(R.mipmap.icon_round);
                 }
-                UpdateAdapter();
+                InitData();
             }
         });
         cb_all.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +181,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                     SLT_All=!SLT_All;
                     img_all.setImageResource(R.mipmap.icon_round);
                 }
-                UpdateAdapter();
+                InitData();
             }
         });
         //管理
@@ -207,11 +193,9 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fm_shop_cart_btn_delete:
-                goodsCartTrueList = LitePal.where("slt_goods='true'").find(LiteGoodsCartBean.class);
                 PlaceOrder();
                 break;
             case R.id.fm_shop_cart_btn_settle:
-                goodsCartTrueList = LitePal.where("slt_goods='true'").find(LiteGoodsCartBean.class);
                 DeleteCart();
                 break;
             case R.id.fm_shop_cart_manage:
@@ -250,28 +234,12 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
             boolean queryCity = intent.getBooleanExtra("query_city",false);  //判断是否需要调用查询城市
             //如果是接收到需要查询城市信息的广播   则去执行该方法
             if(queryCity){
-                UpdateAdapter();
+                InitData();
             }
 
         }
     }
 
-    public void UpdateAdapter(){
-        liteGoodsCartBeanList = LitePal.findAll(LiteGoodsCartBean.class);
-        shopCartAdapter.setListAll(liteGoodsCartBeanList);
-        shopCartAdapter.notifyDataSetChanged();
-        goodsCartTrueList = LitePal.where("slt_goods='true'").find(LiteGoodsCartBean.class);
-        double SumMoney=0;
-        for (int a=0;a<goodsCartTrueList.size();a++){
-            SumMoney=SumMoney+goodsCartTrueList.get(a).getGoods_num()*Double.parseDouble(goodsCartTrueList.get(a).getGoods_price());
-        }
-        tv_sumMoney.setText("合计：¥ "+SumMoney);
-        if (goodsCartTrueList.size()==liteGoodsCartBeanList.size()){
-            img_all.setImageResource(R.mipmap.icon_round_select);
-        }else {
-            img_all.setImageResource(R.mipmap.icon_round);
-        }
-    }
 
     @Override
     public void onDestroy() {

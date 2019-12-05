@@ -20,7 +20,7 @@ public class CouponDetailModel implements CouponDetailContract.Model {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                    couponDetailPresenter.SetCouponDetail(response.body());
                     }
                 });
     }

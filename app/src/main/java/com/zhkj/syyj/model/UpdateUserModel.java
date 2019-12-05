@@ -9,6 +9,22 @@ import com.zhkj.syyj.presenter.UpdateUserPresenter;
 
 public class UpdateUserModel implements UpdateUserContract.Model {
 
+
+    /**
+     * 获取个人信息
+     */
+    public void PostUserInfo(UpdateUserPresenter updateUserPresenter,String uid,String token){
+        OkGo.<String>get(RequstUrlUtils.URL.UserInfo)
+                .params("uid",uid)
+                .params("token",token)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                    updateUserPresenter.SetUserInfo(response.body());
+                    }
+                });
+    }
+
     /**
      * 更改个人信息
      */
@@ -28,7 +44,7 @@ public class UpdateUserModel implements UpdateUserContract.Model {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                        updateUserPresenter.SetSaveUserInfo(response.body());
                     }
                 });
     }

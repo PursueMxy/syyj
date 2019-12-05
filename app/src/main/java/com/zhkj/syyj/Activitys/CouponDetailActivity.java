@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.zhkj.syyj.Beans.CouponDetailBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.DateUtils;
 import com.zhkj.syyj.contract.CouponDetailContract;
 import com.zhkj.syyj.presenter.CouponDetailPresenter;
 
@@ -75,6 +76,13 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void UpdateUI(int code, String msg, CouponDetailBean.DataBean data){
-
+     if (code==1){
+         tv_title.setText(data.getName());
+         String start_time=data.getUse_start_time()+"";
+         String end_time=data.getUse_end_time()+"";
+         tv_content.setText("使用需知\n"+"有效期："+ DateUtils.timeStamp2Date(start_time)+"~"+DateUtils.timeStamp2Date(end_time)+"\n"+
+                 "规则提醒："+data.getUse_type_title()+"\n使用门槛："+data.getCondition_title()+"\n类型："+data.getType_title()
+                 +"\n抵扣优惠：¥"+data.getMoney() +"\n使用商品："+data.getUse_type_title());
+     }
     }
 }

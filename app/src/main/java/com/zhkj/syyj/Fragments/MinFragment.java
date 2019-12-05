@@ -189,7 +189,9 @@ public class MinFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(mContext, CouponActivity.class));
                 break;
             case R.id.fm_min_integarl:
-                startActivity(new Intent(mContext, IntegralActivity.class));
+                Intent intent7 = new Intent(mContext, IntegralActivity.class);
+                intent7.putExtra("level",level+"");
+                startActivity(intent7);
                 break;
             case R.id.fm_min_rl_news:
                 startActivity(new Intent(mContext, NewsActivity.class));

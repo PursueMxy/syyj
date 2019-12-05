@@ -10,17 +10,19 @@
     android:layout_width="@dimen/dp_160"
     android:layout_height="@dimen/dp_115" />
     <TextView
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
         android:id="@+id/list_integral_tv_title"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_width="@dimen/dp_160"
-        android:layout_height="@dimen/dp_43"
+        android:layout_height="wrap_content"
         android:text="商品标题商品标题商品标题"
         android:textColor="@color/text_black"
         android:textSize="@dimen/sp_14"
         />
     <RelativeLayout
-        android:layout_marginTop="@dimen/dp_2"
-        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView

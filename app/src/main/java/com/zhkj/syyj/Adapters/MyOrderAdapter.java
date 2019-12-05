@@ -184,9 +184,14 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_title.setText(datasBean.getOrder_goods().get(childPosition).getGoods_name());
         childViewHolder.tv_num.setText("X"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
         childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
-        childViewHolder.tv_price.setText("¥ "+datasBean.getOrder_goods().get(childPosition).getGoods_price());
         childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
-        childViewHolder.tv_total_amount.setText("¥"+datasBean.getTotal_amount());
+        if (datasBean.getPay_status()==0) {
+            childViewHolder.tv_price.setText("¥ " + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+            childViewHolder.tv_total_amount.setText("¥" + datasBean.getTotal_amount());
+        }else {
+            childViewHolder.tv_price.setText("" + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+            childViewHolder.tv_total_amount.setText("" + datasBean.getTotal_amount());
+        }
         Glide.with(mContext).load(RequstUrlUtils.URL.HOST+datasBean.getOrder_goods().get(childPosition).getOriginal_img()).into(childViewHolder.img_item);
         return convertView;
     }

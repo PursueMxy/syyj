@@ -3,6 +3,8 @@ package com.zhkj.syyj.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,14 +15,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.MyOrderAdapter;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.contract.MyExchangeContract;
+import com.zhkj.syyj.presenter.MyExchangePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MyExchangeActivity extends AppCompatActivity implements View.OnClickListener {
+public class MyExchangeActivity extends AppCompatActivity implements View.OnClickListener, MyExchangeContract.View {
     private RadioButton radiobutton_whole;
     private RadioButton radiobutton_confirm;
     private RadioButton radiobutton_to_bo_received;
@@ -28,16 +34,27 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
     private ExpandableListView elvShoppingCar;
     private Context mContext;
     private MyOrderAdapter myOrderAdapter;
-    private List<OrderListBean.DataBean> datas;
+    private List<OrderListBean.DataBean> datas=new ArrayList<>();
+    private MyExchangePresenter myExchangePresenter;
+    private String uid;
+    private String token;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_exchange);
         mContext = getApplicationContext();
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
+        Intent intent = getIntent();
+        type=intent.getStringExtra("type");
         InitUI();
         initExpandableListView();
         initData();
+        myExchangePresenter = new MyExchangePresenter(this);
+        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
     }
 
     private void InitUI() {
@@ -48,12 +65,13 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
         radiobutton_to_bo_shipped = findViewById(R.id.my_exchange_radiobutton_to_bo_shipped);
         radiobutton_to_bo_received = findViewById(R.id.my_exchange_radiobutton_to_bo_received);
         radiobutton_confirm = findViewById(R.id.my_exchange_radiobutton_confirm);
-
         my_exchange_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.my_exchange_radiobutton_to_bo_shipped:
+                        type="WAITSEND";
+                        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_choosed_color);
@@ -64,6 +82,8 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
                         radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.my_exchange_radiobutton_to_bo_received:
+                        type="WAITRECEIVE";
+                        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -74,6 +94,8 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
                         radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.my_exchange_radiobutton_whole:
+                        type="";
+                        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
                         radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -84,6 +106,8 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
                         radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.my_exchange_radiobutton_confirm:
+                        type="FINISH";
+                        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -99,6 +123,7 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
+        RadioGroupUI();
     }
 
     /**
@@ -178,5 +203,65 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //解析数据
+    public void UpdateJson(int code,String msg,String data) {
+        datas.clear();
+        if (code == 1) {
+            OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
+            datas = orderListBean.getData();
+        }
+        initExpandableListViewData(datas);
+        myOrderAdapter.notifyDataSetChanged();
+        myOrderAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    private void RadioGroupUI() {
+       if (type.equals("WAITSEND")){
+            radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_choosed_color);
+            radiobutton_to_bo_shipped.setTextColor(getResources().getColor(R.color.text_efb134));
+            radiobutton_to_bo_received.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+        }
+        else if (type.equals("WAITRECEIVE")){
+            radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_shipped.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_received.setBackgroundResource(R.drawable.myorder_choosed_color);
+            radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_efb134));
+            radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+        }
+        else if (type.equals("FINISH")){
+            radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_shipped.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_received.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_confirm.setBackgroundResource(R.drawable.myorder_choosed_color);
+            radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_efb134));
+        }
+        else {
+            radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
+            radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
+            radiobutton_to_bo_shipped.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_shipped.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_to_bo_received.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+            radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+            radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+        }
     }
 }

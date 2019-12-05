@@ -13,8 +13,10 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.zhkj.syyj.Adapters.IntegralDeatilAdapter;
+import com.zhkj.syyj.Beans.IntegralDtlListBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.IntegralDetailContract;
 import com.zhkj.syyj.presenter.IntegralDetailPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
@@ -31,7 +33,7 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
     @BindView(R.id.integral_detail_recyclerView)
     XRecyclerView mRecyclerView;
     private Context mContext;
-    private List<String> list=new ArrayList<>();
+    private List<IntegralDtlListBean.DataBean> list=new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private IntegralDeatilAdapter integralDeatilAdapter;
     private IntegralDetailPresenter integralDetailPresenter;
@@ -54,13 +56,6 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
     }
 
     private void InitUI() {
-        list.add("分类1");
-        list.add("分类2");
-        list.add("分类3");
-        list.add("分类4");
-        list.add("分类5");
-        list.add("分类6");
-        list.add("分类7");
         mRecyclerView.setNestedScrollingEnabled(false);
         mLayoutManager = new LinearLayoutManager(mContext);
         integralDeatilAdapter = new IntegralDeatilAdapter(this);
@@ -116,5 +111,16 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void UpdateUI(int code,String msg,List<IntegralDtlListBean.DataBean> data){
+        list.clear();
+        if (code==1){
+            list=data;
+        }else {
+            ToastUtils.showToast(mContext,msg);
+        }
+        integralDeatilAdapter.setListAll(list);
+        integralDeatilAdapter.notifyDataSetChanged();
     }
 }

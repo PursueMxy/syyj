@@ -29,6 +29,7 @@ import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.CollectContract;
 import com.zhkj.syyj.presenter.CollectPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
+import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 
 import org.litepal.LitePal;
 
@@ -97,12 +98,6 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onLoadMore() {
-//                addlist.add("112");
-//                addlist.add("113");
-//                addlist.add("114");
-//                addlist.add("115");
-//                addlist.add("116");
-//                addlist.add("117");
 //                collectAdapter.addItemsToLast(addlist);
 //                collectAdapter.notifyDataSetChanged();
 //                //加载更多
@@ -122,6 +117,14 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
                         , 0
                         , 0
                         , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
+            }
+        });
+        collectAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Object item, int position) {
+                Intent intent = new Intent(mContext, GoodsDetailActivity.class);
+                intent.putExtra("goods_id",liteCollectBeanList.get(position).getGoods_id()+"");
+                startActivity(intent);
             }
         });
     }
@@ -166,7 +169,15 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void DeleteCollect() {
-
+        String collect_id="";
+       for (int a=0;a<liteCollectDeleteList.size();a++){
+           if (a==0){
+               collect_id=""+liteCollectDeleteList.get(a).getCollect_id();
+           }else {
+               collect_id= collect_id+","+liteCollectDeleteList.get(a).getCollect_id();
+           }
+       }
+       collectPresenter.GetCollectGoods(uid,token,collect_id);
     }
 
     @Override
@@ -200,6 +211,8 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
           liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
           collectAdapter.setListAll(liteCollectBeanList);
           collectAdapter.notifyDataSetChanged();
+          tv_manage.setText("管理");
+          btn_delete.setVisibility(View.GONE);
       }else {
           ToastUtils.showToast(mContext,msg);
       }
@@ -223,5 +236,12 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
+    //返回通知
+    public void UpdateUI(int code,String msg){
+        if (code==1) {
+            collectPresenter.GetCollectList(uid, token, page);
+        }else {
+            ToastUtils.showToast(mContext,msg);
+        }
+    }
 }

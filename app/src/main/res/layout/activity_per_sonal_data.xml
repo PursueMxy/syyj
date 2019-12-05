@@ -137,12 +137,14 @@
                 android:textColor="#ff040000"
                 android:textSize="@dimen/sp_14"/>
             <TextView
+                android:layout_alignParentRight="true"
                 android:id="@+id/personal_data_tv_mobile"
-                android:layout_width="83dp"
-                android:layout_height="19dp"
-                android:text="180****1849"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
                 android:textColor="#ff949397"
                 android:textSize="14sp"
+                android:layout_marginRight="@dimen/dp_30"
                 />
             <ImageView
                 android:layout_centerVertical="true"

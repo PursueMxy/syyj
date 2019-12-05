@@ -10,6 +10,7 @@ public interface CollectContract {
 
     interface View {
         void UpdateUI(int code , String msg, List<CollectListBean.DataBean> data);
+        void UpdateUI(int code,String msg);
     }
 
     interface Presenter {

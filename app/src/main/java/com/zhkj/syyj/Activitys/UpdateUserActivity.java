@@ -36,6 +36,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhkj.syyj.Beans.UploadBean;
+import com.zhkj.syyj.Beans.UserInfoBean;
 import com.zhkj.syyj.CustView.Wheel.ScreenInfo;
 import com.zhkj.syyj.CustView.Wheel.WheelMain;
 import com.zhkj.syyj.R;
@@ -70,7 +71,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     @BindView(R.id.up_user_radioBtn_girl)
     RadioButton radiobtn_girl;
     @BindView(R.id.up_user_edt_userId)
-    EditText edt_userId;
+    TextView edt_userId;
     @BindView(R.id.up_user_edt_userName)
     EditText edt_userName;
     @BindView(R.id.up_user_tv_address)
@@ -87,12 +88,13 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     private View timepickerview;
     private int mType;
     private String selectedProvince;
-    private String selectedCity;
+    private String selectedCity="";
     private String selectedArea;
     private String token;
     private String uid;
+    private int sex=0;
     private UpdateUserPresenter updateUserPresenter;
-    private String headimg= RequstUrlUtils.URL.HOST+"/uploads/headimg.jpg";
+    private String headimg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
         token = share.getString("token", "");
         uid = share.getString("uid", "");
         updateUserPresenter = new UpdateUserPresenter(this);
+        updateUserPresenter.GetUserInfo(uid,token);
     }
 
     private void InitUI() {
@@ -113,7 +116,9 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId==radiobtn_man.getId()){
                     System.out.println("选中了female!");
+                    sex=1;
                 }else if (checkedId==radiobtn_girl.getId()){
+                    sex=2;
                     System.out.println("选中了male!");
                 }
             }
@@ -201,7 +206,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
                       if (!vocation.equals("")){
                            if (!selectedCity.equals("")){
                                if (!wechatNumber.equals("")){
-                               updateUserPresenter.GetSaveUserInfo(userId,token,userName, headimg,"1",birthday,selectedProvince,selectedArea,selectedCity,vocation,wechatNumber);
+                               updateUserPresenter.GetSaveUserInfo(userId,token,userName, headimg,sex+"",birthday,selectedProvince,selectedArea,selectedCity,vocation,wechatNumber);
                                }else {
                                    ToastUtils.showToast(mContext,"微信号不能为空");
                                }
@@ -293,5 +298,42 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void UpdateUI(int code, String msg, UserInfoBean.DataBean data){
+       if (code==1){
+           edt_wechatNumber.setText(data.getWechat());
+           edt_vocation.setText(data.getCareer());
+           edt_userName.setText(data.getNickname());
+           edt_userId.setText(data.getId()+"");
+           tv_birthday.setText(data.getBirthday());
+           tv_address.setText(data.getProvince()+data.getDistrict()+data.getCity());
+           if (data.getSex()==1){
+               radiobtn_man.setChecked(true);
+               radiobtn_girl.setChecked(false);
+           }else if (data.getSex()==2){
+               radiobtn_man.setChecked(false);
+               radiobtn_girl.setChecked(true);
+           }else {
+               radiobtn_man.setChecked(false);
+               radiobtn_girl.setChecked(false);
+           }
+           Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getHeadimg()).into(img_head);
+           selectedProvince=data.getProvince();
+           selectedArea=data.getDistrict();
+           selectedCity=data.getCity();
+           headimg=data.getHeadimg();
+       }else {
+           ToastUtils.showToast(mContext,msg);
+       }
+    }
+
+    public void UpdateSave(int code,String msg){
+        if (code==1){
+            startActivity(new Intent(mContext, PerSonalDataActivity.class));
+
+        }else {
+            ToastUtils.showToast(mContext,msg);
+        }
     }
 }

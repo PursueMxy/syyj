@@ -57,6 +57,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     private MyOrderPresenter myOrderPresenter;
     private String uid;
     private String token;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

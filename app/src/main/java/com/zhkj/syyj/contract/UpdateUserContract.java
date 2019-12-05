@@ -1,5 +1,6 @@
 package com.zhkj.syyj.contract;
 
+import com.zhkj.syyj.Beans.UserInfoBean;
 import com.zhkj.syyj.presenter.UpdateUserPresenter;
 
 public interface UpdateUserContract {
@@ -8,6 +9,8 @@ public interface UpdateUserContract {
     }
 
     interface View {
+        void UpdateUI(int code, String msg, UserInfoBean.DataBean data);
+        void UpdateSave(int code,String msg);
     }
 
     interface Presenter {

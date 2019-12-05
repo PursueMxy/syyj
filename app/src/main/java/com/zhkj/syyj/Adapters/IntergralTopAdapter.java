@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zhkj.syyj.Beans.IntegralCategoryBean;
 import com.zhkj.syyj.R;
 
 import java.util.ArrayList;
@@ -18,9 +19,10 @@ import java.util.List;
 public class IntergralTopAdapter extends RecyclerView.Adapter<IntergralTopAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<String> list=new ArrayList<>();
+    private List<IntegralCategoryBean.DataBean> list=new ArrayList<>();
+    private int Item=0;
 
-    public IntergralTopAdapter(Context context, List<String> list){
+    public IntergralTopAdapter(Context context, List<IntegralCategoryBean.DataBean> list){
           this.mContext=context;
           this.list=list;
 
@@ -48,16 +50,26 @@ public class IntergralTopAdapter extends RecyclerView.Adapter<IntergralTopAdapte
                 }
             });
         }
-        if (position==0){
+        if (position==Item){
             holder.tv_typename.setBackgroundResource(R.drawable.myorder_choosed_color);
             holder.tv_typename.setTextColor(mContext.getResources().getColor(R.color.text_efb134));
         }else {
             holder.tv_typename.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             holder.tv_typename.setTextColor(mContext.getResources().getColor(R.color.text_fdfdfd));
         }
-        holder.tv_typename.setText(list.get(position));
+        holder.tv_typename.setText(list.get(position).getName());
 
 
+    }
+
+    public void UpdateItem(int item){
+        this.Item=item;
+        notifyDataSetChanged();
+    }
+
+    public void RecherList(List<IntegralCategoryBean.DataBean> list){
+        this.list=list;
+        notifyDataSetChanged();
     }
 
     private OnItemClickListener mOnItemClickListener;//声明接口

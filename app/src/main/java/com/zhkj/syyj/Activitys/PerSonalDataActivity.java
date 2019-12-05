@@ -27,11 +27,14 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhkj.syyj.Beans.UploadBean;
+import com.zhkj.syyj.Beans.UserBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.GifSizeFilter;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
+import com.zhkj.syyj.contract.PerSonalDataContract;
+import com.zhkj.syyj.presenter.PerSonalDataPresenter;
 
 import java.io.File;
 import java.util.List;
@@ -41,15 +44,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PerSonalDataActivity extends AppCompatActivity {
+public class PerSonalDataActivity extends AppCompatActivity implements PerSonalDataContract.View {
     private static final int REQUEST_CODE = 1024;
     private Context mContext;
     @BindView(R.id.personal_data_img_head)
     ImageView img_head;
     @BindView(R.id.personal_data_tv_mobile)
     TextView tv_mobile;
+    private PerSonalDataPresenter perSonalDataPresenter;
+    private String token;
+    private String uid;
     private String headimg;
-    private String mobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +63,21 @@ public class PerSonalDataActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         ButterKnife.bind(this);
         SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        headimg= share.getString("headimg", "");
-        mobile = share.getString("mobile", "");
-        Glide.with(mContext).load(headimg).into(img_head);
-        tv_mobile.setText(MxyUtils.settingphone(mobile));
+        token = share.getString("token", "");
+        uid = share.getString("uid", "");
+        perSonalDataPresenter = new PerSonalDataPresenter(this);
+        perSonalDataPresenter.GetUser(uid,token);
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        perSonalDataPresenter = new PerSonalDataPresenter(this);
+        perSonalDataPresenter.GetUser(uid,token);
+
+    }
+
     @OnClick({R.id.personal_data_tv_user,R.id.personal_data_img_back,R.id.personal_data_img_edt_head,R.id.personal_date_rl_update_mobile,R.id.personal_data_rl_change_psw})
     public void onViewClicked(View view){
         switch (view.getId()){
@@ -146,5 +160,19 @@ public class PerSonalDataActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void UpdateUI(int code, String msg, UserBean.DataBean data){
+       if (code==1){
+       Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getHeadimg()).into(img_head);
+       tv_mobile.setText(data.getMobile());
+       }else {
+           ToastUtils.showToast(mContext,msg);
+       }
     }
 }

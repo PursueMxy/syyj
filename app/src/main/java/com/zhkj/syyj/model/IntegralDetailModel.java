@@ -18,7 +18,7 @@ public class IntegralDetailModel implements IntegralDetailContract.Model {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                    integralDetailPresenter.SetIntegralRecord(response.body());
                     }
                 });
     }

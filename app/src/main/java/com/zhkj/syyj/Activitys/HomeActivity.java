@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
@@ -66,6 +67,17 @@ public class HomeActivity extends AppCompatActivity {
             currentItems=0;
         }
         home_bottombarly.setCurrentItem(currentItems);
+        if (currentItems==1){
+            shopFragment.InitData();
+        }else if (currentItems==2){
+            taskFragment.InitData();
+        }else if (currentItems==3){
+            shopCartFragment.InitData();
+        }else if (currentItems==4){
+            minFragment.InitData();
+        }else{
+            homeFragment.InitData();
+        }
     }
 
     private void AddFragment() {
@@ -92,7 +104,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
      public void SetCurrentItem(int items){
+         currentItems=items;
          home_bottombarly.setCurrentItem(items);
+         if ( items==1){
+             shopFragment.InitData();
+         }else if ( items==2){
+             taskFragment.InitData();
+         }else if ( items==3){
+             shopCartFragment.InitData();
+         }else if ( items==4){
+             minFragment.InitData();
+         }else{
+             homeFragment.InitData();
+         }
      }
 
     private void IintUI() {
@@ -105,7 +129,8 @@ public class HomeActivity extends AppCompatActivity {
         home_bottombarly.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
             public void onItemSelected(BottomBarItem bottomBarItem, int i, int i1) {
-                 if (currentItems==1){
+                currentItems=i;
+               if (currentItems==1){
                     shopFragment.InitData();
                 }else if (currentItems==2){
                     taskFragment.InitData();

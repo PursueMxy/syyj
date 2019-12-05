@@ -25,5 +25,6 @@ public class CouponDetailPresenter implements CouponDetailContract.Presenter {
     public void SetCouponDetail(String content){
         CouponDetailBean couponDetailBean = new GsonBuilder().create().fromJson(content, CouponDetailBean.class);
         CouponDetailBean.DataBean data = couponDetailBean.getData();
+        mView.UpdateUI(couponDetailBean.getCode(),couponDetailBean.getMsg(),data);
     }
 }

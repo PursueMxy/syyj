@@ -3,23 +3,22 @@ package com.zhkj.syyj.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.zhkj.syyj.Activitys.CollectActivity;
+import com.zhkj.syyj.Beans.AsyncUpdateCartBean;
 import com.zhkj.syyj.Beans.CarGoodsBean;
-import com.zhkj.syyj.Beans.LiteGoodsCartBean;
-import com.zhkj.syyj.Beans.Products;
+import com.zhkj.syyj.Beans.CartListBean;
+import com.zhkj.syyj.Beans.CartsBean;
 import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.Fragments.ShopCartFragment;
 import com.zhkj.syyj.R;
@@ -27,8 +26,6 @@ import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
-
-import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +39,7 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
     private int GoodsNum;
     private int goods_cart_id;
     private final Intent intent;
+
 
     public ShopCartAdapter(Context context) {
         super(context, R.layout.list_fm_shopcart);
@@ -76,12 +74,17 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
         img_cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gson = new GsonBuilder().create();
+                String cart="";
                 if (data.getSelected()==1){
+                    cart= gson.toJson(new CartsBean(data.getId(), data.getGoods_num(), 0));
                  img_cb.setImageResource(R.mipmap.icon_round);
                 }else if (data.getSelected()==0){
-                  img_cb.setImageResource(R.mipmap.icon_round_select);
+                    cart= gson.toJson(new CartsBean(data.getId(), data.getGoods_num(), 1));
+                    img_cb.setImageResource(R.mipmap.icon_round_select);
                 }
                 intent.putExtra("query_city", true);   //通知fragment,让它去调用queryCity()方法
+                intent.putExtra("cartLists",cart);
                 localBroadcastManager.sendBroadcast(intent);   //发送本地广播   通知fragment该刷新了
             }
         });
@@ -128,10 +131,21 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
                 });
     }
 
-//    //返回价格
-//    public void AsyncUpdateCart(){
-//        OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
-//                .params("","")
-//                .params()
-//    }
+
+    public void  AsyncUpdateCart(String cart){
+        OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
+                .params("uid",uid)
+                .params("token",token)
+                .params("cart",cart)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
+                        if (asyncUpdateCartBean.getCode()==1){
+                            intent.putExtra("query_city", true);   //通知fragment,让它去调用queryCity()方法
+                            localBroadcastManager.sendBroadcast(intent);   //发送本地广播   通知fragment该刷新了
+                        }
+                    }
+                });
+    }
 }

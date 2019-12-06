@@ -159,5 +159,11 @@ public class RequstUrlUtils {
         // 更新购物车，并返回计算结果
         public static String AsyncUpdateCart=HOST+"/cart/asyncUpdateCart";
 
+        //开始任务
+        public static String StartTask=HOST+"/task/startTask";
+
+        //删除购物车
+        public static String CartDelete=HOST+"/cart/delete";
+
     }
 }

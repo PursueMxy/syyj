@@ -31,6 +31,7 @@ import com.zhkj.syyj.Activitys.MyOrderActivity;
 import com.zhkj.syyj.Activitys.NewsActivity;
 import com.zhkj.syyj.Activitys.OrderTypeActivity;
 import com.zhkj.syyj.Activitys.PerSonalDataActivity;
+import com.zhkj.syyj.Activitys.SetActivity;
 import com.zhkj.syyj.Activitys.ShoppingAddressActivity;
 import com.zhkj.syyj.Beans.IndexBean;
 import com.zhkj.syyj.CustView.CustomProgressDialog;
@@ -135,6 +136,7 @@ public class MinFragment extends Fragment implements View.OnClickListener {
         inflate.findViewById(R.id.fm_min_rel_orderDone).setOnClickListener(this);
         inflate.findViewById(R.id.fm_min_rel_task).setOnClickListener(this);
         inflate.findViewById(R.id.fm_min_my_integral).setOnClickListener(this);
+        inflate.findViewById(R.id.fm_min_rl_set).setOnClickListener(this);
         tv_username = inflate.findViewById(R.id.fm_min_tv_username);
         img_head = inflate.findViewById(R.id.fm_min_img_head);
         tv_hy = inflate.findViewById(R.id.fm_min_tv_hy);
@@ -205,6 +207,9 @@ public class MinFragment extends Fragment implements View.OnClickListener {
                 Intent intent5 = new Intent(mContext, IntegralActivity.class);
                 intent5.putExtra("level",level+"");
                 startActivity(intent5);
+                break;
+            case R.id.fm_min_rl_set:
+                startActivity(new Intent(mContext, SetActivity.class));
                 break;
                 default:
                     break;

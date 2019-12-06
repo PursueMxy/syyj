@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -56,7 +57,7 @@ import static com.zhkj.syyj.Utils.MxyUtils.getDimens;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaskFragment extends Fragment {
+public class TaskFragment extends Fragment implements View.OnClickListener {
 
 
     private View inflate;
@@ -84,6 +85,7 @@ public class TaskFragment extends Fragment {
     private int taskId;
     private int DonePage=0;
     private CustomProgressDialog progressDialog;
+    private TextView tv_startTask;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -131,7 +133,9 @@ public class TaskFragment extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void InitUI() {
+        inflate.findViewById(R.id.fm_task_startTask).setOnClickListener(this);
         ll_task = inflate.findViewById(R.id.fm_task_ll_task);
+        tv_startTask = inflate.findViewById(R.id.fm_task_startTask);
         task_radioGroup =  inflate.findViewById(R.id.fm_task_radioGroup);
         ckbtn_task =  inflate.findViewById(R.id.fm_task_ckbtn_task);
         ckbtn_done =  inflate.findViewById(R.id.fm_task_ckbtn_done);
@@ -259,6 +263,7 @@ public class TaskFragment extends Fragment {
                                 List<TaskListsBean.DataBean.TaskListBean> taskList = data.getTaskList();
                                 taskListAdapter.setListAll(taskList);
                                 tasklist_recyclerView.setAdapter(taskListAdapter);
+                                tv_startTask.setText(data.getStatus().getMsg());
                             }
         });
     }
@@ -286,4 +291,27 @@ public class TaskFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fm_task_startTask:
+                startTask();
+                break;
+                default:
+                    break;
+        }
+    }
+
+    private void startTask() {
+           OkGo.<String>post(RequstUrlUtils.URL.StartTask)
+                   .params("uid",uid)
+                   .params("token",token)
+                   .params("cat_id",taskId)
+                   .execute(new StringCallback() {
+                       @Override
+                       public void onSuccess(Response<String> response) {
+
+                       }
+                   });
+    }
 }

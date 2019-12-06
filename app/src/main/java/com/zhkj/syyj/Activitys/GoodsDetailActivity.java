@@ -501,6 +501,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     public void UpdateCartBuy(int code,String msg,String content){
         if (code==1) {
             Intent intent = new Intent(mContext, PlaceOrderActivity.class);
+            intent.putExtra("type","1");
             intent.putExtra("content", content);
             intent.putExtra("item_id", item_id + "");
             startActivity(intent);

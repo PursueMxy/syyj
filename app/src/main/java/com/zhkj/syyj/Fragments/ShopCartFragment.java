@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,17 +24,18 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zhkj.syyj.Activitys.PlaceOrderActivity;
 import com.zhkj.syyj.Adapters.ShopCartAdapter;
+import com.zhkj.syyj.Beans.AsyncUpdateCartBean;
 import com.zhkj.syyj.Beans.CarGoodsBean;
-import com.zhkj.syyj.Beans.GoodsSpecBean;
-import com.zhkj.syyj.Beans.LiteGoodsCartBean;
-import com.zhkj.syyj.Beans.Products;
+import com.zhkj.syyj.Beans.CardOrderBean;
+import com.zhkj.syyj.Beans.CartListBean;
+import com.zhkj.syyj.Beans.CartsBean;
+import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
-
-import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +61,14 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     public static final String LOCAL_BROADCAST = "com.zhkj.syyj.LOCAL_BROADCAST";
     private LocalReceiver localReceiver;
     private List<CarGoodsBean.DataBean> goodsCartTrueList=new ArrayList<>();
+    private List<CarGoodsBean.DataBean> goodsCartFalseList=new ArrayList<>();
     private TextView tv_sumMoney;
     private boolean SLT_All=false;
     private ImageView img_all;
     private Button btn_delete;
     private Button btn_settle;
     private boolean IsManage=false;
+    private ArrayList<CartsBean> cartList=new ArrayList<>();
 
     public ShopCartFragment() {
         // Required empty public constructor
@@ -85,6 +85,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
         token = share.getString("token", "");
         InitUI();
         InitData();
+        AsyncUpdateCart("");
         return inflate;
     }
 
@@ -95,12 +96,24 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        LitePal.deleteAll(LiteGoodsCartBean.class);
                         CarGoodsBean carGoodsBean = new GsonBuilder().create().fromJson(response.body(), CarGoodsBean.class);
                         goodsCartTrueList.clear();
+                        goodsCartFalseList.clear();
                         if (carGoodsBean.getCode()==1) {
                             List<CarGoodsBean.DataBean> data = carGoodsBean.getData();
                             goodsCartTrueList=data;
+                        }
+                        for (int a=0;a<goodsCartTrueList.size();a++){
+                            if (goodsCartTrueList.get(a).getSelected()==0){
+                                goodsCartFalseList.add(goodsCartTrueList.get(a));
+                            }
+                        }
+                        if (goodsCartTrueList.size()>0&&goodsCartFalseList.size()==0){
+                            SLT_All=true;
+                            img_all.setImageResource(R.mipmap.icon_round_select);
+                        }else {
+                            SLT_All=false;
+                               img_all.setImageResource(R.mipmap.icon_round);
                         }
                         shopCartAdapter.setListAll(goodsCartTrueList);
                         shopCartAdapter.notifyDataSetChanged();
@@ -149,54 +162,60 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
         img_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cartList.clear();
                 if (!SLT_All){
-                    LiteGoodsCartBean liteGoodsCartBean = new LiteGoodsCartBean();
-                    liteGoodsCartBean.setSlt_goods("true");
-                    liteGoodsCartBean.updateAll();
                     SLT_All=!SLT_All;
+                    for (int a=0;a<goodsCartTrueList.size();a++){
+                        cartList.add(new CartsBean(goodsCartTrueList.get(a).getId(), goodsCartTrueList.get(a).getGoods_num(), 1));
+                    }
+                    AsyncUpdateCart(cartList);
                     img_all.setImageResource(R.mipmap.icon_round_select);
                 }else {
-                    LiteGoodsCartBean liteGoodsCartBean = new LiteGoodsCartBean();
-                    liteGoodsCartBean.setSlt_goods("false");
-                    liteGoodsCartBean.updateAll();
                     SLT_All=!SLT_All;
+                    for (int a=0;a<goodsCartTrueList.size();a++){
+                        cartList.add(new CartsBean(goodsCartTrueList.get(a).getId(), goodsCartTrueList.get(a).getGoods_num(), 0));
+                    }
+                    AsyncUpdateCart(cartList);
                     img_all.setImageResource(R.mipmap.icon_round);
                 }
-                InitData();
             }
         });
         cb_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cartList.clear();
+                cartList.clear();
                 if (!SLT_All){
-                    LiteGoodsCartBean liteGoodsCartBean = new LiteGoodsCartBean();
-                    liteGoodsCartBean.setSlt_goods("true");
-                    liteGoodsCartBean.updateAll();
                     SLT_All=!SLT_All;
+                    for (int a=0;a<goodsCartTrueList.size();a++){
+                        cartList.add(new CartsBean(goodsCartTrueList.get(a).getId(), goodsCartTrueList.get(a).getGoods_num(), 1));
+                    }
+                    AsyncUpdateCart(cartList);
                     img_all.setImageResource(R.mipmap.icon_round_select);
                 }else {
-                    LiteGoodsCartBean liteGoodsCartBean = new LiteGoodsCartBean();
-                    liteGoodsCartBean.setSlt_goods("false");
-                    liteGoodsCartBean.updateAll();
                     SLT_All=!SLT_All;
+                    for (int a=0;a<goodsCartTrueList.size();a++){
+                        cartList.add(new CartsBean(goodsCartTrueList.get(a).getId(), goodsCartTrueList.get(a).getGoods_num(), 0));
+                    }
+                    AsyncUpdateCart(cartList);
                     img_all.setImageResource(R.mipmap.icon_round);
                 }
-                InitData();
             }
         });
         //管理
         inflate.findViewById(R.id.fm_shop_cart_manage).setOnClickListener(this);
-
+        inflate.findViewById(R.id.fm_shop_cart_btn_delete).setOnClickListener(this);
+        inflate.findViewById(R.id.fm_shop_cart_btn_settle).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fm_shop_cart_btn_delete:
-                PlaceOrder();
+                DeleteCart();
                 break;
             case R.id.fm_shop_cart_btn_settle:
-                DeleteCart();
+                OffHandPay();
                 break;
             case R.id.fm_shop_cart_manage:
                 if (!IsManage){
@@ -217,12 +236,32 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     }
 
     private void DeleteCart() {
-
+        String cart_ids="";
+        for (int a=0;a<goodsCartTrueList.size();a++) {
+            if (a==0){
+                cart_ids=goodsCartTrueList.get(a).getId()+"";
+            }else {
+                cart_ids=cart_ids+","+goodsCartTrueList.get(a).getId();
+            }
+        }
+        OkGo.<String>post(RequstUrlUtils.URL.CartDelete)
+                .params("uid",uid)
+                .params("token",token)
+                .params("cart_ids",cart_ids)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            InitData();
+                            AsyncUpdateCart("");
+                        }else {
+                            ToastUtils.showToast(mContext,publicResultBean.getMsg());
+                        }
+                    }
+                });
     }
 
-    private void PlaceOrder() {
-
-    }
 
     private class LocalReceiver extends BroadcastReceiver {
         @Override
@@ -234,7 +273,12 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
             boolean queryCity = intent.getBooleanExtra("query_city",false);  //判断是否需要调用查询城市
             //如果是接收到需要查询城市信息的广播   则去执行该方法
             if(queryCity){
-                InitData();
+                String cartLists = intent.getStringExtra("cartLists");
+                try {
+                    AsyncUpdateCart(cartLists);
+                }catch (Exception e){
+                    AsyncUpdateCart("");
+                }
             }
 
         }
@@ -245,5 +289,75 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         localBroadcastManager.unregisterReceiver(localReceiver);    //取消广播的注册
+    }
+
+    public void  AsyncUpdateCart(String cart){
+        OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
+                .params("uid",uid)
+                .params("token",token)
+                .params("cart",cart)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
+                        if (asyncUpdateCartBean.getCode()==1){
+                            InitData();
+                            AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
+                            AsyncUpdateCartBean.DataBean.CartPriceInfoBean cart_price_info = data.getCart_price_info();
+                            tv_sumMoney.setText("¥ "+cart_price_info.getTotal_fee());
+                        }
+                    }
+                });
+        Log.e("jdsfbnj",cart);
+    }
+
+
+    public void  AsyncUpdateCart(ArrayList<CartsBean> cartList){
+        for (int a=0;a<cartList.size();a++) {
+            int finalA = a;
+            String cart = new GsonBuilder().create().toJson(cartList.get(a));
+            OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
+                    .params("uid", uid)
+                    .params("token", token)
+                    .params("cart", cart)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
+                            if (asyncUpdateCartBean.getCode() == 1) {
+                                AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
+                                AsyncUpdateCartBean.DataBean.CartPriceInfoBean cart_price_info = data.getCart_price_info();
+                                if (finalA ==cartList.size()-1) {
+                                    InitData();
+                                    tv_sumMoney.setText("¥ " + cart_price_info.getTotal_fee());
+                                }
+                            }
+                        }
+                    });
+        }
+
+    }
+
+
+    /*立即购买*/
+    public void OffHandPay(){
+        OkGo.<String>post(RequstUrlUtils.URL.CartAdd2)
+                .params("uid",uid)
+                .params("token",token)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            Intent intent = new Intent(mContext, PlaceOrderActivity.class);
+                            intent.putExtra("type","2");
+                            intent.putExtra("content", response.body());
+                            intent.putExtra("item_id", "");
+                            startActivity(intent);
+                        }else {
+                            ToastUtils.showToast(mContext,publicResultBean.getMsg());
+                        }
+                    }
+                });
     }
 }

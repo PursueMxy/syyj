@@ -73,6 +73,7 @@
                     android:layout_width="@dimen/dp_68"
                     android:layout_height="@dimen/dp_52" />
                 <TextView
+                    android:id="@+id/fm_task_startTask"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_toRightOf="@+id/fm_tasklist_img"
                     android:gravity="center"

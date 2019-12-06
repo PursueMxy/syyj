@@ -46,8 +46,8 @@
      <TextView
          android:id="@+id/myorder_item_detail_tv_num"
          android:layout_marginRight="@dimen/dp_10"
-         android:text="X1"
-         android:textSize="@dimen/sp_16"
+         android:text="x1"
+         android:textSize="@dimen/sp_12"
          android:textColor="@color/text_black"
          android:layout_alignBottom="@+id/myorder_item_detail_tv_price"
          android:layout_alignTop="@+id/myorder_item_detail_tv_price"

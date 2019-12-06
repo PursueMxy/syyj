@@ -244,4 +244,10 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
             ToastUtils.showToast(mContext,msg);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        localBroadcastManager.unregisterReceiver(localReceiver);    //取消广播的注册
+    }
 }

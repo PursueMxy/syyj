@@ -23,13 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.GoodsListActivity"></activity>
+        <activity android:name=".Activitys.SetActivity"></activity>
+        <activity android:name=".Activitys.GoodsListActivity" />
         <activity android:name=".Activitys.ChangePasswordActivity" />
         <activity
             android:name=".Activitys.CallCenterActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".Activitys.PlaceOrderActivity" />
+        <activity android:name=".Activitys.PlaceOrderActivity" />
         <activity
             android:name=".Activitys.OrderTypeActivity"
             android:launchMode="singleTask" />
@@ -102,8 +102,7 @@
         <activity
             android:name=".Activitys.PerSonalDataActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".Activitys.ShoppingAddressActivity" />
+        <activity android:name=".Activitys.ShoppingAddressActivity" />
         <activity
             android:name=".Activitys.MemberActivity"
             android:launchMode="singleTask" />
@@ -168,7 +167,6 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask" /> <!-- 注意这里的android:theme="@style/AppTheme" AppTheme一定要是NoActionbar类型的主题 -->
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.zhkj.syyj.fileprovider"

@@ -182,7 +182,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
             }
         });
         childViewHolder.tv_title.setText(datasBean.getOrder_goods().get(childPosition).getGoods_name());
-        childViewHolder.tv_num.setText("X"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
+        childViewHolder.tv_num.setText("x"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
         childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
         childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
         if (datasBean.getPay_status()==0) {

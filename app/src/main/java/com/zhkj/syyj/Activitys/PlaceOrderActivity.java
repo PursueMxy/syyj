@@ -55,6 +55,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     private String item_id;
     private String pay_type="user_money";
     private int ADDRESS_CODE=2001;
+    private String type;
+    private String action="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
         Intent intent = getIntent();
         content = intent.getStringExtra("content");
         item_id = intent.getStringExtra("item_id");
+        type = intent.getStringExtra("type");
+        if (type.equals("1")){
+            action="buy_now";
+        }else if (type.equals("2")){
+            action="";
+            item_id="";
+        }
         mContext = getApplicationContext();
         SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         uid = share.getString("uid", "");
@@ -116,7 +125,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
                 int goods_id = cartList.get(0).getGoods_id();
                 int goods_num = cartList.get(0).getGoods_num();
                 placeOrderPresenter.GetCarPay(uid,token,address_id+"","",message,goods_id+"",goods_num+"",item_id,
-                        "buy_now",pay_type);
+                        action,pay_type);
                 break;
             case R.id.place_order_cb_balancePay:
                 if(cb_balancePay.isChecked()){

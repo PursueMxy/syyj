@@ -5,12 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activitys.OrderDetailActivity">
-    <LinearLayout
-        android:layout_marginBottom="@dimen/dp_66"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
     <RelativeLayout
+        android:id="@+id/order_detail_rl_one"
         android:background="@color/colorPrimaryDark"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_high">
@@ -31,6 +27,8 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
      <RelativeLayout
+         android:layout_below="@+id/order_detail_rl_one"
+         android:id="@+id/order_detail_rl_two"
          android:background="@color/colorPrimaryDark"
          android:layout_width="match_parent"
          android:layout_height="wrap_content">
@@ -51,6 +49,8 @@
      </RelativeLayout>
 
     <ScrollView
+        android:layout_below="@+id/order_detail_rl_two"
+        android:layout_above="@+id/order_detail_rl_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -106,7 +106,7 @@
         android:layout_height="@dimen/dp_88">
         <TextView
             android:id="@+id/order_detail_tv_consignee"
-            android:text="XXXXX"
+            android:text=""
             android:drawableLeft="@mipmap/icon_min_location"
             android:drawablePadding="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_10"
@@ -118,7 +118,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/dp_13"
             android:layout_marginLeft="@dimen/dp_34"
-            android:text="XX省XX市XX区XX街道"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
@@ -274,7 +274,7 @@
                          />
                  </RelativeLayout>
              </LinearLayout>
-            
+
             <RelativeLayout
                 android:layout_marginBottom="@dimen/dp_30"
                 android:background="@drawable/bg_white"
@@ -307,15 +307,15 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-    </LinearLayout>
     <RelativeLayout
+        android:id="@+id/order_detail_rl_bottom"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp_0"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_66">
         <Button
-            android:id="@+id/order_detail_btn_immediate_payment"
+            android:id="@+id/order_detail_btn_three"
             android:background="@drawable/btn_yellow"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_alignParentRight="true"
@@ -326,8 +326,10 @@
             android:layout_width="@dimen/dp_93"
             android:layout_height="@dimen/dp_40" />
 
+
+
         <Button
-            android:id="@+id/order_detail_btn_backOrder"
+            android:id="@+id/order_detail_btn_two"
             android:background="@drawable/btn_enroll"
             android:layout_marginRight="@dimen/dp_114"
             android:layout_alignParentRight="true"
@@ -338,8 +340,9 @@
             android:layout_width="@dimen/dp_93"
             android:layout_height="@dimen/dp_40" />
 
+
         <Button
-            android:id="@+id/order_detail_btn_checkExpress"
+            android:id="@+id/order_detail_btn_one"
             android:background="@drawable/btn_enroll"
             android:layout_marginRight="@dimen/dp_217"
             android:layout_alignParentRight="true"

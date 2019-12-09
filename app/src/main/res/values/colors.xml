@@ -27,6 +27,7 @@
     <color name="ff5000">#ff5000</color>
     <color name="v666666">#666666</color>
     <color name="veeeeee">#eeeeee</color>
+    <color name="fffc295c">#fffc295c</color>
     <dimen name="top_high">@dimen/dp_45</dimen>
     <dimen name="left">@dimen/dp_15</dimen>
     <dimen name="right">@dimen/dp_15</dimen>

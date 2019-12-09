@@ -26,7 +26,7 @@ public class InformationChoiceAdapter extends HelperRecyclerViewAdapter<NewsList
         TextView tv_title = viewHolder.getView(R.id.list_information_choice_tv_title);
         TextView tv_time= viewHolder.getView(R.id.list_information_choice_tv_time);
         TextView tv_content = viewHolder.getView(R.id.list_information_choice_tv_content);
-       ImageView choice_img = viewHolder.getView(R.id.list_information_choice_img);
+        ImageView choice_img = viewHolder.getView(R.id.list_information_choice_img);
         tv_title.setText(data.getTitle());
         tv_time.setText(data.getAdd_time());
         tv_content.setText(data.getDescription());

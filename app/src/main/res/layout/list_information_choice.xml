@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/bg_white"
-    android:layout_marginTop="@dimen/dp_10"
-    android:layout_width="@dimen/dp_330"
-    android:layout_height="@dimen/dp_110">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
+        android:layout_marginTop="@dimen/dp_15"
         android:id="@+id/list_information_choice_img"
         android:src="@mipmap/icon_home_rel"
         android:layout_marginLeft="@dimen/dp_10"
@@ -12,13 +12,12 @@
         android:layout_width="@dimen/dp_107"
         android:layout_height="@dimen/dp_90" />
     <TextView
+        android:layout_marginTop="@dimen/dp_10"
         android:id="@+id/list_information_choice_tv_title"
-        android:layout_alignTop="@+id/list_information_choice_img"
         android:text="金价飙涨吸引各路资金涌入金价飙涨吸引各路资金涌入"
         android:textColor="#ff040000"
         android:textSize="14sp"
         android:lines="2"
-        android:ellipsize="end"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@id/list_information_choice_img"
         android:layout_width="@dimen/dp_193"
@@ -43,7 +42,6 @@
         android:textSize="12sp"
         android:lines="1"
         android:ellipsize="end"
-        android:layout_marginTop="@dimen/dp_5"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@id/list_information_choice_img"
         android:layout_width="@dimen/dp_193"

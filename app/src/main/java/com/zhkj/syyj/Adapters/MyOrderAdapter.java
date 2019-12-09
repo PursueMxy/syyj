@@ -1,7 +1,10 @@
 package com.zhkj.syyj.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.zhkj.syyj.Activitys.EvaluateActivity;
+import com.zhkj.syyj.Activitys.HomeActivity;
+import com.zhkj.syyj.Activitys.LogisticsDetailActivity;
+import com.zhkj.syyj.Activitys.MyOrderActivity;
 import com.zhkj.syyj.Activitys.OrderDetailActivity;
+import com.zhkj.syyj.Activitys.ReMindActivity;
 import com.zhkj.syyj.Beans.OrderBean;
+import com.zhkj.syyj.Beans.OrderDetailBean;
 import com.zhkj.syyj.Beans.OrderListBean;
+import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -29,16 +43,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.zhkj.syyj.Utils.RequstUrlUtils.URL.CancelOrder;
+
 public class MyOrderAdapter extends BaseExpandableListAdapter {
 
     private final Context mContext;
+    private final String uid;
+    private final String token;
     private List<OrderListBean.DataBean> data=new ArrayList<>();
     private boolean isSelectAll = false;
     private double total_price;
 
     public MyOrderAdapter(Context context) {
         this.mContext = context;
-
+        SharedPreferences share =mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
     }
 
     /**
@@ -130,47 +150,62 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
         final OrderListBean.DataBean datasBean = data.get(groupPosition);
+        OrderListBean.DataBean.OrderStatusDetailBean order_status_detail = datasBean.getOrder_status_detail();
         if (childPosition==(datasBean.getOrder_goods().size()-1)){
             childViewHolder.myorder_item_bottom_rl.setVisibility(View.VISIBLE);
-        }else {
+        }
+        else {
             childViewHolder.myorder_item_bottom_rl.setVisibility(View.GONE);
         }
-        OrderListBean.DataBean.OrderStatusDetailBean order_status_detail = datasBean.getOrder_status_detail();
         if (order_status_detail.getStatus()==0){
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_obligation.setVisibility(View.VISIBLE);
-        }else if(order_status_detail.getStatus()==1){
+        }
+        else if(order_status_detail.getStatus()==1){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-        }else if(order_status_detail.getStatus()==2){
+        }
+        else if(order_status_detail.getStatus()==2){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.VISIBLE);
-        }else if (order_status_detail.getStatus()==3){
+        }
+        else if (order_status_detail.getStatus()==3){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.GONE);
+            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+        }
+        else if (order_status_detail.getStatus()==4){
+            childViewHolder.ll_obligation.setVisibility(View.GONE);
+            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.VISIBLE);
-        }else if (order_status_detail.getStatus()==4){
+        }
+        else if (order_status_detail.getStatus()==5){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
-        } else if (order_status_detail.getStatus()==5){
+        }
+        else if (order_status_detail.getStatus()==6){
             childViewHolder.ll_obligation.setVisibility(View.GONE);
             childViewHolder.ll_tobe_received.setVisibility(View.GONE);
             childViewHolder.ll_cancel_order.setVisibility(View.GONE);
             childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
-        }else if (order_status_detail.getStatus()==6){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+        }
+        if (datasBean.getPay_status()==0) {
+            childViewHolder.tv_price.setText("¥ " + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+            childViewHolder.tv_total_amount.setText("¥" + datasBean.getTotal_amount());
+        }
+        else {
+            childViewHolder.tv_price.setText("" + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+            childViewHolder.tv_total_amount.setText("" + datasBean.getTotal_amount());
         }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,14 +220,62 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_num.setText("x"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
         childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
         childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
-        if (datasBean.getPay_status()==0) {
-            childViewHolder.tv_price.setText("¥ " + datasBean.getOrder_goods().get(childPosition).getGoods_price());
-            childViewHolder.tv_total_amount.setText("¥" + datasBean.getTotal_amount());
-        }else {
-            childViewHolder.tv_price.setText("" + datasBean.getOrder_goods().get(childPosition).getGoods_price());
-            childViewHolder.tv_total_amount.setText("" + datasBean.getTotal_amount());
-        }
         Glide.with(mContext).load(RequstUrlUtils.URL.HOST+datasBean.getOrder_goods().get(childPosition).getOriginal_img()).into(childViewHolder.img_item);
+        //订单取消
+        childViewHolder.btn_cancelOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CancelOrderDialog(datasBean.getOrder_id());
+            }
+        });
+        //立即付款
+        childViewHolder.btn_payOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        //再次购买
+        childViewHolder.btn_oneMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderOneMore(datasBean.getOrder_id());
+            }
+        });
+        //立即评价
+        childViewHolder.btn_evaluate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent4 = new Intent(mContext, EvaluateActivity.class);
+                intent4.putExtra("order_id",datasBean.getOrder_id()+"");
+                mContext.startActivity(intent4);
+            }
+        });
+        childViewHolder.btn_again.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderOneMore(datasBean.getOrder_id());
+            }
+        });
+        childViewHolder.btn_dlt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DltOrderDialog(datasBean.getOrder_id());
+            }
+        });
+        childViewHolder.btn_logistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent4 = new Intent(mContext, LogisticsDetailActivity.class);
+                intent4.putExtra("order_id",datasBean.getOrder_id()+"");
+                mContext.startActivity(intent4);
+            }
+        });
+        childViewHolder.btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConfirmOrder(datasBean.getOrder_id());
+            }
+        });
         return convertView;
     }
 
@@ -200,6 +283,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+
 
     static class GroupViewHolder {
         @BindView(R.id.myorder_item_top_tv_typename)
@@ -237,8 +321,142 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         LinearLayout ll_tobe_received;
         @BindView(R.id.item_shopping_ll_orderDone)
         LinearLayout ll_orderDone;
+        @BindView(R.id.item_dtl_obligation_btn_cancelOrder)
+        Button btn_cancelOrder;
+        @BindView(R.id.item_dtl_obligation_btn_payOrder)
+        Button btn_payOrder;
+        @BindView(R.id.item_dtl_orderDone_btn_oneMore)
+        Button btn_oneMore;
+        @BindView(R.id.item_dtl_orderDone_btn_evaluate)
+        Button  btn_evaluate;
+        @BindView(R.id.item_dtl_cancel_btn_again)
+        Button btn_again;
+        @BindView(R.id.item_dtl_cancel_btn_dlt)
+        Button btn_dlt;
+        @BindView(R.id.item_received_btn_logistics)
+        Button btn_logistics;
+        @BindView(R.id.item_received_btn_confirm)
+        Button btn_confirm;
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
+
+    //取消订单dialog
+    public void CancelOrderDialog(int order_id){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
+                .setTitle("取消订单")
+                .setMessage("请确认是否取消")
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        CancelOrder(order_id);
+                    }
+                });
+        dialog.show();
+    }
+
+    //取消订单
+    private void CancelOrder(int order_id) {
+        OkGo.<String>get(RequstUrlUtils.URL.CancelOrder)
+                .params("token",token)
+                .params("uid",uid)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            Intent intent4 = new Intent(mContext, MyOrderActivity.class);
+                            intent4.putExtra("title","全部");
+                            mContext.startActivity(intent4);
+                        }
+                    }
+                });
+    }
+
+    //再次购买
+    public void OrderOneMore(int order_id){
+        OkGo.<String>get(RequstUrlUtils.URL.OrderOneMore)
+                .params("token",token)
+                .params("uid",uid)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            Intent intent4 = new Intent(mContext, HomeActivity.class);
+                            intent4.putExtra("currentItems","3");
+                            mContext.startActivity(intent4);
+                        }
+                    }
+                });
+    }
+
+    //删除订单dialog
+    public void DltOrderDialog(int order_id){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
+                .setTitle("删除订单")
+                .setMessage("请确认是否删除")
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DltOrder(order_id);
+                    }
+                });
+        dialog.show();
+    }
+
+    //删除订单
+    private void DltOrder(int order_id) {
+        OkGo.<String>get(RequstUrlUtils.URL.OrderDel_order)
+                .params("token",token)
+                .params("uid",uid)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            Intent intent4 = new Intent(mContext, MyOrderActivity.class);
+                            intent4.putExtra("title","全部");
+                            mContext.startActivity(intent4);
+                        }
+                    }
+                });
+    }
+
+    //确认收货
+    private void ConfirmOrder(int order_id){
+        OkGo.<String>get(RequstUrlUtils.URL.OrderConfirm)
+                .params("uid",uid)
+                .params("token",token)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            Intent intent4 = new Intent(mContext, MyOrderActivity.class);
+                            intent4.putExtra("title","全部");
+                            mContext.startActivity(intent4);
+                        }
+                    }
+                });
+
+    }
+
 }

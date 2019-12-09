@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,17 +16,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.zhkj.syyj.Adapters.AppraiseAdapter;
+import com.zhkj.syyj.Beans.GoodsCommentBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.contract.AppraiseContract;
+import com.zhkj.syyj.presenter.AppraisePresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppraiseActivity extends AppCompatActivity implements View.OnClickListener {
+public class AppraiseActivity extends AppCompatActivity implements View.OnClickListener, AppraiseContract.View {
 
     private XRecyclerView mRecyclerView;
-    private List<String> list=new ArrayList<>();
+    private List<GoodsCommentBean.DataBean> list=new ArrayList<>();
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
     private AppraiseAdapter appraiseAdapter;
@@ -34,28 +38,30 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
     private RadioButton radiobutton_to_bo_shipped;
     private RadioButton radiobutton_to_bo_received;
     private RadioButton radiobutton_obligation;
+    private  int page=0;
+    private  String goods_id;
+    private int type=0;
+    private AppraisePresenter appraisePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appraise);
         mContext = getApplicationContext();
+        Intent intent = getIntent();
+        goods_id = intent.getStringExtra("goods_id");
         InitUI();
+        appraisePresenter = new AppraisePresenter(this);
+        appraisePresenter.GetGoodsComment(page, goods_id,type);
     }
 
     private void InitUI() {
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
         findViewById(R.id.appraise_img_back).setOnClickListener(this);
         mRecyclerView= findViewById(R.id.appraise_recycleView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mLayoutManager = new LinearLayoutManager(mContext);
         appraiseAdapter = new AppraiseAdapter(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -64,12 +70,14 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onLoadMore() {
+                page=0;
+                appraisePresenter.GetGoodsComment(page, goods_id,type);
                 //加载更多
                 mRecyclerView.loadMoreComplete();//加载动画完成
                 mRecyclerView.setNoMore(true);//数据加载完成
             }
         });
-        mRecyclerView.setAdapter( appraiseAdapter);
+        mRecyclerView.setAdapter(appraiseAdapter);
         appraiseAdapter.setListAll(list);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -78,7 +86,7 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                 outRect.set(0
                         , 0
                         , 0
-                        , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
+                        , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_1)));
             }
         });
 
@@ -92,6 +100,9 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.appraise_radiobutton_obligation:
+                        type=1;
+                        page=0;
+                        appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_choosed_color);
@@ -102,6 +113,9 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.appraise_radiobutton_to_bo_shipped:
+                        type=2;
+                        page=0;
+                        appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -112,6 +126,9 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         break;
                     case R.id.appraise_radiobutton_to_bo_received:
+                        type=3;
+                        page=0;
+                        appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -122,6 +139,9 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_efb134));
                         break;
                     case R.id.appraise_radiobutton_whole:
+                        type=0;
+                        page=0;
+                        appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -154,5 +174,18 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void UpdateUI(int code,String msg,List<GoodsCommentBean.DataBean> data){
+        if (code==1){
+            list=data;
+            appraiseAdapter.setListAll(list);
+            appraiseAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -260,8 +260,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/goods_detail_img_appraise"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:lines="2"
-                    android:maxLines="2"
                     android:text=""
                     android:textColor="#ff040000"
                     android:textSize="12sp"

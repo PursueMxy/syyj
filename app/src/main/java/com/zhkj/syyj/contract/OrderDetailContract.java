@@ -10,6 +10,7 @@ public interface OrderDetailContract {
 
     interface View {
         void  UpdateJson(int code, String msg, OrderDetailBean.DataBean data);
+        void UpdateUI(int code, String msg,String typename);
     }
 
     interface Presenter {

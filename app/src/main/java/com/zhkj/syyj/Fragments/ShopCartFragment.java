@@ -308,7 +308,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
-        Log.e("jdsfbnj",cart);
+
     }
 
 
@@ -337,6 +337,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
 
 
     /*立即购买*/

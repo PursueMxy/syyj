@@ -28,81 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_35" />
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:src="@mipmap/icon_evaluate"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_200" />
-        
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dp_170"
-            android:background="@color/white"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_61">
-            <TextView
-                android:drawablePadding="@dimen/dp_10"
-                android:id="@+id/evaluate_tv_praise"
-                android:layout_marginLeft="@dimen/dp_40"
-                android:gravity="center"
-                android:drawableLeft="@mipmap/icon_slt_evaluate"
-                android:text="好评"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <TextView
-                android:drawablePadding="@dimen/dp_10"
-                android:layout_toRightOf="@+id/evaluate_tv_praise"
-                android:id="@+id/evaluate_tv_middle"
-                android:layout_marginLeft="@dimen/dp_45"
-                android:gravity="center"
-                android:drawableLeft="@mipmap/icon_no_evaluate"
-                android:text="中评"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/evaluate_tv_difference"
-                android:drawablePadding="@dimen/dp_10"
-                android:layout_toRightOf="@+id/evaluate_tv_middle"
-                android:layout_marginLeft="@dimen/dp_45"
-                android:gravity="center"
-                android:drawableLeft="@mipmap/icon_no_evaluate"
-                android:text="差评"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-    </RelativeLayout>
-    <TextView
-        android:layout_marginLeft="@dimen/left"
-        android:layout_marginTop="@dimen/dp_20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="请输入您的评价"
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/sp_14"
-        />
-    <RelativeLayout
-        android:layout_marginTop="@dimen/dp_20"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
-        android:background="@drawable/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_97">
-        <EditText
-            android:id="@+id/evaluate_tv_evaluate"
-            android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/text_949397"
-            android:hint="请写下您的评价"
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+   <ListView
+       android:id="@+id/evaluate_listview"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
 </LinearLayout>

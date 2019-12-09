@@ -314,7 +314,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             List<OrderListBean.DataBean.OrderGoodsBean> goods = datas.get(i).getOrder_goods();
 
         }
-
         if (hasSelect) {
             showDeleteDialog(datasTemp);
         } else {
@@ -401,49 +400,5 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
-
-    public class myAdaper extends BaseAdapter{
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-
-            if (null == convertView) {
-                holder = new ViewHolder();
-                switch (getItemViewType(position)) {
-                    case 1: // head
-                        convertView =getLayoutInflater().inflate(R.layout.list_home_task, null);
-                        break;
-                    case 2:// content
-                        convertView =getLayoutInflater().inflate(R.layout.list_home_shop_choice, null);
-                        break;
-                    case 3: // bottom
-                        convertView =getLayoutInflater().inflate(R.layout.list_fm_shop_right, null);
-                        break;
-                }
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            return null;
-        }
-        public class  ViewHolder{
-
-        }
     }
 }

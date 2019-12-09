@@ -165,5 +165,32 @@ public class RequstUrlUtils {
         //删除购物车
         public static String CartDelete=HOST+"/cart/delete";
 
+        //商品评论
+        public static String GoodsComment=HOST+"/goods/comment";
+
+        // 取消订单 订单未支付
+        public static String CancelOrder=HOST+"/order/cancel_order";
+
+        //立即付款
+        public static String OrderPay=HOST+"/order/pay";
+
+        //确认收货
+        public static  String OrderConfirm=HOST+"/order/order_confirm";
+
+        //再次购买
+        public static String OrderOneMore=HOST+"/order/oneMore";
+
+        //删除订单
+        public static String OrderDel_order=HOST+"/order/del_order";
+
+        //物流详情
+        public static String OrderExpress=HOST+"/order/express";
+
+        //申请取消订单 已支付未发货
+        public static String RecordRefundOrder=HOST+"record_refund_order";
+
+        //发表评价
+        public static String OrderAdd_comment=HOST+"/order/add_comment";
+
     }
 }

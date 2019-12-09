@@ -100,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/item_dtl_obligation_btn_cancelOrder"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -110,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
             <Button
+                android:id="@+id/item_dtl_obligation_btn_payOrder"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -130,6 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/item_received_btn_logistics"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -140,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
             <Button
+                android:id="@+id/item_received_btn_confirm"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -160,6 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/item_dtl_orderDone_btn_oneMore"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -170,6 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
             <Button
+                android:id="@+id/item_dtl_orderDone_btn_evaluate"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -181,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
         </LinearLayout>
-        <!-- 已完成  -->
+        <!-- 已取消 -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/item_shopping_ll_cancel_order"
@@ -190,6 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/item_dtl_cancel_btn_dlt"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"
@@ -200,6 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
             <Button
+                android:id="@+id/item_dtl_cancel_btn_again"
                 android:focusable="false"
                 android:layout_marginRight="@dimen/dp_9"
                 android:layout_marginLeft="@dimen/dp_9"

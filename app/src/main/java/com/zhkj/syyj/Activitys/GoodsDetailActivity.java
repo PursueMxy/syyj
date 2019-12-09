@@ -207,7 +207,9 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 goodsDetailPresenter.GetCollectGoods(uid,token,goods_id);
                 break;
             case R.id.goods_detail_tv_view_all_appraise:
-                startActivity(new Intent(mContext,AppraiseActivity.class));
+                Intent intent1 = new Intent(mContext, AppraiseActivity.class);
+                intent1.putExtra("goods_id",goods_id);
+                startActivity(intent1);
                 break;
             case R.id.goods_detail_tv_forward:
                 startActivity(new Intent(mContext,ForwardActivity.class));
@@ -459,12 +461,15 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             tv_appraise_name.setText(nickname);
             tv_appraise_content.setText(content);
             Glide.with(mContext).load(RequstUrlUtils.URL.HOST+headimg).into(img_appraise);
-            tv_appraise_name.setVisibility(View.GONE);
-            tv_appraise_content.setText(View.GONE);
-            img_appraise.setVisibility(View.GONE);
+            tv_appraise_name.setVisibility(View.VISIBLE);
+            tv_appraise_content.setVisibility(View.VISIBLE);
+            img_appraise.setVisibility(View.VISIBLE);
         }catch (Exception e){
-
+            tv_appraise_name.setVisibility(View.GONE);
+            tv_appraise_content.setVisibility(View.GONE);
+            img_appraise.setVisibility(View.GONE);
         }
+
     }
 
     //解析产品规格列表

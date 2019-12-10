@@ -73,6 +73,12 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
         integralPresenter.GetIntegralCategory();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        integralPresenter.GetIntegralCategory();
+    }
+
     private void InitUI() {
         findViewById(R.id.integral_img_back).setOnClickListener(this);
         findViewById(R.id.integral_tv_detail).setOnClickListener(this);

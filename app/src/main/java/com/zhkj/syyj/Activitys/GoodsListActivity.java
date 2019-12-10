@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Adapters.CollectAdapter;
@@ -26,6 +27,9 @@ import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class GoodsListActivity extends AppCompatActivity implements View.OnClickListener, GoodsListContract.View {
 
     private XRecyclerView mRecyclerView;
@@ -37,6 +41,17 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
     private LinearLayoutManager mLayoutManager;
     private Context mContext;
     private GoodsListAdapter goodsListAdapter;
+    @BindView(R.id.goods_list_tv_whole)
+    TextView tv_whole;
+    @BindView(R.id.goods_list_tv_salas)
+    TextView tv_salas;
+    @BindView(R.id.goods_list_tv_price)
+    TextView tv_price;
+    @BindView(R.id.goods_list_img_price)
+    ImageView img_price;
+    private boolean isasc=false;
+    private String sort_asc="desc";
+    private String sort="sort";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +61,18 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
         id = intent.getStringExtra("id");
         name = intent.getStringExtra("name");
         mContext = getApplicationContext();
+        ButterKnife.bind(this);
         InitUI();
         goodsListPresenter = new GoodsListPresenter(this);
-        goodsListPresenter.GetGoodsList(id,"sales_sum","asc");
+        goodsListPresenter.GetGoodsList(id,sort,sort_asc);
     }
 
     private void InitUI() {
         findViewById(R.id.goods_list_img_back).setOnClickListener(this);
+        findViewById(R.id.goods_list_top_rl_whole).setOnClickListener(this);
+        findViewById(R.id.goods_list_top_rl_salas).setOnClickListener(this);
+        findViewById(R.id.goods_list_top_rl_price).setOnClickListener(this);
+        findViewById(R.id.goods_list_img_price).setOnClickListener(this);
         mRecyclerView = findViewById(R.id.goods_detail_recyclerView);
         tv_title = findViewById(R.id.goods_list_tv_title);
         tv_title.setText(name);
@@ -101,6 +121,39 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()){
             case R.id.goods_list_img_back:
                 finish();
+            case R.id.goods_list_top_rl_whole:
+                sort="sort";
+                tv_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
+                tv_salas.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_price.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                goodsListPresenter.GetGoodsList(id,sort,sort_asc);
+                break;
+            case R.id.goods_list_top_rl_salas:
+                sort="sales_sum ";
+                tv_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_salas.setBackgroundResource(R.drawable.myorder_choosed_color);
+                tv_price.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                goodsListPresenter.GetGoodsList(id,sort,sort_asc);
+                break;
+            case R.id.goods_list_top_rl_price:
+                sort="shop_price";
+                tv_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_salas.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_price.setBackgroundResource(R.drawable.myorder_choosed_color);
+                goodsListPresenter.GetGoodsList(id,sort,sort_asc);
+                break;
+            case R.id.goods_list_img_price:
+                if (isasc){
+                    isasc=!isasc;
+                    img_price.setBackgroundResource(R.mipmap.ic_price_rise);
+                    sort_asc="desc";
+                }else {
+                    isasc=!isasc;
+                    img_price.setBackgroundResource(R.mipmap.ic_price_down);
+                    sort_asc="asc";
+                }
+                goodsListPresenter.GetGoodsList(id,sort,sort_asc);
+                break;
         }
     }
 

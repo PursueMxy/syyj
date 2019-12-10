@@ -77,6 +77,12 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
         order_type_elv = findViewById(R.id.order_type_elv);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initData();
+    }
+
     /**
      * 初始化数据
      */

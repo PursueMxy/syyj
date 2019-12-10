@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Beans.HomeIndexBean;
-import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;

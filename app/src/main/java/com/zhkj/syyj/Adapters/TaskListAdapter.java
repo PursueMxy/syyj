@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Activitys.ForwardActivity;
 import com.zhkj.syyj.Activitys.ReMindActivity;
-import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.Beans.TaskListsBean;
 import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.R;

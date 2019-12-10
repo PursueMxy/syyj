@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="syyj" />
-    <version value="2" />
+    <version value="3" />
     <list>
         <mapping class="com.zhkj.syyj.Beans.LiteGoodsCartBean" />
         <mapping class="com.zhkj.syyj.Beans.LiteCollectBean" />
+        <mapping class="com.zhkj.syyj.Beans.LiteCommentBean" />
     </list>
 </litepal>

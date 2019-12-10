@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,8 +28,29 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_35" />
     </RelativeLayout>
-   <ListView
+    <ScrollView
+        android:layout_marginTop="@dimen/dp_49"
+        android:layout_above="@+id/evaluate_btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+   <com.zhkj.syyj.CustView.NoScrollListView
+       android:layout_marginBottom="@dimen/dp_5"
+       android:dividerHeight="@dimen/dp_20"
        android:id="@+id/evaluate_listview"
+       android:divider="@color/bg_fafafa"
        android:layout_width="match_parent"
        android:layout_height="match_parent"/>
-</LinearLayout>
+    </ScrollView>
+   <Button
+       android:id="@+id/evaluate_btn_confirm"
+       android:background="@drawable/btn_login"
+       android:textSize="@dimen/sp_14"
+       android:textColor="@color/white"
+       android:text="提交"
+       android:layout_marginLeft="@dimen/dp_40"
+       android:layout_marginRight="@dimen/dp_40"
+       android:layout_marginBottom="@dimen/dp_40"
+       android:layout_alignParentBottom="true"
+       android:layout_width="match_parent"
+       android:layout_height="@dimen/dp_44"/>
+</RelativeLayout>

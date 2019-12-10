@@ -146,6 +146,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                InitData();
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
@@ -313,28 +314,45 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
 
 
     public void  AsyncUpdateCart(ArrayList<CartsBean> cartList){
-        for (int a=0;a<cartList.size();a++) {
-            int finalA = a;
-            String cart = new GsonBuilder().create().toJson(cartList.get(a));
-            OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
-                    .params("uid", uid)
-                    .params("token", token)
-                    .params("cart", cart)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
-                            if (asyncUpdateCartBean.getCode() == 1) {
-                                AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
-                                AsyncUpdateCartBean.DataBean.CartPriceInfoBean cart_price_info = data.getCart_price_info();
-                                if (finalA ==cartList.size()-1) {
-                                    InitData();
-                                    tv_sumMoney.setText("¥ " + cart_price_info.getTotal_fee());
-                                }
-                            }
+        String s = new GsonBuilder().create().toJson(cartList);
+        OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
+                .params("uid", uid)
+                .params("token", token)
+                .params("cart",s)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
+                        if (asyncUpdateCartBean.getCode() == 1) {
+                            AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
+                            AsyncUpdateCartBean.DataBean.CartPriceInfoBean cart_price_info = data.getCart_price_info();
+                            InitData();
+                            tv_sumMoney.setText("¥ " + cart_price_info.getTotal_fee());
                         }
-                    });
-        }
+                    }
+                });
+//        for (int a=0;a<cartList.size();a++) {
+//            int finalA = a;
+//            String cart = new GsonBuilder().create().toJson(cartList.get(a));
+//            OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
+//                    .params("uid", uid)
+//                    .params("token", token)
+//                    .params("cart", cart)
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onSuccess(Response<String> response) {
+//                            AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
+//                            if (asyncUpdateCartBean.getCode() == 1) {
+//                                AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
+//                                AsyncUpdateCartBean.DataBean.CartPriceInfoBean cart_price_info = data.getCart_price_info();
+//                                if (finalA ==cartList.size()-1) {
+//                                    InitData();
+//                                    tv_sumMoney.setText("¥ " + cart_price_info.getTotal_fee());
+//                                }
+//                            }
+//                        }
+//                    });
+//        }
 
     }
 

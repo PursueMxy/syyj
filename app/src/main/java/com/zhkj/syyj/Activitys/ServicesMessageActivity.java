@@ -30,7 +30,7 @@ import java.util.List;
 public class ServicesMessageActivity extends AppCompatActivity implements View.OnClickListener, ServicesMessageContract.View {
 
     private XRecyclerView mRecyclerView;
-    private List<String> list=new ArrayList<>();
+    private List<MessageNoticeBean.DataBean> list=new ArrayList<>();
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
     private ServicesMessageAdapter servicesMessageAdapter;
@@ -51,12 +51,13 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
         servicesMessagePresenter.GetMessageNoticeList(uid,token,0,0);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        servicesMessagePresenter.GetMessageNoticeList(uid,token,0,0);
+    }
+
     private void InitUI() {
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
-        list.add("112");
         findViewById(R.id.services_message_img_back).setOnClickListener(this);
         mRecyclerView = findViewById(R.id.services_message_recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -93,6 +94,10 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext, MessageDetailActivity.class);
                 intent.putExtra("title","服务消息详情");
+                intent.putExtra("id",list.get(position).getRec_id()+"");
+                intent.putExtra("name",list.get(position).getMessage_title());
+                intent.putExtra("time",list.get(position).getSend_time_text());
+                intent.putExtra("content",list.get(position).getMessage_content());
                 startActivity(intent);
             }
         });
@@ -123,6 +128,8 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
     }
 
     public void UpdateUI(int code,String msg, List<MessageNoticeBean.DataBean> data){
-
+        list=data;
+        servicesMessageAdapter.setListAll(list);
+        servicesMessageAdapter.notifyDataSetChanged();
     }
 }

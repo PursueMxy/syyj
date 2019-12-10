@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Beans.CouponDetailBean;
@@ -26,6 +27,7 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
     private CouponDetailPresenter couponDetailPresenter;
     private String token;
     private String uid;
+    private Button btn_use;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,18 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
         couponDetailPresenter.GetCouponDetail(uid,token,cid);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        couponDetailPresenter.GetCouponDetail(uid,token,cid);
+    }
+
     private void InitUI() {
         findViewById(R.id.coupon_detail_img_back).setOnClickListener(this);
         findViewById(R.id.coupon_btn_use).setOnClickListener(this);
         tv_title = findViewById(R.id.coupon_detail_tv_title);
         tv_content = findViewById(R.id.coupon_tv_content);
+        btn_use = findViewById(R.id.coupon_btn_use);
     }
 
     @Override
@@ -83,6 +92,13 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
          tv_content.setText("使用需知\n"+"有效期："+ DateUtils.timeStamp2Date(start_time)+"~"+DateUtils.timeStamp2Date(end_time)+"\n"+
                  "规则提醒："+data.getUse_type_title()+"\n使用门槛："+data.getCondition_title()+"\n类型："+data.getType_title()
                  +"\n抵扣优惠：¥"+data.getMoney() +"\n使用商品："+data.getUse_type_title());
+         if (data.getStatus()==0){
+             btn_use.setText("立即使用");
+             btn_use.setClickable(true);
+         }else {
+             btn_use.setText("已使用");
+             btn_use.setClickable(false);
+         }
      }
     }
 }

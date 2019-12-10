@@ -17,8 +17,10 @@ import android.widget.RadioGroup;
 
 import com.zhkj.syyj.Adapters.AppraiseAdapter;
 import com.zhkj.syyj.Beans.GoodsCommentBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.AppraiseContract;
 import com.zhkj.syyj.presenter.AppraisePresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
@@ -42,6 +44,7 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
     private  String goods_id;
     private int type=0;
     private AppraisePresenter appraisePresenter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,18 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         goods_id = intent.getStringExtra("goods_id");
         InitUI();
+        if (progressDialog == null){
+            progressDialog = CustomProgressDialog.createDialog(this);
+        }
+        progressDialog.show();
         appraisePresenter = new AppraisePresenter(this);
         appraisePresenter.GetGoodsComment(page, goods_id,type);
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        appraisePresenter.GetGoodsComment(page, goods_id,type);
+    }
     private void InitUI() {
         findViewById(R.id.appraise_img_back).setOnClickListener(this);
         mRecyclerView= findViewById(R.id.appraise_recycleView);
@@ -182,10 +193,16 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void UpdateUI(int code,String msg,List<GoodsCommentBean.DataBean> data){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
         if (code==1){
             list=data;
             appraiseAdapter.setListAll(list);
             appraiseAdapter.notifyDataSetChanged();
+        }else {
+            ToastUtils.showToast(mContext,msg);
         }
     }
 }

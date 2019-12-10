@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,6 +33,11 @@ public class CallCenterActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_call_center);
         mContext = getApplicationContext();
         InitUI();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     private void InitUI() {

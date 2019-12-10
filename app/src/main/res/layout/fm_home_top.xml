@@ -4,37 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/home_img_logo_name"
-            android:layout_marginTop="@dimen/dp_10"
-            android:src="@mipmap/icon_logo_name"
-            android:layout_width="@dimen/dp_54"
-            android:layout_height="@dimen/dp_37" />
-        <RelativeLayout
-            android:layout_marginRight="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/bg_search"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@+id/home_img_logo_name"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_37">
-            <EditText
-                android:textColor="#ff949397"
-                android:textSize="12sp"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:background="@null"
-                android:drawableLeft="@mipmap/icon_search"
-                android:gravity="center|left"
-                android:hint="请输入搜索内容"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-    </RelativeLayout>
 
     <com.yyydjk.library.BannerLayout
+        android:layout_marginTop="@dimen/dp_3"
         android:id="@+id/fm_home_banner"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_201"
@@ -156,6 +128,7 @@
             android:textColor="#ff040000"
             android:textSize="20sp"/>
         <TextView
+            android:id="@+id/fmhome_rl_tv_goods_lists"
             android:gravity="center"
             android:text="更多  ➞"
             android:layout_centerVertical="true"

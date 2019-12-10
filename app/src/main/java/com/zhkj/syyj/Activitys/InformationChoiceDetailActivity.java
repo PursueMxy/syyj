@@ -20,15 +20,22 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
 
     private TextView tv_title;
     private InformationChoiceDetailPresenter informationChoiceDetailPresenter;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_choice_detail);
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
         InitUI();
         informationChoiceDetailPresenter = new InformationChoiceDetailPresenter(this);
+        informationChoiceDetailPresenter.getNewsDetail(id);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         informationChoiceDetailPresenter.getNewsDetail(id);
     }
 

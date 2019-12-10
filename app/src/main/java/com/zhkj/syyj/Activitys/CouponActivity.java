@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.CouponAdapter;
 import com.zhkj.syyj.Beans.CouponBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.CouponContract;
@@ -46,6 +47,7 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     private String uid;
     private String type="";
     private int page=0;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,17 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
         token = share.getString("token", "");
         uid = share.getString("uid", "");
         InitUI();
+        if (progressDialog == null){
+            progressDialog = CustomProgressDialog.createDialog(this);
+        }
+        progressDialog.show();
         couponPresenter = new CouponPresenter(this);
+        couponPresenter.GetCoupon(uid,token,type,page);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         couponPresenter.GetCoupon(uid,token,type,page);
     }
 
@@ -102,7 +114,7 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
             }
         });
-       RadioGroup coupon_radioGroup= findViewById(R.id.coupon_radioGroup);
+        RadioGroup coupon_radioGroup= findViewById(R.id.coupon_radioGroup);
         radiobutton_whole = findViewById(R.id.coupon_radiobutton_whole);
         radiobutton_obligation = findViewById(R.id.coupon_radiobutton_obligation);
         radiobutton_to_bo_shipped = findViewById(R.id.coupon_radiobutton_to_bo_shipped);
@@ -113,6 +125,10 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                 switch (checkedId){
                     case R.id.coupon_radiobutton_obligation:
                         type="0";
+                        if (progressDialog == null){
+                            progressDialog = CustomProgressDialog.createDialog(CouponActivity.this);
+                        }
+                        progressDialog.show();
                         couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -125,6 +141,10 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         break;
                     case R.id.coupon_radiobutton_to_bo_shipped:
                         type="1";
+                        if (progressDialog == null){
+                            progressDialog = CustomProgressDialog.createDialog(CouponActivity.this);
+                        }
+                        progressDialog.show();
                         couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -137,6 +157,10 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         break;
                     case R.id.coupon_radiobutton_to_bo_received:
                         type="2";
+                        if (progressDialog == null){
+                            progressDialog = CustomProgressDialog.createDialog(CouponActivity.this);
+                        }
+                        progressDialog.show();
                         couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -149,6 +173,10 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
                         break;
                     case R.id.coupon_radiobutton_whole:
                         type="";
+                        if (progressDialog == null){
+                            progressDialog = CustomProgressDialog.createDialog(CouponActivity.this);
+                        }
+                        progressDialog.show();
                         couponPresenter.GetCoupon(uid,token,type,page);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
@@ -193,6 +221,10 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void UpdateUI(int code ,String msg,List<CouponBean.DataBean> data){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
         list=data;
         couponAdapter.setListAll(list);
         couponAdapter.notifyDataSetChanged();

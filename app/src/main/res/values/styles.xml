@@ -49,6 +49,11 @@
         <item name="android:button">@drawable/checkbox_bg</item>
     </style>
 
+    <!--CheckBox框框样式-->
+    <style name="EvaluateCheck" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/evaluateck_bg</item>
+    </style>
+
     <style name="DialogCommonStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

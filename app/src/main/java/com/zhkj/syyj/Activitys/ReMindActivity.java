@@ -51,6 +51,10 @@ public class ReMindActivity extends AppCompatActivity implements View.OnClickLis
         InitUI();
         reMindPresenter = new ReMindPresenter(this);
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
 
     private void InitUI() {
         findViewById(R.id.remind_img_back).setOnClickListener(this);

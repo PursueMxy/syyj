@@ -5,5 +5,5 @@
     <!-- 边框色 -->
     <stroke android:width="0.5dip" android:color="@color/text_949397" />
 
-    <corners android:radius="@dimen/dp_4"></corners>
+    <corners android:radius="@dimen/dp_5"></corners>
 </shape>

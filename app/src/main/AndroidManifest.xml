@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.SetActivity"></activity>
+        <activity android:name=".Activitys.OrderPayActivity"></activity>
+        <activity android:name=".Activitys.SetActivity" />
         <activity android:name=".Activitys.GoodsListActivity" />
         <activity android:name=".Activitys.ChangePasswordActivity" />
         <activity
@@ -102,7 +103,8 @@
         <activity
             android:name=".Activitys.PerSonalDataActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".Activitys.ShoppingAddressActivity" />
+        <activity android:name=".Activitys.ShoppingAddressActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".Activitys.MemberActivity"
             android:launchMode="singleTask" />

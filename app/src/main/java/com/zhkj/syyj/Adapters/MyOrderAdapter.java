@@ -232,6 +232,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         childViewHolder.btn_payOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OrderPay(datasBean.getOrder_id());
             }
         });
         //再次购买
@@ -457,6 +458,20 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
+    }
+
+    //立即付款
+    private void OrderPay(int order_id){
+        OkGo.<String>get(RequstUrlUtils.URL.OrderPay)
+                .params("uid",uid)
+                .params("token",token)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                    }
+                });
     }
 
 }

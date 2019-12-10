@@ -68,6 +68,8 @@ public class UpdateMobileActivity extends AppCompatActivity implements UpdateMob
         tv_phone.setText(MxyUtils.settingphone(mobile));
         updateMobilePresenter = new UpdateMobilePresenter(this);
     }
+
+
      @OnClick({R.id.update_mobile_btn_next,R.id.update_mobile_btn_confirm,R.id.update_mode_tv_mobile_code,R.id.update_mode_new_tv_mobile_code})
      public void onViewClicked(View view){
         switch (view.getId()){

@@ -19,11 +19,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.yyydjk.library.BannerLayout;
-import com.zhkj.syyj.Adapters.GridAdapter;
-import com.zhkj.syyj.Beans.BuyIntegralGoodsBean;
-import com.zhkj.syyj.Beans.GoodsSpecBean;
 import com.zhkj.syyj.Beans.IntegralGoodsDetailBean;
-import com.zhkj.syyj.Beans.SpecGoodsPriceBean;
 import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.CustView.CircleImageView;
 import com.zhkj.syyj.CustView.GlideImageLoader;
@@ -99,6 +95,12 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
         uid = share.getString("uid", "");
         InitUI();
         integralGoodsDetailPresenter = new IntegralGoodsDetailPresenter(this);
+        integralGoodsDetailPresenter.GetIntegraDetail(uid,token,goods_id);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         integralGoodsDetailPresenter.GetIntegraDetail(uid,token,goods_id);
     }
 

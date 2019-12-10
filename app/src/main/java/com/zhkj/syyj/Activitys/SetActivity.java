@@ -4,14 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.ClearCacheManager;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.SysUtil;
 import com.zhkj.syyj.Utils.ToastUtils;
 
@@ -25,6 +32,8 @@ public class SetActivity extends AppCompatActivity {
     @BindView(R.id.set_tv_versionName)
     TextView tv_versionName;
     private Context mContext;
+    private String uid;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,9 @@ public class SetActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String versionName = getVersionName();
         tv_versionName.setText(versionName);
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
         try {
             String cache = ClearCacheManager.getTotalCacheSize(SetActivity.this);
             if(SysUtil.isNotNUll(cache)){
@@ -58,7 +70,10 @@ public class SetActivity extends AppCompatActivity {
                 tv_clean_cache.setText("0.0B");
                 break;
             case R.id.set_btn_out_login:
-                startActivity(new Intent(mContext,LoginActivity.class));
+                Logout();
+                break;
+            case R.id.set_rl_user:
+                startActivity(new Intent(mContext, PerSonalDataActivity.class));
                 break;
         }
     }
@@ -84,5 +99,21 @@ public class SetActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //退出登录
+    public void Logout(){
+        OkGo.<String>get(RequstUrlUtils.URL.logout)
+                .params("uid",uid)
+                .params("token",token)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            startActivity(new Intent(mContext,LoginActivity.class));
+                        }
+                    }
+                });
     }
 }

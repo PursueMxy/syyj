@@ -52,6 +52,10 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
         InitUI();
 
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
 
     private void InitUI() {
         findViewById(R.id.forward_btn_define).setOnClickListener(this);

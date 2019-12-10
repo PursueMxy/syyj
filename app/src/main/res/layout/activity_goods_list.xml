@@ -32,13 +32,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50">
         <RelativeLayout
+            android:id="@+id/goods_list_top_rl_whole"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/goods_list_tv_whole"
+                android:layout_centerHorizontal="true"
+                android:layout_width="@dimen/dp_50"
                 android:background="@drawable/myorder_choosed_color"
                 android:gravity="center"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="全部"
                 android:textColor="@color/text_efb134"
@@ -46,12 +49,16 @@
                 />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/goods_list_top_rl_salas"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/goods_list_tv_salas"
+                android:background="@drawable/myorder_nochoosed_color"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/dp_50"
                 android:layout_height="match_parent"
                 android:text="销量"
                 android:textColor="@color/text_949397"
@@ -59,35 +66,30 @@
                 />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/goods_list_top_rl_price"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/goods_list_top_price"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:background="@drawable/myorder_nochoosed_color"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/goods_list_tv_price"
+                android:gravity="center"
+                android:layout_width="@dimen/dp_55"
+                android:layout_height="match_parent"
                 android:text="价格"
                 android:textColor="@color/text_949397"
                 android:textSize="@dimen/sp_16"
                 />
             <ImageView
-                android:layout_marginTop="@dimen/dp_3"
-                android:layout_marginLeft="@dimen/dp_3"
-                android:layout_alignTop="@+id/goods_list_top_price"
-                android:layout_toRightOf="@+id/goods_list_top_price"
-                android:src="@mipmap/ic_upward"
+                android:id="@+id/goods_list_img_price"
+                android:padding="@dimen/dp_3"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_85"
+                android:src="@mipmap/ic_price_rise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:layout_marginLeft="@dimen/dp_3"
-                android:layout_marginBottom="@dimen/dp_3"
-                android:layout_alignBottom="@+id/goods_list_top_price"
-                android:layout_toRightOf="@+id/goods_list_top_price"
-                android:src="@mipmap/ic_downward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
         </RelativeLayout>
     </LinearLayout>
     <com.zhouyou.recyclerview.XRecyclerView

@@ -39,6 +39,7 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
     private int GoodsNum;
     private int goods_cart_id;
     private final Intent intent;
+    private ArrayList<CartsBean> cartList=new ArrayList<>();
 
 
     public ShopCartAdapter(Context context) {
@@ -76,11 +77,14 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
             public void onClick(View v) {
                 Gson gson = new GsonBuilder().create();
                 String cart="";
+                cartList.clear();
                 if (data.getSelected()==1){
-                    cart= gson.toJson(new CartsBean(data.getId(), data.getGoods_num(), 0));
-                 img_cb.setImageResource(R.mipmap.icon_round);
+                    cartList.add(new CartsBean(data.getId(), data.getGoods_num(), 0));
+                    cart= gson.toJson(cartList);
+                   img_cb.setImageResource(R.mipmap.icon_round);
                 }else if (data.getSelected()==0){
-                    cart= gson.toJson(new CartsBean(data.getId(), data.getGoods_num(), 1));
+                    cartList.add(new CartsBean(data.getId(), data.getGoods_num(), 1));
+                    cart= gson.toJson(cartList);
                     img_cb.setImageResource(R.mipmap.icon_round_select);
                 }
                 intent.putExtra("query_city", true);   //通知fragment,让它去调用queryCity()方法
@@ -132,20 +136,5 @@ public class ShopCartAdapter extends HelperRecyclerViewAdapter<CarGoodsBean.Data
     }
 
 
-    public void  AsyncUpdateCart(String cart){
-        OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
-                .params("uid",uid)
-                .params("token",token)
-                .params("cart",cart)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
-                        if (asyncUpdateCartBean.getCode()==1){
-                            intent.putExtra("query_city", true);   //通知fragment,让它去调用queryCity()方法
-                            localBroadcastManager.sendBroadcast(intent);   //发送本地广播   通知fragment该刷新了
-                        }
-                    }
-                });
-    }
+
 }

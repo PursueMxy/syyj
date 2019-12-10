@@ -68,6 +68,7 @@ public class ShoppingAddressUpdateActivity extends AppCompatActivity implements 
         addressUpdatePresenter = new ShoppingAddressUpdatePresenter(this);
     }
 
+
     private void InitUI() {
         findViewById(R.id.shopping_address_update_img_back).setOnClickListener(this);
         tv_city = findViewById(R.id.shopping_address_up_tv_city);

@@ -35,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_42">
         <TextView
+            android:id="@+id/cash_out_tv_money"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_centerVertical="true"
             android:layout_width="match_parent"
@@ -101,7 +102,7 @@
             <TextView
                 android:layout_marginLeft="@dimen/dp_45"
                 android:layout_centerVertical="true"
-                android:text="微信支付"
+                android:text="提现到微信"
                 android:textColor="#ff040000"
                 android:textSize="@dimen/sp_12"
                 android:layout_width="match_parent"
@@ -130,7 +131,7 @@
             <TextView
                 android:layout_marginLeft="@dimen/dp_45"
                 android:layout_centerVertical="true"
-                android:text="支付宝支付"
+                android:text="提现到支付宝"
                 android:textColor="#ff040000"
                 android:textSize="@dimen/sp_12"
                 android:layout_width="match_parent"

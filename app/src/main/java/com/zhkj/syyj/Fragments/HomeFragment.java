@@ -33,9 +33,9 @@ import com.zhkj.syyj.Activitys.HomeActivity;
 import com.zhkj.syyj.Activitys.InformationChoiceActivity;
 import com.zhkj.syyj.Activitys.InformationChoiceDetailActivity;
 import com.zhkj.syyj.Activitys.ReMindActivity;
+import com.zhkj.syyj.Activitys.ShopFmSearchActivity;
 import com.zhkj.syyj.Adapters.ShopChoiceAdapter;
 import com.zhkj.syyj.Beans.HomeIndexBean;
-import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.GlideImageLoader;
@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private List<HomeIndexBean.DataBean.GoodsBean> goodsList=new ArrayList<>();
     private String article_id="";
     private CustomProgressDialog progressDialog;
+    private int SHOPFMSEARCH_CODE=1001;
 
 
     public HomeFragment() {
@@ -92,7 +93,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public void InitData() {
         if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(mContext);
+            progressDialog = CustomProgressDialog.createDialog(getContext());
         }
         progressDialog.show();
         OkGo.<String>get(RequstUrlUtils.URL.HomeIndex)
@@ -146,6 +147,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         home_top.findViewById(R.id.fmhome_tv_information_choice).setOnClickListener(this);
         home_top.findViewById(R.id.fmhome_rl_information_choice).setOnClickListener(this);
         home_top.findViewById(R.id.fmhome_rl_tv_task_lists).setOnClickListener(this);
+        home_top.findViewById(R.id.fmhome_rl_tv_goods_lists).setOnClickListener(this);
+        inflate.findViewById(R.id.home_top_search).setOnClickListener(this);
         home_choice_img = home_top.findViewById(R.id.home_choice_img);
         home_choice_tv_title = home_top.findViewById(R.id.home_choice_tv_title);
         home_choice_tv_title_description = home_top.findViewById(R.id.home_choice_tv_title_description);
@@ -219,6 +222,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                Intent intent1=new Intent(mContext,HomeActivity.class);
                intent1.putExtra("currentItems","2");
                startActivity(intent1);
+                break;
+            case R.id.home_top_search:
+                Intent intent2 = new Intent(mContext, ShopFmSearchActivity.class);
+                startActivityForResult(intent2,SHOPFMSEARCH_CODE);
+                break;
+            case R.id.fmhome_rl_tv_goods_lists:
+                startActivity(new Intent(mContext,ShopFmSearchActivity.class));
                 break;
                 default:
                     break;

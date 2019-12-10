@@ -57,6 +57,12 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
         myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
+    }
+
     private void InitUI() {
         findViewById(R.id.my_exchange_img_back).setOnClickListener(this);
         elvShoppingCar = findViewById(R.id.my_exchange_elv_shopping_car);

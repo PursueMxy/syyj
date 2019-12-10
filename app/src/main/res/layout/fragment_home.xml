@@ -4,10 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.HomeFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/fm_home_rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/home_img_logo_name"
+            android:layout_marginTop="@dimen/dp_10"
+            android:src="@mipmap/icon_logo_name"
+            android:layout_width="@dimen/dp_54"
+            android:layout_height="@dimen/dp_37" />
+        <RelativeLayout
+            android:id="@+id/home_top_search"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/bg_search"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/home_img_logo_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_37">
+            <TextView
+                android:id="@+id/home_top_search_edt"
+                android:textColor="#ff949397"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:background="@null"
+                android:drawableLeft="@mipmap/icon_search"
+                android:gravity="center|left"
+                android:hint="请输入搜索内容"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <EditText
+                android:textColor="#ff949397"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:background="@null"
+                android:gravity="center|left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </RelativeLayout>
             <com.zhouyou.recyclerview.XRecyclerView
+                android:layout_marginTop="@dimen/dp_3"
+                android:layout_below="@+id/fm_home_rl_top"
                 android:layout_marginRight="@dimen/dp_10"
                 android:id="@+id/fmhome_XRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </com.zhouyou.recyclerview.XRecyclerView>
+    </RelativeLayout>
 </FrameLayout>

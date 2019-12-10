@@ -77,6 +77,12 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
         placeOrderIntegralPresenter.getDefaultAddress(uid,token);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        placeOrderIntegralPresenter.getDefaultAddress(uid,token);
+    }
+
     private void InitData() {
         BuyIntegralGoodsBean buyIntegralGoodsBean = new GsonBuilder().create().fromJson(content, BuyIntegralGoodsBean.class);
         BuyIntegralGoodsBean.DataBean data = buyIntegralGoodsBean.getData();
@@ -86,7 +92,7 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
         tv_title.setText(data.getGoods_name());
         tv_price.setText(data.getExchange_integral()+"");
         tv_num.setText(data.getGoods_num());
-        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img());
+        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img()).into(img_goods);
         tv_couponNumber.setText(""+data.getTotale());
         tv_freight.setText("¥ "+data.getShipping_price());
     }

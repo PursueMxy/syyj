@@ -35,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_42">
         <TextView
+            android:id="@+id/recharge_tv_money"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_centerVertical="true"
             android:layout_width="match_parent"

@@ -58,7 +58,6 @@ public class TaskListFragment extends Fragment {
         // Inflate the layout for this fragment
         inflate = inflater.inflate(R.layout.fragment_task_list, container, false);
         mContext = getContext();
-        Log.e("执行了","第几次");
         InitUI();
         return inflate;
     }

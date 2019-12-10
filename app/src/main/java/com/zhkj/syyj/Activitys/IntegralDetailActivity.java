@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -52,6 +53,12 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
         uid = share.getString("uid", "");
         InitUI();
         integralDetailPresenter = new IntegralDetailPresenter(this);
+        integralDetailPresenter.GetIntegralRecord(uid,token,page);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         integralDetailPresenter.GetIntegralRecord(uid,token,page);
     }
 

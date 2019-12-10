@@ -12,9 +12,11 @@
     <color name="tab_normal_color">#4E4D52</color>
     <color name="tab_selected_color">#E0BD85</color>
     <color name="tab_e6e6e6">#e6e6e6</color>
-    <drawable name="cut_off_rule">#e6e6e6</drawable>
     <color name="bg_fafafa">#FFFAFAFA</color>
+    <color name="bg_e6e6e6">#FFE6E6E6</color>
+    <color name="ff707070">#ff707070</color>
 
+    <drawable name="cut_off_rule">#e6e6e6</drawable>
     <!--白色  标题 背景-->
     <color name="colorBackground">#ffffff</color>
     <!--蓝色  选中下划线 -->

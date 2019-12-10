@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.zhkj.syyj.R;
 
@@ -23,23 +25,34 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     private CheckBox cb_wechatpay;
     private CheckBox cb_alipay;
     private EditText edt_price;
+    private String uid;
+    private String token;
+    private String balance;
+    private TextView tv_money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recharge);
         mContext = getApplicationContext();
+        Intent intent = getIntent();
+        balance = intent.getStringExtra("balance");
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
         InitUI();
     }
 
     private void InitUI() {
         findViewById(R.id.re_charge_img_back).setOnClickListener(this);
         cb_wechatpay = findViewById(R.id.recharge_cb_wechatpay);
+        tv_money = findViewById(R.id.recharge_tv_money);
         cb_alipay = findViewById(R.id.recharge_cb_alipay);
         cb_alipay.setOnClickListener(this);
         cb_wechatpay.setOnClickListener(this);
         findViewById(R.id.recharge_btn_define).setOnClickListener(this);
         edt_price = findViewById(R.id.recharge_edt_price);
+        tv_money.setText("当前余额："+balance);
     }
 
 

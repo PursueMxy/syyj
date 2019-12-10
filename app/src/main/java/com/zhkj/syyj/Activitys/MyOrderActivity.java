@@ -86,6 +86,22 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (titleName.equals("全部")) {
+            myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+        }else if (titleName.equals("待付款")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
+        }else if (titleName.equals("待发货")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
+        }else if (titleName.equals("待收货")){
+            myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
+        }else if (titleName.equals("已完成")){
+            myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
+        }
+    }
+
     private void InitUI() {
         findViewById(R.id.my_order_img_back).setOnClickListener(this);
         elvShoppingCar = findViewById(R.id.elv_shopping_car);

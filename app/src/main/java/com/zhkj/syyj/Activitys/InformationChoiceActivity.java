@@ -15,9 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.zhkj.syyj.Adapters.InformationChoiceAdapter;
-import com.zhkj.syyj.Adapters.ShopChoiceAdapter;
 import com.zhkj.syyj.Beans.NewsListBean;
-import com.zhkj.syyj.Beans.Products;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.InformationChoiceContract;
@@ -44,6 +42,12 @@ public class InformationChoiceActivity extends AppCompatActivity implements View
         mContext = getApplicationContext();
         InitUI();
         informationChoicePresenter = new InformationChoicePresenter(this);
+        informationChoicePresenter.GetNewList();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         informationChoicePresenter.GetNewList();
     }
 
@@ -85,7 +89,7 @@ public class InformationChoiceActivity extends AppCompatActivity implements View
                 outRect.set(0
                         , 0
                         , 0
-                        , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_1)));
+                        , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
             }
         });
     }

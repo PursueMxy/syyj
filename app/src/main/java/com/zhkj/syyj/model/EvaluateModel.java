@@ -22,4 +22,19 @@ public class EvaluateModel implements EvaluateContract.Model {
                     }
                 });
     }
+
+    //发表评价
+    public void PostOrderAddComment(EvaluatePresenter evaluatePresenter,String uid,String token,String order_id,String comment){
+        OkGo.<String>get(RequstUrlUtils.URL.OrderAdd_comment)
+                .params("uid",uid)
+                .params("token",token)
+                .params("order_id",order_id)
+                .params("comment",comment)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                       evaluatePresenter.SetOrderAddComment(response.body());
+                    }
+                });
+    }
 }

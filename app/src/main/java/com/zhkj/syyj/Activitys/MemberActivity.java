@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -59,6 +60,12 @@ public class MemberActivity extends AppCompatActivity implements MemberContract.
         headimg = share.getString("headimg", "");
         nickname = share.getString("nickname", "");
         InitUI();
+        InitData();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         InitData();
     }
 

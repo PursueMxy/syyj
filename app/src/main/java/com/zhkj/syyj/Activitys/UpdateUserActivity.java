@@ -110,6 +110,12 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
         updateUserPresenter.GetUserInfo(uid,token);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        updateUserPresenter.GetUserInfo(uid,token);
+    }
+
     private void InitUI() {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

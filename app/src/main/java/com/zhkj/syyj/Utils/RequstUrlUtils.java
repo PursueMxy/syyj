@@ -3,11 +3,14 @@ package com.zhkj.syyj.Utils;
 public class RequstUrlUtils {
     public static class URL{
         //请求头
-        public static  String HOST="http://syapi.kuaishanghd.com";
+//        public static  String HOST="http://syapi.kuaishanghd.com";
         //测试
-//        public static  String HOST="http://192.168.0.8:99/index";
+        public static  String HOST="http://192.168.0.8:99";
         //注册
         public static String Logon=HOST+"/user/reg";
+
+        //退出登录
+        public static String logout=HOST+"/user/logout";
 
         //上传图片
         public static String Upload=HOST+"/api/upload";
@@ -138,6 +141,12 @@ public class RequstUrlUtils {
         //优惠券详情
         public static String CouponDetail=HOST+"/coupon/detail";
 
+        //购买优惠券
+        public static String CouponGetCoupon=HOST+"/coupon/getCoupon";
+
+        //购券中心
+        public static String couponCenterList=HOST+"/coupon/couponCenterList";
+
         //积分商城分类
         public static String IntegralCategory=HOST+"/goods/integralCategory";
 
@@ -191,6 +200,17 @@ public class RequstUrlUtils {
 
         //发表评价
         public static String OrderAdd_comment=HOST+"/order/add_comment";
+
+        //设置用户消息已读
+        public static String setMessageForRead=HOST+"/user/setMessageForRead";
+
+        // 获取商品规格对应价格
+        public static String getSpecGoodsPrice=HOST+"/goods/getSpecGoodsPrice";
+
+        //商品列表
+        public static  String goodsList=HOST+"/goods/goodsList";
+
+
 
     }
 }

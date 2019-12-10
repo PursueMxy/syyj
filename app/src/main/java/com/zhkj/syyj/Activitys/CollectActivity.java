@@ -72,6 +72,12 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
         collectPresenter.GetCollectList(uid,token,page);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        collectPresenter.GetCollectList(uid,token,page);
+    }
+
     private void InitUI() {
         //获取LocalBroadcastManager   本地广播管理者实例
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);

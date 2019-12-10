@@ -59,6 +59,12 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
         myBalancePresenter.GetBalance(uid,token);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        myBalancePresenter.GetBalance(uid,token);
+    }
+
     private void InitUI() {
         findViewById(R.id.my_balance_img_back).setOnClickListener(this);
         tv_pursue = findViewById(R.id.my_balance_tv_pursue);
@@ -72,10 +78,14 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.my_balance_btn_recharge:
-                startActivity(new Intent(mContext,RechargeActivity.class));
+                Intent intent = new Intent(mContext, RechargeActivity.class);
+                intent.putExtra("balance",balance);
+                startActivity(intent);
                 break;
             case R.id.my_balance_btn_cash_out:
-                startActivity(new Intent(mContext,CashOutActivity.class));
+                Intent intent1 = new Intent(mContext, CashOutActivity.class);
+                intent1.putExtra("balance",balance);
+                startActivity(intent1);
                 break;
             case R.id.my_balance_img_back:
                 finish();

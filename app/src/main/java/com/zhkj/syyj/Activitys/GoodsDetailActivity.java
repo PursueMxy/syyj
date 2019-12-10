@@ -140,6 +140,12 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
+    }
+
     @SuppressLint("JavascriptInterface")
     private void InitUI() {
         webview = findViewById(R.id.goods_detail_web_goods_content);

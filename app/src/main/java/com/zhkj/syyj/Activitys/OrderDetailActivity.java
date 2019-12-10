@@ -70,6 +70,12 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         orderDetailPresenter.GetOrderDetail(uid,token,order_id);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        orderDetailPresenter.GetOrderDetail(uid,token,order_id);
+    }
+
     private void InitUI() {
         noScrollListView = findViewById(R.id.order_detail_noScrollListView);
         findViewById(R.id.order_detail_rl_logistics).setOnClickListener(this);

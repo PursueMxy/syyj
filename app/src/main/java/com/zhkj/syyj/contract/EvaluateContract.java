@@ -8,6 +8,7 @@ public interface EvaluateContract {
 
     interface View {
         void  UpdateJson(int code, String msg, OrderDetailBean.DataBean data);
+        void UpdateUI(int code, String msg);
     }
 
     interface Presenter {

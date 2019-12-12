@@ -1,12 +1,11 @@
 package com.zhkj.syyj.Beans;
 
 public class CouponDetailBean {
-
     /**
      * code : 1
      * msg : 请求成功
-     * time : 1575454722
-     * data : {"id":44,"name":"测试","send_type":1,"money":"10","condition":100,"createnum":100,"send_num":1,"use_start_time":1574580867,"use_end_time":1579937667,"use_type":0,"price":0,"desc":null,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满100元可用","isget":1,"status":1}
+     * time : 1576142873
+     * data : {"id":48,"name":"测试购买优惠券","send_type":2,"money":"0.1","condition":10,"createnum":100,"send_num":3,"use_start_time":1576035538,"use_end_time":1581651538,"use_type":0,"price":0.01,"desc":null,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用","isget":1,"status":0}
      */
 
     private int code;
@@ -48,24 +47,24 @@ public class CouponDetailBean {
 
     public static class DataBean {
         /**
-         * id : 44
-         * name : 测试
-         * send_type : 1
-         * money : 10
-         * condition : 100
+         * id : 48
+         * name : 测试购买优惠券
+         * send_type : 2
+         * money : 0.1
+         * condition : 10
          * createnum : 100
-         * send_num : 1
-         * use_start_time : 1574580867
-         * use_end_time : 1579937667
+         * send_num : 3
+         * use_start_time : 1576035538
+         * use_end_time : 1581651538
          * use_type : 0
-         * price : 0
+         * price : 0.01
          * desc : null
          * type : 1
          * type_title : 立减券
          * use_type_title : 全店通用
-         * condition_title : 满100元可用
+         * condition_title : 满10元可用
          * isget : 1
-         * status : 1
+         * status : 0
          */
 
         private int id;
@@ -78,7 +77,7 @@ public class CouponDetailBean {
         private int use_start_time;
         private int use_end_time;
         private int use_type;
-        private int price;
+        private double price;
         private Object desc;
         private int type;
         private String type_title;
@@ -167,11 +166,11 @@ public class CouponDetailBean {
             this.use_type = use_type;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 
@@ -231,4 +230,13 @@ public class CouponDetailBean {
             this.status = status;
         }
     }
+
+    /**
+     * code : 1
+     * msg : 请求成功
+     * time : 1575454722
+     * data : {"id":44,"name":"测试","send_type":1,"money":"10","condition":100,"createnum":100,"send_num":1,"use_start_time":1574580867,"use_end_time":1579937667,"use_type":0,"price":0,"desc":null,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满100元可用","isget":1,"status":1}
+     */
+
+
 }

@@ -37,8 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45">
             <TextView
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableLeft="@mipmap/ic_user_money"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/dp_50"
+                android:layout_marginLeft="@dimen/dp_40"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="余额支付"
@@ -59,8 +61,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45">
             <TextView
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableLeft="@mipmap/ic_alipay"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/dp_50"
+                android:layout_marginLeft="@dimen/dp_40"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="支付宝支付"
@@ -81,8 +85,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45">
             <TextView
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableLeft="@mipmap/ic_wechat_pay"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/dp_50"
+                android:layout_marginLeft="@dimen/dp_40"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="微信支付"

@@ -35,7 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chat_list"
                 android:layout_width="match_parent"
@@ -48,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_66">
+        android:layout_height="@dimen/dp_50">
         <EditText
             android:id="@+id/call_center_tv_content"
             android:hint="请输入内容"
@@ -59,7 +58,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/edt_bg"
             android:layout_width="@dimen/dp_280"
-            android:layout_height="@dimen/dp_48" />
+            android:layout_height="@dimen/dp_33" />
 
         <ImageView
             android:id="@+id/call_center_img_sendout"

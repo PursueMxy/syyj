@@ -184,7 +184,8 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
                     List<Uri> uris = Matisse.obtainResult(data);
                     if (uris.size()>0){
                         Glide.with(this).load(uris.get(0)).into(img_add);
-                        File file = new File(uris.get(0).getPath());//实例化数据库文件
+                        List<String> strings = Matisse.obtainPathResult(data);
+                        File file = new File(strings.get(0));//实例化数据库文件
                        OkGo.<String>post(RequstUrlUtils.URL.Upload)
                             .params("image",file)
                             .params("type","app")

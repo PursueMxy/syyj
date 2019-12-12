@@ -4,11 +4,12 @@ import java.util.List;
 
 public class CouponCenterBean {
 
+
     /**
      * code : 1
      * msg : 请求成功
-     * time : 1575949312
-     * data : [{"id":48,"name":"6661","money":"1","condition":10,"createnum":100,"send_num":0,"use_start_time":1574859641,"use_end_time":1580043641,"use_type":0,"price":2,"desc":null,"type":1,"isget":0,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用"},{"id":47,"name":"无门槛优惠券","money":"0.1","condition":0,"createnum":100,"send_num":1,"use_start_time":1574667545,"use_end_time":1580024345,"use_type":0,"price":0,"desc":"","type":1,"isget":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":""},{"id":46,"name":"8.8折扣券啦","money":"8.8折","condition":100,"createnum":100,"send_num":1,"use_start_time":1574666660,"use_end_time":1580023460,"use_type":0,"price":0,"desc":"","type":2,"isget":1,"type_title":"折扣券","use_type_title":"全店通用","condition_title":"满100元可用"},{"id":45,"name":"aaa","money":"100","condition":200,"createnum":100,"send_num":0,"use_start_time":1574836776,"use_end_time":1580020776,"use_type":0,"price":0,"desc":"","type":3,"isget":0,"type_title":"满减券","use_type_title":"全店通用","condition_title":"满200元可用"},{"id":39,"name":"666","money":"20","condition":100,"createnum":100,"send_num":5,"use_start_time":1573972891,"use_end_time":1579329691,"use_type":2,"price":0,"desc":"","type":1,"isget":0,"type_title":"立减券","use_type_title":"指定分类商品","condition_title":"满100元可用"}]
+     * time : 1576122516
+     * data : [{"id":48,"name":"测试购买优惠券","money":"0.1","condition":10,"createnum":100,"send_num":0,"use_start_time":1576035538,"use_end_time":1581651538,"use_type":0,"price":0.01,"desc":null,"type":1,"isget":0,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用"},{"id":47,"name":"无门槛优惠券","money":"0.1","condition":0,"createnum":100,"send_num":0,"use_start_time":1574667545,"use_end_time":1580024345,"use_type":0,"price":0,"desc":null,"type":1,"isget":0,"type_title":"立减券","use_type_title":"全店通用","condition_title":""},{"id":46,"name":"8.8折扣券啦","money":"8.8折","condition":100,"createnum":100,"send_num":0,"use_start_time":1574666660,"use_end_time":1580023460,"use_type":0,"price":0,"desc":null,"type":2,"isget":0,"type_title":"折扣券","use_type_title":"全店通用","condition_title":"满100元可用"},{"id":45,"name":"aaa","money":"100","condition":200,"createnum":100,"send_num":0,"use_start_time":1574836776,"use_end_time":1580020776,"use_type":0,"price":0,"desc":null,"type":3,"isget":0,"type_title":"满减券","use_type_title":"全店通用","condition_title":"满200元可用"},{"id":39,"name":"666","money":"20","condition":100,"createnum":100,"send_num":5,"use_start_time":1573972891,"use_end_time":1579329691,"use_type":2,"price":0,"desc":null,"type":1,"isget":0,"type_title":"立减券","use_type_title":"指定分类商品","condition_title":"满100元可用"}]
      */
 
     private int code;
@@ -51,15 +52,15 @@ public class CouponCenterBean {
     public static class DataBean {
         /**
          * id : 48
-         * name : 6661
-         * money : 1
+         * name : 测试购买优惠券
+         * money : 0.1
          * condition : 10
          * createnum : 100
          * send_num : 0
-         * use_start_time : 1574859641
-         * use_end_time : 1580043641
+         * use_start_time : 1576035538
+         * use_end_time : 1581651538
          * use_type : 0
-         * price : 2
+         * price : 0.01
          * desc : null
          * type : 1
          * isget : 0
@@ -77,7 +78,7 @@ public class CouponCenterBean {
         private int use_start_time;
         private int use_end_time;
         private int use_type;
-        private int price;
+        private double price;
         private Object desc;
         private int type;
         private int isget;
@@ -157,11 +158,11 @@ public class CouponCenterBean {
             this.use_type = use_type;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 

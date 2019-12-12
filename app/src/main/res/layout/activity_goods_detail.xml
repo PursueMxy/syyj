@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activitys.GoodsDetailActivity">
     <RelativeLayout
+        android:id="@+id/goods_detail_table"
         android:background="@color/colorPrimaryDark"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_high">
@@ -25,11 +26,62 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </RelativeLayout>
-    <com.zhkj.syyj.CustView.MyScrollView
+    <LinearLayout
+        android:layout_below="@+id/goods_detail_table"
+        android:visibility="gone"
+        android:id="@+id/goods_detail_ll_suspension"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:id="@+id/goods_detail_suspension_forward"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:background="@drawable/myorder_choosed_color"
+                android:text="转发卖货"
+                android:textColor="@color/text_efb134"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_50" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:id="@+id/goods_detail_suspension_appraise"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:background="@drawable/myorder_nochoosed_color"
+                android:text="评价"
+                android:textColor="@color/text_fdfdfd"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_50" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:id="@+id/goods_detail_suspension_det"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:background="@drawable/myorder_nochoosed_color"
+                android:text="详情"
+                android:textColor="@color/text_fdfdfd"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_50" />
+        </RelativeLayout>
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/goods_detail_scrollView"
+        android:layout_below="@+id/goods_detail_ll_suspension"
         android:layout_above="@+id/goods_detail_rl_bottom"
         android:scrollbars="none"
-        android:layout_marginTop="@dimen/top_high"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -37,8 +89,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <com.zhkj.syyj.CustView.MeasureRelativeLayout
+                android:id="@+id/goods_detail_top_tl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+         <LinearLayout
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
             <RelativeLayout
+                android:id="@+id/goods_rl_top_one"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_192">
 
@@ -140,6 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50">
                     <TextView
+                        android:id="@+id/goods_detail_forward"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:background="@drawable/myorder_choosed_color"
@@ -153,6 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50">
                     <TextView
+                        android:id="@+id/goods_detail_appraise"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:background="@drawable/myorder_nochoosed_color"
@@ -166,6 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50">
                     <TextView
+                        android:id="@+id/goods_detail_det"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:background="@drawable/myorder_nochoosed_color"
@@ -175,7 +238,8 @@
                         android:layout_height="@dimen/dp_50" />
                 </RelativeLayout>
             </LinearLayout>
-
+         </LinearLayout>
+            </com.zhkj.syyj.CustView.MeasureRelativeLayout>
             <com.zhkj.syyj.CustView.MeasureRelativeLayout
                 android:id="@+id/goods_detail_rl_official"
                 android:layout_width="match_parent"
@@ -282,7 +346,7 @@
                 android:layout_marginBottom="@dimen/dp_50"
                 />
         </LinearLayout>
-    </com.zhkj.syyj.CustView.MyScrollView>
+    </androidx.core.widget.NestedScrollView>
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/goods_detail_rl_bottom"

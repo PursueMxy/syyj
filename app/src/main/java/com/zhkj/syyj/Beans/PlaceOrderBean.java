@@ -8,8 +8,8 @@ public class PlaceOrderBean {
     /**
      * code : 1
      * msg : 请求成功
-     * time : 1575359577
-     * data : {"user_money":"88037.00","cartPriceInfo":{"total_fee":29.9,"goods_fee":0,"goods_num":1,"shipping_fee":0},"userCartCouponList":[],"userCouponNum":0,"cartGoodsTotalNum":1,"cartList":[{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":269,"spec_key":"21_23_61","spec_key_name":"选择种类:选择10斤装 种类:袋装 场景:送孩子","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]}
+     * time : 1576136184
+     * data : {"user_money":"79282.80","cartPriceInfo":{"total_fee":29.9,"goods_fee":0,"goods_num":1,"shipping_fee":0},"userCartCouponList":[{"id":129,"cid":48,"coupon":{"name":"测试购买优惠券","money":"0.1","condition":10,"use_start_time":1576035538,"use_end_time":1581651538,"use_type":0,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用","able":1}}],"userCouponNum":1,"cartGoodsTotalNum":1,"cartList":[{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":267,"spec_key":"21_24_60","spec_key_name":"选择种类:选择10斤装 种类:普通盒装 场景:送女友","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]}
      */
 
     private int code;
@@ -51,19 +51,19 @@ public class PlaceOrderBean {
 
     public static class DataBean {
         /**
-         * user_money : 88037.00
+         * user_money : 79282.80
          * cartPriceInfo : {"total_fee":29.9,"goods_fee":0,"goods_num":1,"shipping_fee":0}
-         * userCartCouponList : []
-         * userCouponNum : 0
+         * userCartCouponList : [{"id":129,"cid":48,"coupon":{"name":"测试购买优惠券","money":"0.1","condition":10,"use_start_time":1576035538,"use_end_time":1581651538,"use_type":0,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用","able":1}}]
+         * userCouponNum : 1
          * cartGoodsTotalNum : 1
-         * cartList : [{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":269,"spec_key":"21_23_61","spec_key_name":"选择种类:选择10斤装 种类:袋装 场景:送孩子","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]
+         * cartList : [{"goods_id":220,"goods_sn":"TP0000220","goods_name":"好多多","goods_price":"29.90","member_goods_price":29.9,"original_img":"/uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg","goods_num":1,"item_id":267,"spec_key":"21_24_60","spec_key_name":"选择种类:选择10斤装 种类:普通盒装 场景:送女友","sku":"","shipping_fee":0,"cut_fee":0,"goods_fee":29.9,"total_fee":29.9}]
          */
 
         private String user_money;
         private CartPriceInfoBean cartPriceInfo;
         private int userCouponNum;
         private int cartGoodsTotalNum;
-        private List<?> userCartCouponList;
+        private List<UserCartCouponListBean> userCartCouponList;
         private List<CartListBean> cartList;
 
         public String getUser_money() {
@@ -98,11 +98,11 @@ public class PlaceOrderBean {
             this.cartGoodsTotalNum = cartGoodsTotalNum;
         }
 
-        public List<?> getUserCartCouponList() {
+        public List<UserCartCouponListBean> getUserCartCouponList() {
             return userCartCouponList;
         }
 
-        public void setUserCartCouponList(List<?> userCartCouponList) {
+        public void setUserCartCouponList(List<UserCartCouponListBean> userCartCouponList) {
             this.userCartCouponList = userCartCouponList;
         }
 
@@ -160,6 +160,158 @@ public class PlaceOrderBean {
             }
         }
 
+        public static class UserCartCouponListBean {
+            /**
+             * id : 129
+             * cid : 48
+             * coupon : {"name":"测试购买优惠券","money":"0.1","condition":10,"use_start_time":1576035538,"use_end_time":1581651538,"use_type":0,"type":1,"type_title":"立减券","use_type_title":"全店通用","condition_title":"满10元可用","able":1}
+             */
+
+            private int id;
+            private int cid;
+            private CouponBean coupon;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getCid() {
+                return cid;
+            }
+
+            public void setCid(int cid) {
+                this.cid = cid;
+            }
+
+            public CouponBean getCoupon() {
+                return coupon;
+            }
+
+            public void setCoupon(CouponBean coupon) {
+                this.coupon = coupon;
+            }
+
+            public static class CouponBean {
+                /**
+                 * name : 测试购买优惠券
+                 * money : 0.1
+                 * condition : 10
+                 * use_start_time : 1576035538
+                 * use_end_time : 1581651538
+                 * use_type : 0
+                 * type : 1
+                 * type_title : 立减券
+                 * use_type_title : 全店通用
+                 * condition_title : 满10元可用
+                 * able : 1
+                 */
+
+                private String name;
+                private String money;
+                private int condition;
+                private int use_start_time;
+                private int use_end_time;
+                private int use_type;
+                private int type;
+                private String type_title;
+                private String use_type_title;
+                private String condition_title;
+                private int able;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getMoney() {
+                    return money;
+                }
+
+                public void setMoney(String money) {
+                    this.money = money;
+                }
+
+                public int getCondition() {
+                    return condition;
+                }
+
+                public void setCondition(int condition) {
+                    this.condition = condition;
+                }
+
+                public int getUse_start_time() {
+                    return use_start_time;
+                }
+
+                public void setUse_start_time(int use_start_time) {
+                    this.use_start_time = use_start_time;
+                }
+
+                public int getUse_end_time() {
+                    return use_end_time;
+                }
+
+                public void setUse_end_time(int use_end_time) {
+                    this.use_end_time = use_end_time;
+                }
+
+                public int getUse_type() {
+                    return use_type;
+                }
+
+                public void setUse_type(int use_type) {
+                    this.use_type = use_type;
+                }
+
+                public int getType() {
+                    return type;
+                }
+
+                public void setType(int type) {
+                    this.type = type;
+                }
+
+                public String getType_title() {
+                    return type_title;
+                }
+
+                public void setType_title(String type_title) {
+                    this.type_title = type_title;
+                }
+
+                public String getUse_type_title() {
+                    return use_type_title;
+                }
+
+                public void setUse_type_title(String use_type_title) {
+                    this.use_type_title = use_type_title;
+                }
+
+                public String getCondition_title() {
+                    return condition_title;
+                }
+
+                public void setCondition_title(String condition_title) {
+                    this.condition_title = condition_title;
+                }
+
+                public int getAble() {
+                    return able;
+                }
+
+                public void setAble(int able) {
+                    this.able = able;
+                }
+            }
+        }
+
         public static class CartListBean {
             /**
              * goods_id : 220
@@ -169,9 +321,9 @@ public class PlaceOrderBean {
              * member_goods_price : 29.9
              * original_img : /uploads/goods/2018/04-19/42409986d627f6ad8deb459ae874b612.jpg
              * goods_num : 1
-             * item_id : 269
-             * spec_key : 21_23_61
-             * spec_key_name : 选择种类:选择10斤装 种类:袋装 场景:送孩子
+             * item_id : 267
+             * spec_key : 21_24_60
+             * spec_key_name : 选择种类:选择10斤装 种类:普通盒装 场景:送女友
              * sku :
              * shipping_fee : 0
              * cut_fee : 0

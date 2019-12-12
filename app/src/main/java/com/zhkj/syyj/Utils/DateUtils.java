@@ -25,6 +25,12 @@ public class DateUtils {
         return format.format(new Date());
     }
 
+    public static String getToday() {
+        SimpleDateFormat format = new SimpleDateFormat("MM.dd",
+                Locale.getDefault());
+        return format.format(new Date());
+    }
+
     public static String getTodayDateHour() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm",
                 Locale.getDefault());

@@ -19,12 +19,15 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.syyj.Beans.LoginBean;
+import com.zhkj.syyj.Beans.WechatLoginBean;
+import com.zhkj.syyj.MyApplication;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.CommonUtil;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.LoginContract;
 import com.zhkj.syyj.presenter.LoginPresenter;
+import com.zhkj.syyj.wxapi.WXEntryActivity;
 
 import java.util.List;
 
@@ -65,6 +68,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginPresenter = new LoginPresenter(this);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        try {
+            String type = intent.getStringExtra("type");
+            if (type.equals("wechat")){
+                String code = intent.getStringExtra("code");
+                Log.e("code",code);
+                loginPresenter.GetWechatLogin(code);
+            }else {
+
+            }
+        }catch (Exception e){
+
+        }
+    }
+
     private void InitUI() {
         img_password = findViewById(R.id.login_img_password);
         edt_password = findViewById(R.id.login_edt_password);
@@ -73,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.login_tv_no_password).setOnClickListener(this);
         findViewById(R.id.login_btn_login).setOnClickListener(this);
         findViewById(R.id.login_btn_enroll).setOnClickListener(this);
+        findViewById(R.id.login_btn_wechat_login).setOnClickListener(this);
         edt_mobile.setText(mobile);
         edt_password.setText(password);
     }
@@ -103,13 +124,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     loginPresenter.GetLogin(mobile,password);
                 }
                 break;
+            case R.id.login_btn_wechat_login:
+                WXEntryActivity.loginWeixin(mContext, MyApplication.iwxapi);
+                break;
                 default:
                     break;
         }
     }
 
     /*
-     * 注册返回事件
+     * 登录返回事件
      * */
     public void Login(int code, String msg, LoginBean.DataBean dataBean){
         if (code==1){
@@ -130,6 +154,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         ToastUtils.showToast(mContext,msg);
+    }
+
+    //微信登录返回事件
+    public void WechatLogin(int code, String msg, WechatLoginBean.DataBean data){
+        if (code==1){
+          if (msg.equals("未绑定手机号")||msg.equals("注册成功")){
+              Intent intent = new Intent(mContext, BindInformationActivity.class);
+              intent.putExtra("uid",data.getUid()+"");
+              startActivity(intent);
+          }else if (msg.equals("登录成功")){
+              SharedPreferences.Editor editor = share.edit();
+              editor.putString("uid",data.getUid()+"");
+              editor.putString("token",data.getToken());
+              editor.commit();//提交
+              startActivity(new Intent(mContext, HomeActivity.class));
+          }
+        }else{
+            ToastUtils.showToast(mContext,msg);
+        }
     }
 
     @Override

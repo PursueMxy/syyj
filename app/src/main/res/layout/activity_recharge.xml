@@ -40,7 +40,7 @@
             android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="当前余额：￥36.00"
+            android:text="当前余额：￥"
             android:textColor="#ff040000"
             android:textSize="14sp"
             />
@@ -68,7 +68,7 @@
              android:background="@null"
              android:layout_margin="@dimen/dp_10"
              android:hint="请输入充值金额"
-             android:inputType="number"
+             android:inputType="numberDecimal"
              android:layout_width="match_parent"
              android:layout_height="wrap_content" />
           <View
@@ -89,11 +89,12 @@
             android:textSize="14sp"
             />
         <RelativeLayout
+            android:id="@+id/recharge_rl_wechatpay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <CheckBox
+        <ImageView
             android:id="@+id/recharge_cb_wechatpay"
-            style="@style/MyCheckBox"
+            android:src="@mipmap/icon_round_select"
             android:checked="true"
             android:layout_margin="@dimen/dp_10"
             android:layout_width="wrap_content"
@@ -117,12 +118,13 @@
             android:layout_height="0.3dp"/>
 
         <RelativeLayout
+            android:id="@+id/recharge_rl_alipay"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <CheckBox
+            <ImageView
                 android:id="@+id/recharge_cb_alipay"
-                style="@style/MyCheckBox"
+                android:src="@mipmap/icon_round"
                 android:checked="false"
                 android:layout_margin="@dimen/dp_10"
                 android:layout_width="wrap_content"

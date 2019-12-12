@@ -176,6 +176,7 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
         <TextView
+            android:id="@+id/login_btn_wechat_login"
             android:textColor="@color/text_black"
             android:textSize="@dimen/sp_12"
             android:layout_below="@+id/login_btn_enroll"

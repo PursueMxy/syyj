@@ -55,8 +55,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     private String item_id;
     private String pay_type="user_money";
     private int ADDRESS_CODE=2001;
+    private int COUPON_CODE=2002;
     private String type;
     private String action="";
+    private List<PlaceOrderBean.DataBean.UserCartCouponListBean> userCartCouponList=new ArrayList<>();
+    private String  cid;
+    private double coupon_money;
+    private float money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +88,23 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
 
     private void InitData() {
         placeOrderPresenter.getDefaultAddress(uid,token);
-        Log.e("content",content);
         PlaceOrderBean placeOrderBean = new GsonBuilder().create().fromJson(content, PlaceOrderBean.class);
         PlaceOrderBean.DataBean data = placeOrderBean.getData();
+        userCartCouponList = data.getUserCartCouponList();
         cartList = data.getCartList();
         cartPriceInfo = data.getCartPriceInfo();
         myAdapter.notifyDataSetChanged();
-        tv_price.setText("¥ "+cartPriceInfo.getTotal_fee());
+        if (userCartCouponList.size()>0){
+            tv_coupon.setText(userCartCouponList.get(0).getCoupon().getName());
+            cid = userCartCouponList.get(0).getCid()+"";
+            coupon_money = Double.parseDouble(userCartCouponList.get(0).getCoupon().getMoney());
+            Log.e("hsdhsbdh",coupon_money+"hhh"+cartPriceInfo.getTotal_fee());
+        }else {
+            tv_coupon.setText("没有可以用优惠券");
+        }
         tv_freight.setText("¥ "+cartPriceInfo.getShipping_fee());
+        money=(float) (cartPriceInfo.getTotal_fee()-coupon_money);
+        tv_price.setText("¥ "+ money);
     }
 
     private void InitUI() {
@@ -112,6 +126,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
         cb_aliPay.setOnClickListener(this);
         cb_balancePay.setOnClickListener(this);
         cb_wechatPay.setOnClickListener(this);
+        tv_coupon.setOnClickListener(this);
     }
 
     @Override
@@ -124,7 +139,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
                 String message = tv_message.getText().toString();
                 int goods_id = cartList.get(0).getGoods_id();
                 int goods_num = cartList.get(0).getGoods_num();
-                placeOrderPresenter.GetCarPay(uid,token,address_id+"","",message,goods_id+"",goods_num+"",item_id,
+                placeOrderPresenter.GetCarPay(uid,token,address_id+"",cid,message,goods_id+"",goods_num+"",item_id,
                         action,pay_type);
                 break;
             case R.id.place_order_cb_balancePay:
@@ -167,6 +182,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
                 Intent intent = new Intent(mContext,ShoppingAddressActivity.class);
                 intent.putExtra("type","select");
                 startActivityForResult(intent,ADDRESS_CODE);
+                break;
+            case R.id.place_order_tv_coupon:
+                if (userCartCouponList.size()>0){
+                    Intent intent1 = new Intent(mContext, UsableCouponActivity.class);
+                    intent1.putExtra("coupon",content);
+                    startActivityForResult(intent1,COUPON_CODE);
+                }
                 break;
                 default:
                     break;
@@ -237,6 +259,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
             String contacts= data.getStringExtra("contacts");
             tv_address.setText(address);
             tv_contacts.setText(contacts);
+        }else  if (requestCode == COUPON_CODE&&resultCode==COUPON_CODE) {
+            cid= data.getStringExtra("cid");
+            String name = data.getStringExtra("name");
+            tv_coupon.setText(name);
+            double coupon_money = Double.parseDouble(data.getStringExtra("coupon_money"));
+            money=(float) (cartPriceInfo.getTotal_fee()- coupon_money);
+            tv_price.setText("¥ "+money);
         }
     }
 

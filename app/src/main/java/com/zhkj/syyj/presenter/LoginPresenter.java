@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Beans.LoginBean;
 import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.Beans.WechatLoginBean;
 import com.zhkj.syyj.contract.LoginContract;
 import com.zhkj.syyj.model.LoginModel;
 
@@ -31,5 +32,17 @@ public class LoginPresenter implements LoginContract.Presenter {
         }else {
             mView.Login(publicResultBean.getCode(),publicResultBean.getMsg(),null);
         }
+    }
+
+    //微信登录
+    public void  GetWechatLogin(String code){
+        loginModel.PostWechat(this,code);
+    }
+
+    //登录返回
+    public void SetWechatLogin(String content){
+        WechatLoginBean wechatLoginBean = new GsonBuilder().create().fromJson(content, WechatLoginBean.class);
+        WechatLoginBean.DataBean data = wechatLoginBean.getData();
+        mView.WechatLogin(wechatLoginBean.getCode(),wechatLoginBean.getMsg(),data);
     }
 }

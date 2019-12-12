@@ -20,7 +20,10 @@ import com.zhkj.syyj.Adapters.GridAdapter;
 import com.zhkj.syyj.Adapters.ShopChoiceAdapter;
 import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.DateUtils;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
+import com.zhkj.syyj.Utils.SDFileHelper;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
 
@@ -39,6 +42,7 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayList<String> share_imgs;
     private String content;
     private String task_id;
+    private SDFileHelper sdFileHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,16 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
         content = intent.getStringExtra("content");
         share_imgs = intent.getStringArrayListExtra("share_imgs");
         InitUI();
+        sdFileHelper = new SDFileHelper(this);
 
     }
+
+    private void InitData() {
+        for(int a=0;a<share_imgs.size();a++){
+            sdFileHelper.savePicture( RequstUrlUtils.URL.HOST +share_imgs);
+        }
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -98,6 +110,7 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.forward_btn_define:
+                InitData();
                 WechatDialog();
                 break;
                 default:

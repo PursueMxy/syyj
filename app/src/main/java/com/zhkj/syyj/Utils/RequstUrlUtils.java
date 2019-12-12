@@ -3,14 +3,17 @@ package com.zhkj.syyj.Utils;
 public class RequstUrlUtils {
     public static class URL{
         //请求头
-//        public static  String HOST="http://syapi.kuaishanghd.com";
+        public static  String HOST="http://syapi.kuaishanghd.com";
         //测试
-        public static  String HOST="http://192.168.0.8:99";
+//        public static  String HOST="http://192.168.0.8:99";
         //注册
         public static String Logon=HOST+"/user/reg";
 
         //退出登录
         public static String logout=HOST+"/user/logout";
+
+        //微信登录
+        public static String wxlogin=HOST+"/user/wxlogin";
 
         //上传图片
         public static String Upload=HOST+"/api/upload";
@@ -210,7 +213,8 @@ public class RequstUrlUtils {
         //商品列表
         public static  String goodsList=HOST+"/goods/goodsList";
 
-
+       //余额充值
+        public static  String Recharge=HOST+"/user/recharge";
 
     }
 }

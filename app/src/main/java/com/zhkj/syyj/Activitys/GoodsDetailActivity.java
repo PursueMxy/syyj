@@ -1,6 +1,7 @@
 package com.zhkj.syyj.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -97,7 +99,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private int store_count=0;
     private GoodsDetailPresenter goodsDetailPresenter;
     private int item_id=0;
-    private MyScrollView scrollView;
+    private NestedScrollView scrollView;
     private MeasureRelativeLayout rl_appraise;
     private MeasureRelativeLayout rl_official;
     private int rl_appraiseHeight;
@@ -120,6 +122,14 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private int FiveType;
     private int isCollect=0;
     private ImageView img_collect;
+    private TextView goods_detail_forward;
+    private TextView goods_detail_appraise;
+    private TextView goods_detail_det;
+    private TextView suspension_det;
+    private TextView suspension_appraise;
+    private TextView suspension_forward;
+    private MeasureRelativeLayout goods_detail_ll;
+    private LinearLayout ll_suspension;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +184,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.goods_detail_tv_view_all_appraise).setOnClickListener(this);
         findViewById(R.id.goods_detail_btn_buynow).setOnClickListener(this);
         findViewById(R.id.goods_detail_img_collectGoods).setOnClickListener(this);
+        ll_suspension = findViewById(R.id.goods_detail_ll_suspension);
         img_collect = findViewById(R.id.goods_detail_img_collectGoods);
         scrollView = findViewById(R.id.goods_detail_scrollView);
         img_appraise = findViewById(R.id.goods_detail_img_appraise);
@@ -182,23 +193,72 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         tv_copywriting = findViewById(R.id.goods_detail_tv_copywriting);
         tv_goodsTitle = findViewById(R.id.goods_detail_tv_goodsTitle);
         tv_goodsMoney = findViewById(R.id.goods_detail_tv_goodsMoney);
+        goods_detail_ll = findViewById(R.id.goods_detail_top_tl);
         tv_goodsVolume = findViewById(R.id.goods_detail_tv_goodsVolume);
         tv_share = findViewById(R.id.goods_detail_tv_share);
         rl_appraise = findViewById(R.id.goods_detail_rl_appraise);
         rl_official = findViewById(R.id.goods_detail_rl_official);
-        rl_appraiseHeight = rl_appraise.getViewHeight(rl_appraise);
-        rl_officialHeight = rl_official.getViewHeight(rl_official);
-        appraiseContentHeight = tv_appraise_content.getViewHeight(tv_appraise_content);
-        copywritingHeight = tv_copywriting.getViewHeight(tv_copywriting);
-        scrollView.setOnScrollListener(new MyScrollView.OnScrollListener() {
+        //分类详情
+        goods_detail_det = findViewById(R.id.goods_detail_det);
+        goods_detail_appraise = findViewById(R.id.goods_detail_appraise);
+        goods_detail_forward = findViewById(R.id.goods_detail_forward);
+        suspension_det = findViewById(R.id.goods_detail_suspension_det);
+        suspension_appraise = findViewById(R.id.goods_detail_suspension_appraise);
+        suspension_forward = findViewById(R.id.goods_detail_suspension_forward);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScroll(int scrollY) {
-                int viewHeight = tv_appraise_content.getViewHeight(tv_appraise_content);
-                int viewHeight1 = tv_copywriting.getViewHeight(tv_copywriting);
-                int oneHeight=rl_appraiseHeight+(viewHeight-appraiseContentHeight);
-                int TwoHeight=rl_officialHeight+(viewHeight1-copywritingHeight);
-//                Log.e("滑动距离",scrollY+"和"+oneHeight+"加"+rl_appraiseHeight);
-//                Log.e("滑动距离ssss",scrollY+"和"+TwoHeight+"加"+rl_officialHeight);
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int viewHeight1 = rl_appraise.getViewHeight(rl_appraise);
+                int officialHeight1 = rl_official.getViewHeight(rl_official);
+                int viewHeight = goods_detail_ll.getViewHeight(goods_detail_ll);
+                int oneHight=viewHeight+officialHeight1;
+                if (viewHeight-10<scrollY){
+                    ll_suspension.setVisibility(View.VISIBLE);
+                }else {
+                    ll_suspension.setVisibility(View.GONE);
+                }
+                if (viewHeight-10<scrollY){
+                    if(oneHight-10<scrollY){
+                        goods_detail_det.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        goods_detail_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        goods_detail_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_det.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        suspension_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        goods_detail_det.setTextColor(getResources().getColor(R.color.text_efb134));
+                        goods_detail_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        goods_detail_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_det.setTextColor(getResources().getColor(R.color.text_efb134));
+                        suspension_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    }else {
+                        goods_detail_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        goods_detail_appraise.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        goods_detail_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_appraise.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        suspension_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        goods_detail_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        goods_detail_appraise.setTextColor(getResources().getColor(R.color.text_efb134));
+                        goods_detail_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_appraise.setTextColor(getResources().getColor(R.color.text_efb134));
+                        suspension_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    }
+                }else {
+                    goods_detail_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    goods_detail_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    goods_detail_forward.setBackgroundResource(R.drawable.myorder_choosed_color);
+                    suspension_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    suspension_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    suspension_forward.setBackgroundResource(R.drawable.myorder_choosed_color);
+                    goods_detail_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    goods_detail_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    goods_detail_forward.setTextColor(getResources().getColor(R.color.text_efb134));
+                    suspension_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    suspension_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    suspension_forward.setTextColor(getResources().getColor(R.color.text_efb134));
+                }
             }
         });
     }

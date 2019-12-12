@@ -14,10 +14,16 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.Beans.WechatPayBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.AppContUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
+import com.zhkj.syyj.wxapi.WXPayEntryActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,7 +109,36 @@ public class OrderPayActivity extends AppCompatActivity {
                     public void onSuccess(Response<String> response) {
                         PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
                         if (publicResultBean.getCode()==1){
-                           startActivity(new Intent(mContext,CouponActivity.class));
+                            if (pay_type.equals("weixin")){
+                                WechatPayBean wechatPayBean = new GsonBuilder().create().fromJson(response.body(), WechatPayBean.class);
+                                WechatPayBean.DataBean data = wechatPayBean.getData();
+                                WechatPayBean.DataBean.PayInfoBean payInfo = data.getPayInfo();
+                                IWXAPI wxapi = WXAPIFactory.createWXAPI(mContext, AppContUtils.WX_APP_ID, true);
+                                // 将该app注册到微信
+                                wxapi.registerApp(AppContUtils.WX_APP_ID);
+                                if (!wxapi.isWXAppInstalled()) {
+                                    ToastUtils.showToast(mContext,"你没有安装微信");
+                                    return;
+                                }
+                                try {
+                                    //我们把请求到的参数全部给微信
+                                    PayReq req = new PayReq(); //调起微信APP的对象
+                                    req.appId = payInfo.getAppid();
+                                    req.partnerId =payInfo.getPartnerid();
+                                    req.prepayId = payInfo.getPrepayid();
+                                    req.nonceStr = payInfo.getNoncestr();
+                                    req.timeStamp = payInfo.getTimestamp()+"";
+                                    req.packageValue =payInfo.getPackageX(); //Sign=WXPay
+                                    req.sign =payInfo.getSign();
+                                    wxapi.sendReq(req);//发送调起微信的请求
+                                }catch (Exception e){
+                                    ToastUtils.showToast(mContext,e.getMessage().toString());
+                                }
+//                                Intent intent = new Intent(mContext, WXPayEntryActivity.class);
+//                                intent.putExtra("type","优惠券支付");
+//                                intent.putExtra("content",response.body());
+//                                startActivity(intent);
+                            }
                         }else {
                             ToastUtils.showToast(mContext,publicResultBean.getMsg());
                         }

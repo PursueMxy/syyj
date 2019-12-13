@@ -40,7 +40,6 @@
             android:background="@drawable/bg_search"
             android:textColor="#ff949397"
             android:textSize="12sp"
-            android:layout_toRightOf="@+id/home_img_logo_name"
             android:drawableLeft="@mipmap/icon_search"
             android:gravity="center|left"
             android:hint="请输入搜索内容"

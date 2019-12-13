@@ -92,10 +92,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(getContext());
-        }
-        progressDialog.show();
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
         OkGo.<String>get(RequstUrlUtils.URL.HomeIndex)
                 .execute(new StringCallback() {
                     @Override

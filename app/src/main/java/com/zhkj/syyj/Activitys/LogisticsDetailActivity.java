@@ -140,10 +140,14 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        LogistisBean logistisBean = new GsonBuilder().create().fromJson(response.body(), LogistisBean.class);
-                        if (logistisBean.getCode()==1){
-                            dataList = logistisBean.getData();
-                            myAdapter.notifyDataSetChanged();
+                        try {
+                            LogistisBean logistisBean = new GsonBuilder().create().fromJson(response.body(), LogistisBean.class);
+                            if (logistisBean.getCode()==1){
+                                dataList = logistisBean.getData();
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        }catch (Exception e){
+
                         }
                     }
                 });

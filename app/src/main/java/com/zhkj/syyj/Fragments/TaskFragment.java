@@ -106,10 +106,14 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(mContext);
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(mContext);
+            }
+            progressDialog.show();
+        }catch (Exception e){
+
         }
-        progressDialog.show();
         OkGo.<String>get(RequstUrlUtils.URL.TaskCategory)
                 .execute(new StringCallback() {
                     @Override

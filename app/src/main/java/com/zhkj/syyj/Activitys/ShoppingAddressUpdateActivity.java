@@ -169,7 +169,9 @@ public class ShoppingAddressUpdateActivity extends AppCompatActivity implements 
     //保存数据返回
     public void UpdateDatas(int code,String msg){
         if (code==1){
-            startActivity(new Intent(mContext,ShoppingAddressActivity.class));
+            Intent intents = new Intent(mContext,ShoppingAddressActivity.class);
+            intents.putExtra("type","sel");
+            startActivity(intents);
             finish();
         }
         ToastUtils.showToast(mContext,msg);

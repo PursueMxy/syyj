@@ -287,9 +287,10 @@
             />
 
         <TextView
+            android:layout_toRightOf="@+id/place_order_tv_contacts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_170"
+            android:layout_marginLeft="@dimen/dp_30"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/btn_default"
             android:paddingLeft="@dimen/dp_10"

@@ -41,7 +41,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
     private String uid;
     private String token;
     private AlertDialog alertDialog;
-    private String type;
+    private String type="";
     private int ADDRESS_CODE=2001;
 
     @Override

@@ -54,7 +54,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btn_one;
     private RelativeLayout rl_bottom;
     private TextView tv_address;
-    private String shipping_name;
+    private String shipping_name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +107,16 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.order_detail_rl_logistics:
-                if (!shipping_name.equals("暂无物流信息")) {
-                    Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
-                    intent.putExtra("order_id", order_id);
-                    startActivity(intent);
-                }else {
-                 ToastUtils.showToast(mContext,"暂无物流信息");
+                try {
+                    if (!shipping_name.equals("暂无物流信息")||shipping_name==null) {
+                        Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
+                        intent.putExtra("order_id", order_id);
+                        startActivity(intent);
+                    }else {
+                        ToastUtils.showToast(mContext,"暂无物流信息");
+                    }
+                }catch (Exception e){
+                    ToastUtils.showToast(mContext,"暂无物流信息");
                 }
                 break;
             case R.id.order_detail_img_back:
@@ -125,7 +129,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 if (content.equals("取消订单")){
                     orderDetailPresenter.GetCancelOrder(uid,token,order_id,"取消订单");
                 }else if (content.equals("查看物流")){
-                    if (!shipping_name.equals("暂无物流信息")) {
+                    if (!shipping_name.equals("暂无物流信息")||shipping_name==null) {
                         Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
                         intent.putExtra("order_id", order_id);
                         startActivity(intent);

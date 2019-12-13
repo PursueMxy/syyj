@@ -182,7 +182,9 @@ public class MinFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(mContext, PerSonalDataActivity.class));
                 break;
             case R.id.fm_min_shopping_address:
-                startActivity(new Intent(mContext, ShoppingAddressActivity.class));
+                Intent intents = new Intent(mContext,ShoppingAddressActivity.class);
+                intents.putExtra("type","sel");
+                startActivity(intents);
                 break;
             case R.id.fm_min_rl_collect:
                 startActivity(new Intent(mContext, CollectActivity.class));

@@ -113,7 +113,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                             img_all.setImageResource(R.mipmap.icon_round_select);
                         }else {
                             SLT_All=false;
-                               img_all.setImageResource(R.mipmap.icon_round);
+                            img_all.setImageResource(R.mipmap.icon_round);
                         }
                         shopCartAdapter.setListAll(goodsCartTrueList);
                         shopCartAdapter.notifyDataSetChanged();

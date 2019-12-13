@@ -144,7 +144,9 @@ public class ShoppingAddressAddActivity extends AppCompatActivity implements Vie
     //保存数据返回
     public void UpdateData(int code,String msg){
         if (code==1){
-            startActivity(new Intent(mContext,ShoppingAddressActivity.class));
+            Intent intents = new Intent(mContext,ShoppingAddressActivity.class);
+            intents.putExtra("type","sel");
+            startActivity(intents);
             finish();
         }
         ToastUtils.showToast(mContext,msg);

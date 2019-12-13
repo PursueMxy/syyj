@@ -39,9 +39,9 @@ public class CouponAdapter extends HelperRecyclerViewAdapter<CouponBean.DataBean
         if (data.getStatus()>0){
             img_type.setVisibility(View.VISIBLE);
             if (data.getType()==1){
-                img_type.setImageResource(R.mipmap.ic_already_used);
-            }else {
                 img_type.setImageResource(R.mipmap.ic_coupon_expired);
+            }else {
+                img_type.setImageResource(R.mipmap.ic_already_used);
             }
             coupon_rl.setBackgroundColor(mContext.getResources().getColor(R.color.bg_e6e6e6));
             tv_content.setTextColor(mContext.getResources().getColor(R.color.ff707070));

@@ -29,8 +29,7 @@ public class PlaceOrderModel implements PlaceOrderContract.Model {
  *  提交订单并支付
  *
  */
-
-       public void  PostCartPay(final PlaceOrderPresenter placeOrderPresenter, String uid, String token, String address_id, String coupon_id, String user_note, String goods_id
+ public void  PostCartPay(final PlaceOrderPresenter placeOrderPresenter, String uid, String token, String address_id, String coupon_id, String user_note, String goods_id
                , String goods_num, String item_id, String action, String pay_type){
                OkGo.<String>post(RequstUrlUtils.URL.CartCart3)
                        .params("uid",uid)

@@ -39,9 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener, MyOrderContract.View {
-
-
-
     private List<OrderListBean.DataBean> datas=new ArrayList<>();
     private Context mContext;
     private MyOrderAdapter myOrderAdapter;
@@ -406,10 +403,11 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         datas.clear();
         if (code == 1) {
                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
-                datas = orderListBean.getData();
+                if (orderListBean.getData()!=null) {
+                    datas = orderListBean.getData();
+                }
         }
         initExpandableListViewData(datas);
-        myOrderAdapter.notifyDataSetChanged();
         myOrderAdapter.notifyDataSetChanged();
     }
 

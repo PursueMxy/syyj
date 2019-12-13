@@ -59,6 +59,7 @@
     </RelativeLayout>
 
       <TextView
+          android:id="@+id/dialog_forward_btn_shareToTimeLine"
           android:layout_marginTop="@dimen/dp_20"
           android:drawablePadding="@dimen/dp_10"
           android:drawableTop="@mipmap/icon_wechatcircle"

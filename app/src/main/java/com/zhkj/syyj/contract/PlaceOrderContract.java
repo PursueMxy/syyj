@@ -12,7 +12,7 @@ public interface PlaceOrderContract {
 
     interface View {
         void Update(int code, String msg, AddressBean.DataBean data);
-        void  UpdateUI(int code,String msg);
+        void  UpdateUI(int code,String msg,String content);
     }
 
     interface Presenter {

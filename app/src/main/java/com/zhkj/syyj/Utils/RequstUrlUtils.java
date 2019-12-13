@@ -198,6 +198,9 @@ public class RequstUrlUtils {
         //物流详情
         public static String OrderExpress=HOST+"/order/express";
 
+        //查找物流
+        public static String QueryExpress=HOST+"/api/queryExpress";
+
         //申请取消订单 已支付未发货
         public static String RecordRefundOrder=HOST+"record_refund_order";
 

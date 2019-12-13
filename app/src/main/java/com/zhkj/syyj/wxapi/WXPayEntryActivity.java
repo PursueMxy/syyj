@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhkj.syyj.Activitys.CouponActivity;
 import com.zhkj.syyj.Activitys.HomeActivity;
+import com.zhkj.syyj.Activitys.MyBalanceActivity;
 import com.zhkj.syyj.Activitys.MyOrderActivity;
 import com.zhkj.syyj.Beans.WechatPayBean;
 import com.zhkj.syyj.Beans.WechatPayTwoBean;
@@ -32,12 +34,14 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
     private String type;
     private String content;
     private String code="";
+    private SharedPreferences share;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wxpay_entry);
         mContext = getApplicationContext();
+        share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         content = intent.getStringExtra("content");
@@ -97,10 +101,23 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
             int code = baseResp.errCode;
             switch (code) {
                 case 0:
-                    Log.e("微信支付", "成功");
-                        Intent intent = new Intent(mContext, HomeActivity.class);
-                        intent.putExtra("currentItems","4");
+                    String pay_type = share.getString("pay_type", "");
+                    if (pay_type.equals("order")){
+                        Intent intent = new Intent(mContext, MyOrderActivity.class);
+                        intent.putExtra("title","待发货");
                         startActivity(intent);
+                    }else if (pay_type.equals("recharge")){
+                        Intent intent = new Intent(mContext, MyBalanceActivity.class);
+                        startActivity(intent);
+                    }else if (pay_type.equals("coupon")){
+                        Intent intent = new Intent(mContext, CouponActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Log.e("微信支付", "成功");
+                        Intent intent = new Intent(mContext, HomeActivity.class);
+                        intent.putExtra("currentItems", "4");
+                        startActivity(intent);
+                    }
                     finish();
                     break;
                 case -1:

@@ -199,6 +199,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                  intent.putExtra("goods_id",goodsList.get(position).getGoods_id()+"");
+                intent.putExtra("img_item", RequstUrlUtils.URL.HOST+goodsList.get(position).getOriginal_img());
                 startActivity(intent);
             }
         });

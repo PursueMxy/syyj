@@ -27,7 +27,7 @@ public class ShopChoiceAdapter extends HelperRecyclerViewAdapter<HomeIndexBean.D
         TextView tv_detail = viewHolder.getView(R.id.list_home_shop_choice_tv_detail);
         ImageView choice_img = viewHolder.getView(R.id.list_home_shop_choice_img);
         Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getOriginal_img()).into(choice_img);
-        tv_price.setText(data.getShop_price());
+        tv_price.setText("¥ "+data.getShop_price());
         tv_detail.setText(data.getGoods_name());
     }
 }

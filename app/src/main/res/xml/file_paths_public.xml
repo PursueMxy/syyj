@@ -3,5 +3,8 @@
 <paths>
     <external-path
         name="my_images"
-        path="Pictures"/>
+        path="."/>
+    <external-path
+        name="external"
+        path="." />
 </paths>

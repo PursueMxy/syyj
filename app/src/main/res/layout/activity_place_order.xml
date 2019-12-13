@@ -281,7 +281,7 @@
             android:layout_marginTop="@dimen/dp_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="大梨 180****1849 "
+            android:hint="请新增收货地址"
             android:textColor="@color/text_black"
             android:textSize="@dimen/sp_14"
             />
@@ -306,7 +306,7 @@
             android:layout_marginBottom="@dimen/dp_13"
             android:padding="@dimen/dp_2"
             android:layout_marginLeft="@dimen/dp_34"
-            android:text="XX省XX市XX县XX区XX街道"
+            android:hint="收货地址为空"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/text_black"
             android:layout_width="match_parent"

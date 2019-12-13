@@ -130,6 +130,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView suspension_forward;
     private MeasureRelativeLayout goods_detail_ll;
     private LinearLayout ll_suspension;
+    private String img_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +141,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         token = share.getString("token", "");
         Intent intent = getIntent();
         goods_id = intent.getStringExtra("goods_id");
+        img_item = intent.getStringExtra("img_item");
         mContext = getApplicationContext();
         InitUI();
         if (progressDialog == null){
@@ -308,7 +310,9 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         tv_stock_num = inflate.findViewById(R.id.db_integral_dtl_tv_stock_num);
         tv_money = inflate.findViewById(R.id.db_integral_dtl_tv_money);
         tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
-        tv_market_price.setText("建议售价：¥ "+market_price);
+        ImageView img_goods= inflate.findViewById(R.id.db_integral_dtl_img_goods);
+        Glide.with(mContext).load(img_item).into(img_goods);
+            tv_market_price.setText("建议售价：¥ "+market_price);
         tv_money.setText("¥ "+shop_price);
         tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
         tv_stock_num.setText("库存："+store_count+"");
@@ -346,7 +350,16 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                     tv_select_num.setText(SelectNum+"");
                     tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
                 }else {
-                    ToastUtils.showToast(mContext,"换购数量不能小于1");
+                    if (SpecGoodsPriceList.size()==0){
+                        if (SelectNum>0) {
+                            goodsDetailPresenter.GetCartAdd2(uid, token, goods_id, item_id + "", SelectNum + "", "buy_now");
+                            bottomDialog.dismiss();
+                        }else {
+                            ToastUtils.showToast(mContext,"购买数量不能为0");
+                        }
+                    }else {
+                        ToastUtils.showToast(mContext,"请选择类别");
+                    }
                 }
             }
         });
@@ -383,6 +396,8 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             tv_money.setText("¥ " + shop_price);
             tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
             tv_stock_num.setText("库存：" + store_count + "");
+            ImageView img_goods= inflate.findViewById(R.id.db_integral_dtl_img_goods);
+            Glide.with(mContext).load(img_item).into(img_goods);
             inflate.findViewById(R.id.db_integral_dtl_btn_confirm).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -394,7 +409,16 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                             ToastUtils.showToast(mContext,"购买数量不能为0");
                         }
                     }else {
-                        ToastUtils.showToast(mContext,"请选择类别");
+                        if (SpecGoodsPriceList.size()==0){
+                            if (SelectNum>0) {
+                                goodsDetailPresenter.GetCartAdd2(uid, token, goods_id, item_id + "", SelectNum + "", "buy_now");
+                                bottomDialog.dismiss();
+                            }else {
+                                ToastUtils.showToast(mContext,"购买数量不能为0");
+                            }
+                        }else {
+                            ToastUtils.showToast(mContext,"请选择类别");
+                        }
                     }
                 }
             });

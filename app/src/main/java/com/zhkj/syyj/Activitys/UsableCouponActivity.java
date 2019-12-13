@@ -97,7 +97,7 @@ public class UsableCouponActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext,PlaceOrderActivity.class);
-                intent.putExtra("cid",userCartCouponList.get(position).getCid()+"");
+                intent.putExtra("cid",userCartCouponList.get(position).getId()+"");
                 intent.putExtra("name",userCartCouponList.get(position).getCoupon().getName());
                 intent.putExtra("coupon_money",userCartCouponList.get(position).getCoupon().getMoney());
                 setResult(COUPON_CODE,intent);

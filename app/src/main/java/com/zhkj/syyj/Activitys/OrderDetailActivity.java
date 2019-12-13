@@ -54,6 +54,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btn_one;
     private RelativeLayout rl_bottom;
     private TextView tv_address;
+    private String shipping_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +107,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.order_detail_rl_logistics:
-                Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
-                startActivity(intent);
+                if (!shipping_name.equals("暂无物流信息")) {
+                    Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
+                    intent.putExtra("order_id", order_id);
+                    startActivity(intent);
+                }else {
+                 ToastUtils.showToast(mContext,"暂无物流信息");
+                }
                 break;
             case R.id.order_detail_img_back:
                 finish();
@@ -119,9 +125,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 if (content.equals("取消订单")){
                     orderDetailPresenter.GetCancelOrder(uid,token,order_id,"取消订单");
                 }else if (content.equals("查看物流")){
-                    Intent intent4 = new Intent(mContext, LogisticsDetailActivity.class);
-                    intent4.putExtra("order_id",order_id);
-                   startActivity(intent4);
+                    if (!shipping_name.equals("暂无物流信息")) {
+                        Intent intent = new Intent(mContext, LogisticsDetailActivity.class);
+                        intent.putExtra("order_id", order_id);
+                        startActivity(intent);
+                    }else {
+                        ToastUtils.showToast(mContext,"暂无物流信息");
+                    }
                 }else if (content.equals("再次购买")){
                     orderDetailPresenter.GetOrderOneMore(uid,token,order_id,"再次购买");
                 }
@@ -202,10 +212,11 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             tv_orderNumber.setText(data.getOrder_sn());
             tv_confirmTime.setText(DateUtils.timeStamp2Time2(data.getAdd_time()+""));
             tv_payType.setText(data.getPay_name());
-            tv_goodsPrice.setText("¥ "+data.getGoods_price());
+            tv_goodsPrice.setText("¥ "+data.getUser_money());
             tv_consignee.setText(data.getConsignee()+" "+data.getMobile());
             tv_expressTime.setText(DateUtils.timeStamp2Time2(data.getDelivery_doc().getShipping_time()+""));
             tv_logistics.setText(data.getDelivery_doc().getShipping_name());
+            shipping_name = data.getDelivery_doc().getShipping_name();
             tv_address.setText(data.getFull_address());
             if (order_status_detail.getStatus()==0){
                 rl_bottom.setVisibility(View.VISIBLE);

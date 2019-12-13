@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -22,11 +27,17 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.zhkj.syyj.Activitys.BindInformationActivity;
+import com.zhkj.syyj.Activitys.HomeActivity;
 import com.zhkj.syyj.Activitys.LoginActivity;
+import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.Beans.WechatLoginBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.AppContUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.Utils.WxUtil;
+import com.zhkj.syyj.presenter.LoginPresenter;
 
 public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
 
@@ -34,16 +45,37 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     private static IWXAPI wxapi;
     private static int mTargetScene = SendMessageToWX.Req.WXSceneSession;
     private static int mTargetSceneTimeline = SendMessageToWX.Req.WXSceneTimeline ;
+    private SharedPreferences share;
+    private String token;
+    private String mobile;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wxentry);
         mContext = getApplicationContext();
+        share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        token = share.getString("token", "");
+        mobile = share.getString("mobile", "");
+        password = share.getString("password", "");
         wxapi = WXAPIFactory.createWXAPI(this, AppContUtils.WX_APP_ID, false);
         wxapi.registerApp(AppContUtils.WX_APP_ID);
         wxapi.handleIntent(getIntent(), this);
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        token = share.getString("token", "");
+        mobile = share.getString("mobile", "");
+        password = share.getString("password", "");
+        wxapi = WXAPIFactory.createWXAPI(this, AppContUtils.WX_APP_ID, false);
+        wxapi.registerApp(AppContUtils.WX_APP_ID);
+        wxapi.handleIntent(getIntent(), this);
+    }
+
     public static IWXAPI InitWeiXin(Context context , @NonNull String weixin_app_id){
         if(TextUtils.isEmpty(weixin_app_id)){
 //            Toast.makeText(context.getApplicationContext(),"微信appID不能为空",Toast.LENGTH_LONG).show();
@@ -125,10 +157,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                 // 获取code
                 try {
                     String code = ((SendAuth.Resp) resp).code;
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    intent.putExtra("type","wechat");
-                    intent.putExtra("code",code);
-                    startActivity(intent);
+                    PostWechat(code);
                 }catch (Exception e){
                     ToastUtils.showToast(mContext,"分享成功");
                     finish();
@@ -155,5 +184,44 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     }
     private static String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+    //微信登录
+    /**
+     * 微信登录
+     */
+    public void PostWechat(String code){
+        OkGo.<String>post(RequstUrlUtils.URL.wxlogin)
+                .params("code",code)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1) {
+                            WechatLoginBean wechatLoginBean = new GsonBuilder().create().fromJson(response.body(), WechatLoginBean.class);
+                            WechatLoginBean.DataBean data = wechatLoginBean.getData();
+                            int code1 = wechatLoginBean.getCode();
+                            String msg = wechatLoginBean.getMsg();
+                            if (code1 == 1) {
+                                if (msg.equals("未绑定手机号") || msg.equals("注册成功")) {
+                                    Intent intent = new Intent(mContext, BindInformationActivity.class);
+                                    intent.putExtra("uid", data.getUid() + "");
+                                    startActivity(intent);
+                                } else if (msg.equals("登录成功")) {
+                                    SharedPreferences.Editor editor = share.edit();
+                                    editor.putString("uid", data.getUid() + "");
+                                    editor.putString("token", data.getToken());
+                                    editor.commit();//提交
+                                    startActivity(new Intent(mContext, HomeActivity.class));
+                                }
+                            } else {
+                                ToastUtils.showToast(mContext, msg);
+                            }
+                        }else {
+                            ToastUtils.showToast(mContext,publicResultBean.getMsg());
+                            startActivity(new Intent(mContext,LoginActivity.class));
+                        }
+                    }
+                });
     }
 }

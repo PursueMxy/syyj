@@ -99,12 +99,6 @@
           android:layout_height="match_parent"
           android:background="#ededed"
           android:orientation="vertical">
-          <View
-              android:background="#ededed"
-              android:layout_marginLeft="@dimen/dp_15"
-              android:layout_marginRight="@dimen/dp_15"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/dp_20"/>
           <ExpandableListView
               android:childDivider="#ededed"
               android:layout_marginLeft="@dimen/dp_15"

@@ -36,6 +36,6 @@ public class PlaceOrderPresenter implements PlaceOrderContract.Presenter {
     //支付返回
     public void  SetCarPay(String content){
         PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(content, PublicResultBean.class);
-        mView.UpdateUI(publicResultBean.getCode(),publicResultBean.getMsg());
+        mView.UpdateUI(publicResultBean.getCode(),publicResultBean.getMsg(),content);
     }
 }

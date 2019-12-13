@@ -187,6 +187,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36" />
         </LinearLayout>
+
+            <!-- 已完成 -->
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/item_shopping_ll_orderFinished"
+                android:layout_marginTop="@dimen/dp_14"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/item_dtl_orderFinished_btn_oneMore"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/dp_9"
+                    android:layout_marginLeft="@dimen/dp_9"
+                    android:background="@drawable/btn_enroll"
+                    android:text="再次购买"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36" />
+                <Button
+                    android:id="@+id/item_dtl_orderFinished_btn_evaluate"
+                    android:focusable="false"
+                    android:layout_marginRight="@dimen/dp_9"
+                    android:layout_marginLeft="@dimen/dp_9"
+                    android:background="@drawable/btn_yellow"
+                    android:text="再次购买"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36" />
+            </LinearLayout>
         <!-- 已取消 -->
         <LinearLayout
             android:visibility="gone"

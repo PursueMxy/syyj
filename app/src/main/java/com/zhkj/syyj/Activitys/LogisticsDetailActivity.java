@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,7 +14,17 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.zhkj.syyj.Beans.ExpressBean;
+import com.zhkj.syyj.Beans.LogistisBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogisticsDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,15 +35,22 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
     private TextView tv_goodsNum;
     private TextView tv_expressNumber;
     private String order_id;
+    private String uid;
+    private String token;
+    private List<LogistisBean.DataBean> dataList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logistics_detail);
+        SharedPreferences share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        uid = share.getString("uid", "");
+        token = share.getString("token", "");
         Intent intent = getIntent();
         order_id = intent.getStringExtra("order_id");
         mContext = getApplicationContext();
         InitUI();
+        GetLogistics();
     }
 
     private void InitUI() {
@@ -65,7 +83,7 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
     public class MyAdapter extends BaseAdapter{
         @Override
         public int getCount() {
-            return 5;
+            return dataList.size();
         }
 
         @Override
@@ -81,7 +99,53 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View inflate = LayoutInflater.from(mContext).inflate(R.layout.list_logistics_detail, null);
+            TextView tv_connect = inflate.findViewById(R.id.list_logistics_tv_connect);
+            TextView tv_time = inflate.findViewById(R.id.list_logistics_tv_time);
+            tv_connect.setText(dataList.get(position).getContext());
+            tv_time.setText(dataList.get(position).getTime());
             return inflate;
         }
+    }
+
+    //获取物流信息
+    public void GetLogistics(){
+        OkGo.<String>get(RequstUrlUtils.URL.OrderExpress)
+                .params("uid",uid)
+                .params("token",token)
+                .params("order_id",order_id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        ExpressBean expressBean = new GsonBuilder().create().fromJson(response.body(), ExpressBean.class);
+                        if (expressBean.getCode()==1){
+                            ExpressBean.DataBean data = expressBean.getData();
+                            String invoice_no = data.getInvoice_no();
+                            String shipping_code = data.getShipping_code();
+                            GetQueryExpress(invoice_no,shipping_code);
+                            tv_delivery_express.setText("配送快递："+data.getShipping_name());
+                            tv_expressNumber.setText("快递单号："+data.getInvoice_no());
+                            tv_goodsNum.setText("共"+ data.getGoods_num() +"件商品");
+                        }
+                    }
+                });
+
+    }
+
+    //查找物流
+    public void GetQueryExpress(String invoice_no,String shipping_code){
+        OkGo.<String>get(RequstUrlUtils.URL.QueryExpress)
+                .params("shipping_code",shipping_code)
+                .params("invoice_no",invoice_no)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogistisBean logistisBean = new GsonBuilder().create().fromJson(response.body(), LogistisBean.class);
+                        if (logistisBean.getCode()==1){
+                            dataList = logistisBean.getData();
+                            myAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 }

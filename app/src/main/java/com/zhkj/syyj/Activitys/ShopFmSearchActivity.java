@@ -20,6 +20,7 @@ import com.zhkj.syyj.Adapters.FmShopSearchAdapter;
 import com.zhkj.syyj.Beans.GoodsListBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.ShopFmSearchContract;
 import com.zhkj.syyj.presenter.ShopFmSearchPresenter;
@@ -103,6 +104,7 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 intent.putExtra("goods_id",list.get(position).getGoods_id()+"");
+                intent.putExtra("img_item", RequstUrlUtils.URL.HOST+list.get(position).getOriginal_img());
                 startActivity(intent);
             }
         });

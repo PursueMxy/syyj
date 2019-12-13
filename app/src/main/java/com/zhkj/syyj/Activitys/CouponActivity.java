@@ -84,12 +84,14 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                couponPresenter.GetCoupon(uid,token,type,page);
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
             @Override
             public void onLoadMore() {
                 //加载更多
+                couponPresenter.GetCoupon(uid,token,type,page);
                 mRecyclerView.loadMoreComplete();//加载动画完成
                 mRecyclerView.setNoMore(true);//数据加载完成
             }

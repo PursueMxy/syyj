@@ -21,6 +21,9 @@ import com.google.gson.GsonBuilder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhkj.syyj.Activitys.EvaluateActivity;
 import com.zhkj.syyj.Activitys.HomeActivity;
 import com.zhkj.syyj.Activitys.LogisticsDetailActivity;
@@ -32,8 +35,11 @@ import com.zhkj.syyj.Beans.OrderDetailBean;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
+import com.zhkj.syyj.Beans.WechatPayThreeBean;
 import com.zhkj.syyj.R;
+import com.zhkj.syyj.Utils.AppContUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
+import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 
@@ -125,17 +131,22 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
-        groupViewHolder.tv_typename.setText(data.get(groupPosition).getOrder_status_detail().getName());
-        groupViewHolder.tv_orderNumeber.setText(data.get(groupPosition).getOrder_sn());
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, OrderDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("order_id",data.get(groupPosition).getOrder_id()+"");
-                mContext.startActivity(intent);
-            }
-        });
+        try {
+
+            groupViewHolder.tv_typename.setText(data.get(groupPosition).getOrder_status_detail().getName());
+            groupViewHolder.tv_orderNumeber.setText(data.get(groupPosition).getOrder_sn());
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("order_id", data.get(groupPosition).getOrder_id() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+        }catch (Exception e){
+
+        }
         return convertView;
     }
 
@@ -149,134 +160,142 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
-        final OrderListBean.DataBean datasBean = data.get(groupPosition);
-        OrderListBean.DataBean.OrderStatusDetailBean order_status_detail = datasBean.getOrder_status_detail();
-        if (childPosition==(datasBean.getOrder_goods().size()-1)){
-            childViewHolder.myorder_item_bottom_rl.setVisibility(View.VISIBLE);
-        }
-        else {
-            childViewHolder.myorder_item_bottom_rl.setVisibility(View.GONE);
-        }
-        if (order_status_detail.getStatus()==0){
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_obligation.setVisibility(View.VISIBLE);
-        }
-        else if(order_status_detail.getStatus()==1){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-        }
-        else if(order_status_detail.getStatus()==2){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.VISIBLE);
-        }
-        else if (order_status_detail.getStatus()==3){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
-        }
-        else if (order_status_detail.getStatus()==4){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.VISIBLE);
-        }
-        else if (order_status_detail.getStatus()==5){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
-        }
-        else if (order_status_detail.getStatus()==6){
-            childViewHolder.ll_obligation.setVisibility(View.GONE);
-            childViewHolder.ll_tobe_received.setVisibility(View.GONE);
-            childViewHolder.ll_cancel_order.setVisibility(View.GONE);
-            childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
-        }
-        if (datasBean.getPay_status()==0) {
-            childViewHolder.tv_price.setText("¥ " + datasBean.getOrder_goods().get(childPosition).getGoods_price());
-            childViewHolder.tv_total_amount.setText("¥" + datasBean.getTotal_amount());
-        }
-        else {
-            childViewHolder.tv_price.setText("" + datasBean.getOrder_goods().get(childPosition).getGoods_price());
-            childViewHolder.tv_total_amount.setText("" + datasBean.getTotal_amount());
-        }
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, OrderDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("order_id",data.get(groupPosition).getOrder_id()+"");
-                mContext.startActivity(intent);
+        try {
+            final OrderListBean.DataBean datasBean = data.get(groupPosition);
+            OrderListBean.DataBean.OrderStatusDetailBean order_status_detail = datasBean.getOrder_status_detail();
+            if (childPosition == (datasBean.getOrder_goods().size() - 1)) {
+                childViewHolder.myorder_item_bottom_rl.setVisibility(View.VISIBLE);
+            } else {
+                childViewHolder.myorder_item_bottom_rl.setVisibility(View.GONE);
             }
-        });
-        childViewHolder.tv_title.setText(datasBean.getOrder_goods().get(childPosition).getGoods_name());
-        childViewHolder.tv_num.setText("x"+datasBean.getOrder_goods().get(childPosition).getGoods_num());
-        childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
-        childViewHolder.tv_goods_num.setText("共"+datasBean.getCount_goods_num()+"件商品，");
-        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+datasBean.getOrder_goods().get(childPosition).getOriginal_img()).into(childViewHolder.img_item);
-        //订单取消
-        childViewHolder.btn_cancelOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CancelOrderDialog(datasBean.getOrder_id());
+            if (order_status_detail.getStatus() == 0) {
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+                childViewHolder.ll_obligation.setVisibility(View.VISIBLE);
+            } else if (order_status_detail.getStatus() == 1) {
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+            } else if (order_status_detail.getStatus() == 2) {
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.GONE);
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.VISIBLE);
+            } else if (order_status_detail.getStatus() == 3) {
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+            } else if (order_status_detail.getStatus() == 4) {
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.VISIBLE);
+            } else if (order_status_detail.getStatus() == 5) {
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
+                childViewHolder.ll_orderFinished.setVisibility(View.VISIBLE);
+
+            } else if (order_status_detail.getStatus() == 6) {
+                childViewHolder.ll_orderFinished.setVisibility(View.GONE);
+                childViewHolder.ll_obligation.setVisibility(View.GONE);
+                childViewHolder.ll_tobe_received.setVisibility(View.GONE);
+                childViewHolder.ll_cancel_order.setVisibility(View.GONE);
+                childViewHolder.ll_orderDone.setVisibility(View.VISIBLE);
             }
-        });
-        //立即付款
-        childViewHolder.btn_payOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderPay(datasBean.getOrder_id());
+            if (datasBean.getPay_status() == 0) {
+                childViewHolder.tv_price.setText("¥ " + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+                childViewHolder.tv_total_amount.setText("¥" + datasBean.getTotal_amount());
+            } else {
+                childViewHolder.tv_price.setText("" + datasBean.getOrder_goods().get(childPosition).getGoods_price());
+                childViewHolder.tv_total_amount.setText("" + datasBean.getTotal_amount());
             }
-        });
-        //再次购买
-        childViewHolder.btn_oneMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderOneMore(datasBean.getOrder_id());
-            }
-        });
-        //立即评价
-        childViewHolder.btn_evaluate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent4 = new Intent(mContext, EvaluateActivity.class);
-                intent4.putExtra("order_id",datasBean.getOrder_id()+"");
-                mContext.startActivity(intent4);
-            }
-        });
-        childViewHolder.btn_again.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderOneMore(datasBean.getOrder_id());
-            }
-        });
-        childViewHolder.btn_dlt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DltOrderDialog(datasBean.getOrder_id());
-            }
-        });
-        childViewHolder.btn_logistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent4 = new Intent(mContext, LogisticsDetailActivity.class);
-                intent4.putExtra("order_id",datasBean.getOrder_id()+"");
-                mContext.startActivity(intent4);
-            }
-        });
-        childViewHolder.btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConfirmOrder(datasBean.getOrder_id());
-            }
-        });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("order_id", data.get(groupPosition).getOrder_id() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+            childViewHolder.tv_title.setText(datasBean.getOrder_goods().get(childPosition).getGoods_name());
+            childViewHolder.tv_num.setText("x" + datasBean.getOrder_goods().get(childPosition).getGoods_num());
+            childViewHolder.tv_model.setText(datasBean.getOrder_goods().get(childPosition).getSpec_key_name());
+            childViewHolder.tv_goods_num.setText("共" + datasBean.getCount_goods_num() + "件商品，");
+            Glide.with(mContext).load(RequstUrlUtils.URL.HOST + datasBean.getOrder_goods().get(childPosition).getOriginal_img()).into(childViewHolder.img_item);
+            //订单取消
+            childViewHolder.btn_cancelOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CancelOrderDialog(datasBean.getOrder_id());
+                }
+            });
+            //立即付款
+            childViewHolder.btn_payOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderPay(datasBean.getOrder_id());
+                }
+            });
+            //再次购买
+            childViewHolder.btn_oneMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderOneMore(datasBean.getOrder_id());
+                }
+            });
+            childViewHolder.orderFinished_btn_evaluate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderOneMore(datasBean.getOrder_id());
+                }
+            });
+            //立即评价
+            childViewHolder.btn_evaluate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent4 = new Intent(mContext, EvaluateActivity.class);
+                    intent4.putExtra("order_id", datasBean.getOrder_id() + "");
+                    mContext.startActivity(intent4);
+                }
+            });
+            childViewHolder.btn_again.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderOneMore(datasBean.getOrder_id());
+                }
+            });
+            childViewHolder.btn_dlt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DltOrderDialog(datasBean.getOrder_id());
+                }
+            });
+            childViewHolder.btn_logistics.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent4 = new Intent(mContext, LogisticsDetailActivity.class);
+                    intent4.putExtra("order_id", datasBean.getOrder_id() + "");
+                    mContext.startActivity(intent4);
+                }
+            });
+            childViewHolder.btn_confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConfirmOrder(datasBean.getOrder_id());
+                }
+            });
+        }catch (Exception e){}
         return convertView;
     }
 
@@ -322,6 +341,8 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         LinearLayout ll_tobe_received;
         @BindView(R.id.item_shopping_ll_orderDone)
         LinearLayout ll_orderDone;
+        @BindView(R.id.item_shopping_ll_orderFinished)
+        LinearLayout ll_orderFinished;
         @BindView(R.id.item_dtl_obligation_btn_cancelOrder)
         Button btn_cancelOrder;
         @BindView(R.id.item_dtl_obligation_btn_payOrder)
@@ -338,6 +359,8 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
         Button btn_logistics;
         @BindView(R.id.item_received_btn_confirm)
         Button btn_confirm;
+        @BindView(R.id.item_dtl_orderFinished_btn_evaluate)
+        Button orderFinished_btn_evaluate;
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
@@ -452,7 +475,7 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
                         PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
                         if (publicResultBean.getCode()==1){
                             Intent intent4 = new Intent(mContext, MyOrderActivity.class);
-                            intent4.putExtra("title","全部");
+                            intent4.putExtra("title","已完成");
                             mContext.startActivity(intent4);
                         }
                     }
@@ -469,7 +492,36 @@ public class MyOrderAdapter extends BaseExpandableListAdapter {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                        WechatPayThreeBean wechatPayThreeBean = new GsonBuilder().create().fromJson(response.body(), WechatPayThreeBean.class);
+                        if (wechatPayThreeBean.getCode()==1){
+                            WechatPayThreeBean.DataBean data = wechatPayThreeBean.getData();
+                            if (data.getPayType().equals("weixin")){
+                                WechatPayThreeBean.DataBean.PayInfoBean payInfo = data.getPayInfo();
+                                IWXAPI wxapi = WXAPIFactory.createWXAPI(mContext, AppContUtils.WX_APP_ID, true);
+                                // 将该app注册到微信
+                                wxapi.registerApp(AppContUtils.WX_APP_ID);
+                                if (!wxapi.isWXAppInstalled()) {
+                                    ToastUtils.showToast(mContext,"你没有安装微信");
+                                    return;
+                                }
+                                try {
+                                    //我们把请求到的参数全部给微信
+                                    PayReq req = new PayReq(); //调起微信APP的对象
+                                    req.appId = payInfo.getAppid();
+                                    req.partnerId =payInfo.getPartnerid();
+                                    req.prepayId = payInfo.getPrepayid();
+                                    req.nonceStr = payInfo.getNoncestr();
+                                    req.timeStamp = payInfo.getTimestamp()+"";
+                                    req.packageValue =payInfo.getPackageX(); //Sign=WXPay
+                                    req.sign =payInfo.getSign();
+                                    wxapi.sendReq(req);//发送调起微信的请求
+                                }catch (Exception e){
+                                    ToastUtils.showToast(mContext,e.getMessage().toString());
+                                }
+                            }
+                        }else {
+                            ToastUtils.showToast(mContext,wechatPayThreeBean.getMsg());
+                        }
                     }
                 });
     }

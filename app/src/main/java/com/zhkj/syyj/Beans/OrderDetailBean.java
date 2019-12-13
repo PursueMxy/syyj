@@ -353,7 +353,7 @@ public class OrderDetailBean {
             private String goods_price;
             private String spec_key_name;
             private String original_img;
-            private int integral;
+            private float integral;
 
             public int getGoods_id() {
                 return goods_id;
@@ -403,11 +403,11 @@ public class OrderDetailBean {
                 this.original_img = original_img;
             }
 
-            public int getIntegral() {
+            public float getIntegral() {
                 return integral;
             }
 
-            public void setIntegral(int integral) {
+            public void setIntegral(float integral) {
                 this.integral = integral;
             }
         }

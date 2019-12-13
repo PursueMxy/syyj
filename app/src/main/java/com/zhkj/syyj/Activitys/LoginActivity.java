@@ -71,18 +71,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        try {
-            String type = intent.getStringExtra("type");
-            if (type.equals("wechat")){
-                String code = intent.getStringExtra("code");
-                Log.e("code",code);
-                loginPresenter.GetWechatLogin(code);
-            }else {
-
-            }
-        }catch (Exception e){
-
-        }
     }
 
     private void InitUI() {

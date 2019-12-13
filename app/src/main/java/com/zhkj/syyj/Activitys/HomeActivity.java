@@ -66,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
         }catch (Exception e){
             currentItems=0;
         }
-        home_bottombarly.setCurrentItem(currentItems);
         if (currentItems==1){
             shopFragment.InitData();
         }else if (currentItems==2){
@@ -78,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         }else{
             homeFragment.InitData();
         }
+        home_bottombarly.setCurrentItem(currentItems);
     }
 
     private void AddFragment() {
@@ -103,21 +103,6 @@ public class HomeActivity extends AppCompatActivity {
         mFragmentList.add(minFragment);
     }
 
-     public void SetCurrentItem(int items){
-         currentItems=items;
-         home_bottombarly.setCurrentItem(items);
-         if ( items==1){
-             shopFragment.InitData();
-         }else if ( items==2){
-             taskFragment.InitData();
-         }else if ( items==3){
-             shopCartFragment.InitData();
-         }else if ( items==4){
-             minFragment.InitData();
-         }else{
-             homeFragment.InitData();
-         }
-     }
 
     private void IintUI() {
         mVpContent = findViewById(R.id.vp_content);

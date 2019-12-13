@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_231">
         <RelativeLayout
-            android:background="#ededed"
+            android:background="@mipmap/icon_evaluate"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_200"></RelativeLayout>
         <LinearLayout
@@ -84,10 +84,12 @@
         android:textSize="@dimen/sp_14"
         />
     <RelativeLayout
+        android:layout_marginTop="@dimen/dp_20"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ListView
+            android:scrollbars="none"
             android:dividerHeight="@dimen/dp_0"
             android:id="@+id/logistics_detail_list"
             android:layout_marginRight="@dimen/dp_15"

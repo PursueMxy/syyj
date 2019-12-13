@@ -25,6 +25,7 @@ import com.zhkj.syyj.Beans.LiteGoodsCartBean;
 import com.zhkj.syyj.Fragments.ShopCartFragment;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.CollectContract;
 import com.zhkj.syyj.presenter.CollectPresenter;
@@ -130,6 +131,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 intent.putExtra("goods_id",liteCollectBeanList.get(position).getGoods_id()+"");
+                intent.putExtra("img_item", RequstUrlUtils.URL.HOST+liteCollectBeanList.get(position).getOriginal_img());
                 startActivity(intent);
             }
         });

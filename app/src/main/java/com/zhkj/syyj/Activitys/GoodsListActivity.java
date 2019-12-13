@@ -19,6 +19,7 @@ import com.zhkj.syyj.Adapters.GoodsListAdapter;
 import com.zhkj.syyj.Beans.GoodsListBean;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.contract.GoodsListContract;
 import com.zhkj.syyj.presenter.GoodsListPresenter;
 import com.zhouyou.recyclerview.XRecyclerView;
@@ -111,6 +112,7 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(View view, Object item, int position) {
                 Intent intent = new Intent(mContext, GoodsDetailActivity.class);
                 intent.putExtra("goods_id",data_list.get(position).getGoods_id()+"");
+                intent.putExtra("img_item", RequstUrlUtils.URL.HOST+data_list.get(position).getOriginal_img());
                 startActivity(intent);
             }
         });

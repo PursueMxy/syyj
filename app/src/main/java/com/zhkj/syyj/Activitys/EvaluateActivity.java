@@ -204,8 +204,9 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
     public void UpdateUI(int code, String msg){
         if (code==1){
             Intent intent = new Intent(mContext, MyOrderActivity.class);
-            intent.putExtra("titleName","已完成");
+            intent.putExtra("title","已完成");
             startActivity(intent);
+            finish();
         }else {
             ToastUtils.showToast(mContext,msg);
         }

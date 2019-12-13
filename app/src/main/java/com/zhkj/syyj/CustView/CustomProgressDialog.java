@@ -17,14 +17,17 @@ public class CustomProgressDialog extends Dialog {
     }
 
     public CustomProgressDialog(Context context, int theme) {
-        super(context, theme);
+            super(context, theme);
     }
 
     public static CustomProgressDialog createDialog(Context context){
-        customProgressDialog = new CustomProgressDialog(context, R.style.CustomProgressDialog);
-        customProgressDialog.setContentView(R.layout.customprogressdialog);
-        customProgressDialog.getWindow().getAttributes().gravity = Gravity.CENTER;
+        try {
+            customProgressDialog = new CustomProgressDialog(context, R.style.CustomProgressDialog);
+            customProgressDialog.setContentView(R.layout.customprogressdialog);
+            customProgressDialog.getWindow().getAttributes().gravity = Gravity.CENTER;
+        }catch (Exception e){
 
+        }
         return customProgressDialog;
     }
 

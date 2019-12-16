@@ -39,6 +39,7 @@ import com.zhkj.syyj.Adapters.RecyclerLeftAdapter;
 import com.zhkj.syyj.Adapters.TaskListAdapter;
 import com.zhkj.syyj.Adapters.TaskTableAdapter;
 import com.zhkj.syyj.Beans.DoneListBean;
+import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.Beans.TaskCategoryBean;
 import com.zhkj.syyj.Beans.TaskListsBean;
 import com.zhkj.syyj.CustView.BottomDialog;
@@ -46,6 +47,7 @@ import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
+import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
 
 import java.util.ArrayList;
@@ -106,22 +108,12 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
-        try {
-            if (progressDialog == null){
-                progressDialog = CustomProgressDialog.createDialog(mContext);
-            }
-            progressDialog.show();
-        }catch (Exception e){
-
-        }
+        LoadingDialogShow();
         OkGo.<String>get(RequstUrlUtils.URL.TaskCategory)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (progressDialog != null){
-                            progressDialog.dismiss();
-                            progressDialog = null;
-                        }
+                       LoadingDialogClose();
                         TaskCategoryBean taskCategoryBean = new GsonBuilder().create().fromJson(response.body(), TaskCategoryBean.class);
                         if (taskCategoryBean.getCode()==1){
                             SltTitle(taskCategoryBean.getData());
@@ -165,6 +157,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                InitData();
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
@@ -254,6 +247,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
     //获取任务列表
     public void GetTaskList(int taskId){
+        LoadingDialogShow();
                 OkGo.<String>get(RequstUrlUtils.URL.TaskList)
                         .params("uid",uid)
                         .params("token",token)
@@ -262,6 +256,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
+                                LoadingDialogClose();
                                 TaskListsBean taskListsBean = new GsonBuilder().create().fromJson(response.body(), TaskListsBean.class);
                                 TaskListsBean.DataBean data = taskListsBean.getData();
                                 List<TaskListsBean.DataBean.TaskListBean> taskList = data.getTaskList();
@@ -274,6 +269,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
     //已完成任务
     public void GetDoneList(){
+        LoadingDialogShow();
         OkGo.<String>get(RequstUrlUtils.URL.DoneList)
                 .params("uid",uid)
                 .params("token",token)
@@ -281,6 +277,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LoadingDialogClose();
                         DoneListBean doneListBean = new GsonBuilder().create().fromJson(response.body(), DoneListBean.class);
                         tasklist.clear();
                         if (doneListBean.getCode()==1) {
@@ -314,8 +311,27 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                    .execute(new StringCallback() {
                        @Override
                        public void onSuccess(Response<String> response) {
-
+                           PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                           ToastUtils.showToast(mContext,publicResultBean.getMsg());
                        }
                    });
+    }
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
     }
 }

@@ -22,6 +22,7 @@ import com.zhkj.syyj.Adapters.CollectAdapter;
 import com.zhkj.syyj.Adapters.SystemMessageAdapter;
 import com.zhkj.syyj.Beans.MessageNoticeBean;
 import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -40,7 +41,8 @@ public class SystemMessageActivity extends AppCompatActivity implements View.OnC
     private SystemMessageAdapter systemMessageAdapter;
     private String uid;
     private String token;
-    private int page=0;
+    private int page=1;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,7 @@ public class SystemMessageActivity extends AppCompatActivity implements View.OnC
 
     //获取消息列表
     public void GetMessage(){
+        LoadingDialog();
         OkGo.<String>get(RequstUrlUtils.URL.MessageNoticeList)
                 .params("uid",uid)
                 .params("token",token)
@@ -135,6 +138,7 @@ public class SystemMessageActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LoadingClose();
                         Gson gson = new GsonBuilder().create();
                         PublicResultBean publicResultBean = gson.fromJson(response.body(), PublicResultBean.class);
                         if (publicResultBean.getCode()==1){
@@ -146,5 +150,25 @@ public class SystemMessageActivity extends AppCompatActivity implements View.OnC
                         }
                     }
                 });
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

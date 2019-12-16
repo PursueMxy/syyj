@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.zhkj.syyj.Adapters.InformationChoiceAdapter;
 import com.zhkj.syyj.Beans.NewsListBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.InformationChoiceContract;
@@ -34,6 +35,7 @@ public class InformationChoiceActivity extends AppCompatActivity implements View
     private InformationChoiceAdapter informationChoiceAdapter;
     private  List<NewsListBean.DataBean> list= new ArrayList<>();
     private InformationChoicePresenter informationChoicePresenter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,14 @@ public class InformationChoiceActivity extends AppCompatActivity implements View
         mContext = getApplicationContext();
         InitUI();
         informationChoicePresenter = new InformationChoicePresenter(this);
+        LoadingDialog();
         informationChoicePresenter.GetNewList();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         informationChoicePresenter.GetNewList();
     }
 
@@ -120,8 +124,29 @@ public class InformationChoiceActivity extends AppCompatActivity implements View
 
     //更新列表
     public void UpdateUI(List<NewsListBean.DataBean> data){
+        LoadingClose();
         this.list=data;
         informationChoiceAdapter.setListAll(list);
         mRecyclerView.setAdapter(informationChoiceAdapter);
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

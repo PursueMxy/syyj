@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Beans.AddressBean;
 import com.zhkj.syyj.Beans.BuyIntegralGoodsBean;
 import com.zhkj.syyj.Beans.IntegraPayBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -58,6 +59,7 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
     EditText edt_message;
     private int goods_id;
     private String goods_num;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +76,14 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
         InitUI();
         InitData();
         placeOrderIntegralPresenter = new PlaceOrderIntegralPresenter(this);
+        LoadingDialog();
         placeOrderIntegralPresenter.getDefaultAddress(uid,token);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         placeOrderIntegralPresenter.getDefaultAddress(uid,token);
     }
 
@@ -134,6 +138,7 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
 
     //默认地址解析
     public void Update(int code, String msg, AddressBean.DataBean data){
+        LoadingClose();
         if (code==1){
             address_id = data.getAddress_id()+"";
             tv_address.setText(data.getProvince()+data.getCity()+data.getDistrict()+data.getTwon()+data.getAddress());
@@ -149,5 +154,25 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
        }else {
            ToastUtils.showToast(mContext,msg);
        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

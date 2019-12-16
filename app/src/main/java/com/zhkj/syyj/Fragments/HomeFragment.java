@@ -92,20 +92,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
-        try {
-            if (progressDialog == null){
-                progressDialog = CustomProgressDialog.createDialog(getContext());
-            }
-            progressDialog.show();
-        }catch (Exception e){}
+        LoadingDialogShow();
         OkGo.<String>get(RequstUrlUtils.URL.HomeIndex)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (progressDialog != null){
-                            progressDialog.dismiss();
-                            progressDialog = null;
-                        }
+                       LoadingDialogClose();
                         HomeIndexBean homeIndexBean = new GsonBuilder().create().fromJson(response.body(), HomeIndexBean.class);
                         if (homeIndexBean.getCode()==1){
                             HomeIndexBean.DataBean data = homeIndexBean.getData();
@@ -173,13 +165,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                InitData();
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
             @Override
             public void onLoadMore() {
                 //加载更多
-//                shopChoiceAdapter.addItemsToLast(goodsList);
-//                shopChoiceAdapter.notifyDataSetChanged();
                 mRecyclerView.setNoMore(true);//数据加载完成
                 mRecyclerView.loadMoreComplete();//加载动画完成
             }
@@ -321,6 +312,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
        }catch (Exception e){
            return "";
        }
+    }
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
     }
 
 

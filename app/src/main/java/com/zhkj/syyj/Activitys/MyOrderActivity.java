@@ -20,19 +20,20 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.example.refreshview.CustomRefreshView;
 import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.MyOrderAdapter;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.RoundCornerDialog;
+import com.zhkj.syyj.CustView.SExpandableListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.MyOrderContract;
 import com.zhkj.syyj.presenter.MyOrderPresenter;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,14 +48,17 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton radiobutton_to_bo_received;
     private RadioButton radiobutton_to_bo_shipped;
     private RadioButton radiobutton_obligation;
-    private ExpandableListView elvShoppingCar;
+    private SExpandableListView elvShoppingCar;
     private  ImageView ivNoContant;
     private  RelativeLayout rlNoContant;
     private String titleName;
     private MyOrderPresenter myOrderPresenter;
     private String uid;
     private String token;
-    private String type;
+    private int page=1;
+    private String type="";
+    private CustomProgressDialog progressDialog;
+    private boolean isRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,38 +74,55 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         InitUI();
         initExpandableListView();
         initData();
+        LoadingDialog();
+        page=1;
         if (titleName.equals("全部")) {
-            myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+            type="";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待付款")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
+            type="WAITPAY";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待发货")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
+            type="WAITSEND";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待收货")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
+            type="WAITRECEIVE";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("已完成")){
-            myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
+            type="FINISH";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
+        page=1;
         if (titleName.equals("全部")) {
-            myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+            type="";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待付款")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
+            type="WAITPAY";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待发货")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
+            type="WAITSEND";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("待收货")){
-            myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
+            type="WAITRECEIVE";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }else if (titleName.equals("已完成")){
-            myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
+            type="FINISH";
+            myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
         }
     }
 
     private void InitUI() {
         findViewById(R.id.my_order_img_back).setOnClickListener(this);
         elvShoppingCar = findViewById(R.id.elv_shopping_car);
+        // 在设置适配器之前设置是否支持下拉刷新
+        elvShoppingCar.setLoadingMoreEnabled(true);
+        elvShoppingCar.setPullRefreshEnabled(true);
         RadioGroup my_order_radioGroup= findViewById(R.id.my_order_radioGroup);
         radiobutton_whole = findViewById(R.id.my_order_radiobutton_whole);
         radiobutton_obligation = findViewById(R.id.my_order_radiobutton_obligation);
@@ -116,7 +137,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                 switch (checkedId){
                     case R.id.my_order_radiobutton_whole:
                         datas.clear();
-                        myOrderPresenter.GetMyOrder(uid, token, "", 0, 0);
+                        LoadingDialog();
+                        type="";
+                        page=1;
+                        myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -130,7 +154,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     case R.id.my_order_radiobutton_obligation:
                         datas.clear();
-                        myOrderPresenter.GetMyOrder(uid, token, "WAITPAY", 0, 0);
+                        LoadingDialog();
+                        type="WAITPAY";
+                        page=1;
+                        myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_choosed_color);
@@ -144,7 +171,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     case R.id.my_order_radiobutton_to_bo_shipped:
                         datas.clear();
-                        myOrderPresenter.GetMyOrder(uid, token, "WAITSEND", 0, 0);
+                        LoadingDialog();
+                        type="WAITSEND";
+                        page=1;
+                        myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -158,7 +188,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     case R.id.my_order_radiobutton_to_bo_received:
                         datas.clear();
-                        myOrderPresenter.GetMyOrder(uid, token, "WAITRECEIVE", 0, 0);
+                        LoadingDialog();
+                        type="WAITRECEIVE";
+                        page=1;
+                        myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -172,7 +205,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     case R.id.my_order_radiobutton_confirm:
                         datas.clear();
-                        myOrderPresenter.GetMyOrder(uid, token, "FINISH", 0, 0);
+                        LoadingDialog();
+                        type="FINISH";
+                        page=1;
+                        myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
                         radiobutton_obligation.setBackgroundResource(R.drawable.myorder_nochoosed_color);
@@ -191,7 +227,25 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         RadioGroupUI();
+        elvShoppingCar.setmLoadingListener(new SExpandableListView.LoadingListener() {
+            @Override
+            public void onLoadMore() {
+                // 模拟加载更多
+                page=page+1;
+                elvShoppingCar.setLoadingMoreEnabled(true);
+                elvShoppingCar.setPullRefreshEnabled(true);
+                myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
+            }
 
+            @Override
+            public void onRefresh() {
+                if (isRefresh) {
+                    isRefresh=false;
+                    page = 0;
+                    myOrderPresenter.GetMyOrder(uid, token, type, page, 0);
+                }
+            }
+        });
     }
 
     private void RadioGroupUI() {
@@ -287,7 +341,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         if (datas != null && datas.size() > 0) {
             //刷新数据时，保持当前位置
             myOrderAdapter.setData(datas);
-
+            elvShoppingCar.setNoMore(false);
             //使所有组展开
             for (int i = 0; i < myOrderAdapter.getGroupCount(); i++) {
                 elvShoppingCar.expandGroup(i);
@@ -400,19 +454,59 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     //解析数据
     public void UpdateJson(int code,String msg,String data) {
-        datas.clear();
-        if (code == 1) {
-                OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
-                if (orderListBean.getData()!=null) {
-                    datas = orderListBean.getData();
-                }
-        }
-        initExpandableListViewData(datas);
+        LoadingClose();
+         if (page==1) {
+             isRefresh = true;
+             datas.clear();
+             if (code == 1) {
+                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
+                 if (orderListBean.getData() != null) {
+                     datas = orderListBean.getData();
+                 }
+             }
+             initExpandableListViewData(datas);
+             elvShoppingCar.refreshComplete();
+         }else {
+             if (code == 1) {
+                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
+                 if (orderListBean.getData() != null) {
+                     List<OrderListBean.DataBean> dataList = orderListBean.getData();
+                     if (datas.size()>0){
+                         datas.addAll(dataList);
+                     }else {
+                         page=1;
+                         elvShoppingCar.setNoMore(true);
+                     }
+                     initExpandableListViewData(datas);
+                 }
+             }
+             elvShoppingCar.refreshComplete();
+         }
         myOrderAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

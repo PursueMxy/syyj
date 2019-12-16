@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.MyOrderAdapter;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.contract.MyExchangeContract;
 import com.zhkj.syyj.presenter.MyExchangePresenter;
@@ -39,6 +40,8 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
     private String uid;
     private String token;
     private String type;
+    private int page=1;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +57,15 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
         initExpandableListView();
         initData();
         myExchangePresenter = new MyExchangePresenter(this);
-        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
+        LoadingDialog();
+        myExchangePresenter.GetMyExchange(uid, token, type, page, 1);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        myExchangePresenter.GetMyExchange(uid, token, type, 0, 1);
+        LoadingDialog();
+        myExchangePresenter.GetMyExchange(uid, token, type, page, 1);
     }
 
     private void InitUI() {
@@ -169,7 +174,6 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
         if (datas != null && datas.size() > 0) {
             //刷新数据时，保持当前位置
             myOrderAdapter.setData(datas);
-
             //使所有组展开
             for (int i = 0; i < myOrderAdapter.getGroupCount(); i++) {
                 elvShoppingCar.expandGroup(i);
@@ -213,6 +217,7 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
 
     //解析数据
     public void UpdateJson(int code,String msg,String data) {
+        LoadingClose();
         datas.clear();
         if (code == 1) {
             OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
@@ -268,6 +273,26 @@ public class MyExchangeActivity extends AppCompatActivity implements View.OnClic
             radiobutton_to_bo_received.setTextColor(getResources().getColor(R.color.text_fdfdfd));
             radiobutton_confirm.setBackgroundResource(R.drawable.myorder_nochoosed_color);
             radiobutton_confirm.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 }

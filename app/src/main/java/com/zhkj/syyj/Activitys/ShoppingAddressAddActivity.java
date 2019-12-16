@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ThemedSpinnerAdapter;
 
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Region.Config;
 import com.zhkj.syyj.Region.PopupU;
@@ -39,6 +40,7 @@ public class ShoppingAddressAddActivity extends AppCompatActivity implements Vie
     private String token;
     private String uid;
     private int is_default=0;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,5 +157,24 @@ public class ShoppingAddressAddActivity extends AppCompatActivity implements Vie
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -48,47 +48,8 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         msgApi = WXAPIFactory.createWXAPI(this, AppContUtils.WX_APP_ID);
         msgApi.registerApp(AppContUtils.WX_APP_ID);
         msgApi.handleIntent(getIntent(), this);
-//        PayInfor();
     }
 
-    private void PayInfor() {
-         if (type.equals("优惠券支付")){
-             WechatPayBean wechatPayBean = new GsonBuilder().create().fromJson(content, WechatPayBean.class);
-             WechatPayBean.DataBean data = wechatPayBean.getData();
-             WechatPayBean.DataBean.PayInfoBean payInfo = data.getPayInfo();
-             try {
-                 //我们把请求到的参数全部给微信
-                 PayReq req = new PayReq(); //调起微信APP的对象
-                 req.appId = payInfo.getAppid();
-                 req.partnerId =payInfo.getPartnerid();
-                 req.prepayId = payInfo.getPrepayid();
-                 req.nonceStr = payInfo.getNoncestr();
-                 req.timeStamp = payInfo.getTimestamp()+"";
-                 req.packageValue =payInfo.getPackageX(); //Sign=WXPay
-                 req.sign =payInfo.getSign();
-                 msgApi.sendReq(req);//发送调起微信的请求
-             }catch (Exception e){
-                 ToastUtils.showToast(mContext,e.getMessage().toString());
-             }
-         }else if (type.equals("余额充值")){
-             WechatPayTwoBean wechatPayTwoBean = new GsonBuilder().create().fromJson(content, WechatPayTwoBean.class);
-             WechatPayTwoBean.DataBean payInfo = wechatPayTwoBean.getData();
-             try {
-                 //我们把请求到的参数全部给微信
-                 PayReq req = new PayReq(); //调起微信APP的对象
-                 req.appId = payInfo.getAppid();
-                 req.partnerId =payInfo.getPartnerid();
-                 req.prepayId = payInfo.getPrepayid();
-                 req.nonceStr = payInfo.getNoncestr();
-                 req.timeStamp = payInfo.getTimestamp()+"";
-                 req.packageValue =payInfo.getPackageX(); //Sign=WXPay
-                 req.sign =payInfo.getSign();
-                 msgApi.sendReq(req);//发送调起微信的请求
-             }catch (Exception e){
-                 ToastUtils.showToast(mContext,e.getMessage().toString());
-             }
-         }
-    }
 
     @Override
     public void onReq(BaseReq baseReq) {

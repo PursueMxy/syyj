@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.ReSettingContract;
@@ -32,6 +33,7 @@ public class ReSettingActivity extends AppCompatActivity implements View.OnClick
     private int Timesecond;
     private TextView send_verification_code;
     private SharedPreferences share;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,4 +144,24 @@ public class ReSettingActivity extends AppCompatActivity implements View.OnClick
             Timesecond=Timesecond-1;
         }
     };
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
+    }
 }

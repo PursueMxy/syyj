@@ -51,7 +51,7 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
     private String uid;
     private IntegralPresenter integralPresenter;
     private CustomProgressDialog progressDialog;
-    private int page=0;
+    private int page=1;
     private int cat_id;
 
     @Override
@@ -65,10 +65,7 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
         level = intent.getStringExtra("level");
         mContext = getApplicationContext();
         InitUI();
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(this);
-        }
-        progressDialog.show();
+       LoadingDialog();
         integralPresenter = new IntegralPresenter(this);
         integralPresenter.GetIntegralCategory();
     }
@@ -76,6 +73,7 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         integralPresenter.GetIntegralCategory();
     }
 
@@ -100,7 +98,7 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
                 }
                 progressDialog.show();
                 intergralTopAdapter.UpdateItem(position);
-                page=0;
+                page=1;
                 cat_id=IntegralCategoryList.get(position).getId();
                 integralPresenter.GetIntegralMall(cat_id,page);
             }
@@ -185,7 +183,7 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
         if (code==1){
             IntegralCategoryList=data;
             if (IntegralCategoryList.size()>0){
-                page=0;
+                page=1;
                 cat_id=IntegralCategoryList.get(0).getId();
                 integralPresenter.GetIntegralMall(cat_id,page);
             }
@@ -196,15 +194,32 @@ public class IntegralActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void UpdateUI(int code,String msg,List<IntegralListBean.DataBean> data){
-        if (progressDialog != null){
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
+        LoadingClose();
         list.clear();
         if (code==1){
             list=data;
         }
         integralAdapter.setListAll(list);
         integralAdapter.notifyItemInserted(1);
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.zhkj.syyj.Adapters.ShoppingBrokerAdapter;
 import com.zhkj.syyj.Beans.CouponCenterBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
@@ -36,6 +37,7 @@ public class ShoppingBrokerActivity extends AppCompatActivity implements View.On
     private String token;
     private String uid;
     private ShoppingBrokerPresenter shoppingBrokerPresenter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,14 @@ public class ShoppingBrokerActivity extends AppCompatActivity implements View.On
         uid = share.getString("uid", "");
         InitUI();
         shoppingBrokerPresenter = new ShoppingBrokerPresenter(this);
+        LoadingDialog();
         shoppingBrokerPresenter.GetShoppingBroker(uid,token);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         shoppingBrokerPresenter.GetShoppingBroker(uid,token);
     }
 
@@ -66,6 +70,8 @@ public class ShoppingBrokerActivity extends AppCompatActivity implements View.On
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                LoadingDialog();
+                shoppingBrokerPresenter.GetShoppingBroker(uid,token);
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
@@ -125,6 +131,7 @@ public class ShoppingBrokerActivity extends AppCompatActivity implements View.On
     }
 
     public void UpdateUI(int code,String msg,List<CouponCenterBean.DataBean> data){
+        LoadingClose();
        if (code==1){
          list=data;
          shoppingBrokerAdapter.setListAll(list);
@@ -132,5 +139,25 @@ public class ShoppingBrokerActivity extends AppCompatActivity implements View.On
        }else {
            ToastUtils.showToast(mContext,msg);
        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

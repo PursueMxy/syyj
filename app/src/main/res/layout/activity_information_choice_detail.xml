@@ -34,9 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:layout_margin="@dimen/dp_20"
             android:id="@+id/information_choice_detail_tv_title"
             android:gravity="center|top"
-            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text=""

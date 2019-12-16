@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.zhkj.syyj.Adapters.IntegralDeatilAdapter;
 import com.zhkj.syyj.Beans.IntegralDtlListBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
@@ -40,7 +41,8 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
     private IntegralDetailPresenter integralDetailPresenter;
     private String token;
     private String uid;
-    private int page=0;
+    private int page=1;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +55,14 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
         uid = share.getString("uid", "");
         InitUI();
         integralDetailPresenter = new IntegralDetailPresenter(this);
+        LoadingDialog();
         integralDetailPresenter.GetIntegralRecord(uid,token,page);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         integralDetailPresenter.GetIntegralRecord(uid,token,page);
     }
 
@@ -121,6 +125,7 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
     }
 
     public void UpdateUI(int code,String msg,List<IntegralDtlListBean.DataBean> data){
+        LoadingClose();
         list.clear();
         if (code==1){
             list=data;
@@ -129,5 +134,25 @@ public class IntegralDetailActivity extends AppCompatActivity implements Integra
         }
         integralDeatilAdapter.setListAll(list);
         integralDeatilAdapter.notifyDataSetChanged();
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

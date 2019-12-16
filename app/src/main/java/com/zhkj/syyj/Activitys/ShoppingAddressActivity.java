@@ -17,10 +17,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.google.gson.GsonBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.zhkj.syyj.Adapters.ShoppingAddressAdapter;
 import com.zhkj.syyj.Beans.AddressListBean;
+import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
+import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.ShoppingAddressContract;
 import com.zhkj.syyj.presenter.ShoppingAddressPresenter;
@@ -43,6 +50,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
     private AlertDialog alertDialog;
     private String type="";
     private int ADDRESS_CODE=2001;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +64,14 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
         token = share.getString("token", "");
         InitUI();
         shoppingAddressPresenter = new ShoppingAddressPresenter(this);
+        LoadingDialog();
         shoppingAddressPresenter.GetAddressList(uid,token);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         shoppingAddressPresenter.GetAddressList(uid,token);
     }
 
@@ -76,6 +86,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                shoppingAddressPresenter.GetAddressList(uid,token);
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
@@ -115,6 +126,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
 
     //获取收货列表
     public void UpdateAddressList(int code,String msg,List<AddressListBean.DataBean> data){
+        LoadingClose();
         this.tasklist_item=data;
         shoppingAddressAdapter.setListAll(data);
         mRecyclerView.setAdapter(shoppingAddressAdapter);
@@ -171,11 +183,52 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
         alertDialog.show();
     }
 
+    //设置默认地址
+    public void defaultAddress(String address_id,String is_default){
+        OkGo.<String>get(RequstUrlUtils.URL.defaultAddress)
+                .params("uid",uid)
+                .params("token",token)
+                .params("address_id",address_id)
+                .params("is_default",is_default)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(response.body(), PublicResultBean.class);
+                        if (publicResultBean.getCode()==1){
+                            shoppingAddressPresenter.GetAddressList(uid,token);
+                        }else {
+                            ToastUtils.showToast(mContext,publicResultBean.getMsg());
+                        }
+
+                    }
+                });
+    }
+
     //请求返回更新
     public void UpdateUI(int code,String msg){
         if (code==1){
             shoppingAddressPresenter.GetAddressList(uid,token);
         }
         ToastUtils.showToast(mContext,msg);
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

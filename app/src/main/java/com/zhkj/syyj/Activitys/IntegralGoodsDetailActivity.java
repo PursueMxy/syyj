@@ -1,6 +1,7 @@
 package com.zhkj.syyj.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,14 +17,17 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yyydjk.library.BannerLayout;
 import com.zhkj.syyj.Beans.IntegralGoodsDetailBean;
 import com.zhkj.syyj.CustView.BottomDialog;
 import com.zhkj.syyj.CustView.CircleImageView;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.GlideImageLoader;
 import com.zhkj.syyj.CustView.LabelsView;
+import com.zhkj.syyj.CustView.MeasureRelativeLayout;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -80,6 +84,18 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
     private NoScrollListView dtl_nolistview;
     private int exchange_integral;
     private TextView tv_forwardName;
+    private CustomProgressDialog progressDialog;
+    private NestedScrollView scrollView;
+    private TextView integral_detail_det;
+    private TextView integral_detail_appraise;
+    private TextView integral_detail_forward;
+    private TextView suspension_det;
+    private TextView suspension_appraise;
+    private TextView suspension_forward;
+    private MeasureRelativeLayout rl_appraise;
+    private MeasureRelativeLayout rl_official;
+    private LinearLayout ll_suspension;
+    private MeasureRelativeLayout integral_detail_ll;
 
 
     @Override
@@ -95,12 +111,14 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
         uid = share.getString("uid", "");
         InitUI();
         integralGoodsDetailPresenter = new IntegralGoodsDetailPresenter(this);
+        LoadingDialog();
         integralGoodsDetailPresenter.GetIntegraDetail(uid,token,goods_id);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         integralGoodsDetailPresenter.GetIntegraDetail(uid,token,goods_id);
     }
 
@@ -127,6 +145,74 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
         bannerLayout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
+            }
+        });
+        //分类详情
+        scrollView = findViewById(R.id.integral_detail_scrollView);
+        ll_suspension = findViewById(R.id.integral_detail_ll_suspension);
+        rl_appraise = findViewById(R.id.integral_detail_rl_appraise);
+        rl_official = findViewById(R.id.integral_detail_rl_official);
+        integral_detail_det = findViewById(R.id.integral_detail_det);
+        integral_detail_appraise = findViewById(R.id.integral_detail_appraise);
+        integral_detail_forward = findViewById(R.id.integral_detail_forward);
+        integral_detail_ll = findViewById(R.id.integral_detail_top_tl);
+        suspension_det = findViewById(R.id.integral_detail_suspension_det);
+        suspension_appraise = findViewById(R.id.integral_detail_suspension_appraise);
+        suspension_forward = findViewById(R.id.integral_detail_suspension_forward);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int viewHeight1 = rl_appraise.getViewHeight(rl_appraise);
+                int officialHeight1 = rl_official.getViewHeight(rl_official);
+                int viewHeight =integral_detail_ll.getViewHeight(integral_detail_ll);
+                int oneHight=viewHeight+officialHeight1;
+                if (viewHeight-10<scrollY){
+                    ll_suspension.setVisibility(View.VISIBLE);
+                }else {
+                    ll_suspension.setVisibility(View.GONE);
+                }
+                if (viewHeight-10<scrollY){
+                    if(oneHight-10<scrollY){
+                        integral_detail_det.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        integral_detail_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        integral_detail_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_det.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        suspension_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        integral_detail_det.setTextColor(getResources().getColor(R.color.text_efb134));
+                        integral_detail_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        integral_detail_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_det.setTextColor(getResources().getColor(R.color.text_efb134));
+                        suspension_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    }else {
+                        integral_detail_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        integral_detail_appraise.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        integral_detail_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        suspension_appraise.setBackgroundResource(R.drawable.myorder_choosed_color);
+                        suspension_forward.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                        integral_detail_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        integral_detail_appraise.setTextColor(getResources().getColor(R.color.text_efb134));
+                        integral_detail_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                        suspension_appraise.setTextColor(getResources().getColor(R.color.text_efb134));
+                        suspension_forward.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    }
+                }else {
+                    integral_detail_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    integral_detail_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    integral_detail_forward.setBackgroundResource(R.drawable.myorder_choosed_color);
+                    suspension_det.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    suspension_appraise.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                    suspension_forward.setBackgroundResource(R.drawable.myorder_choosed_color);
+                    integral_detail_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    integral_detail_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    integral_detail_forward.setTextColor(getResources().getColor(R.color.text_efb134));
+                    suspension_det.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    suspension_appraise.setTextColor(getResources().getColor(R.color.text_fdfdfd));
+                    suspension_forward.setTextColor(getResources().getColor(R.color.text_efb134));
+                }
             }
         });
     }
@@ -166,7 +252,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
             TextView tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
             tv_market_price.setVisibility(View.GONE);
             tv_money.setText(" "+exchange_integral);
-            tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
+            tv_selectedNum.setText(key_name+","+SelectNum+"件");
             tv_stock_num.setText("库存："+store_count+"");
             dtl_nolistview = inflate.findViewById(R.id.db_integral_dtl_nolistview);
             dtl_nolistview.setAdapter(new TypeAdapter());
@@ -203,7 +289,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
                     if (SelectNum>1){
                         SelectNum=--SelectNum;
                         tv_select_num.setText(SelectNum+"");
-                        tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
+                        tv_selectedNum.setText(key_name+","+SelectNum+"件");
                     }else {
                         ToastUtils.showToast(mContext,"换购数量不能小于1");
                     }
@@ -215,7 +301,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
                     if ( SelectNum<store_count) {
                         SelectNum = ++SelectNum;
                         tv_select_num.setText(SelectNum + "");
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                        tv_selectedNum.setText( key_name + "," + SelectNum + "件");
                     }else {
                         ToastUtils.showToast(mContext,"库存不足");
                     }
@@ -240,6 +326,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
     }
 
    public void UpdateUI(int code,String msg, IntegralGoodsDetailBean.DataBean data){
+        LoadingClose();
        //产品详情
        webview.loadUrl("javascript:callJS('"+data.getGoods_content()+"')");
        List<IntegralGoodsDetailBean.DataBean.GoodsImagesBean> goods_images = data.getGoods_images();
@@ -341,20 +428,20 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
                     key_name = spec_goods_price.get(a).getKey_name();
                     store_count = spec_goods_price.get(a).getStore_count();
                     item_id = spec_goods_price.get(a).getItem_id();
+                    if (store_count > 0) {
+                        SelectNum = 1;
+                        tv_select_num.setText(SelectNum + "");
+                    } else {
+                        SelectNum = 0;
+                        tv_select_num.setText(SelectNum + "");
+                    }
                     //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                    tv_selectedNum.setText( key_name + "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
                     return ;
                 }else {
-                    tv_selectedNum.setText("已选" + "请选择"+ "," + SelectNum + "件");
+                    tv_selectedNum.setText("请选择"+ "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
-                }
-                if (store_count > 0) {
-                    SelectNum = 1;
-                    tv_select_num.setText(SelectNum + "");
-                } else {
-                    SelectNum = 0;
-                    tv_select_num.setText(SelectNum + "");
                 }
             }
         }
@@ -371,6 +458,26 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
             ToastUtils.showToast(mContext,msg);
         }
 
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 
 }

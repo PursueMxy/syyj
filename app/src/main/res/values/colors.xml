@@ -17,6 +17,7 @@
     <color name="ff707070">#ff707070</color>
 
     <drawable name="cut_off_rule">#e6e6e6</drawable>
+    <drawable name="bg_fefefe">#FEFEFE</drawable>
     <!--白色  标题 背景-->
     <color name="colorBackground">#ffffff</color>
     <!--蓝色  选中下划线 -->

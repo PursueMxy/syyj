@@ -17,6 +17,8 @@ import android.widget.RadioGroup;
 
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.XXPermissions;
 import com.zhkj.syyj.CustView.MyViewPager;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.Fragments.HomeFragment;
@@ -47,6 +49,18 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mContext = getApplicationContext();
+        XXPermissions.with(this)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean isAll) {
+
+                    }
+
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+
+                    }
+                });
         Intent intent = getIntent();
         try {
             currentItems = Integer.parseInt(intent.getStringExtra("currentItems"));

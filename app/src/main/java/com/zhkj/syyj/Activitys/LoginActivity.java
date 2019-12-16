@@ -20,6 +20,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.syyj.Beans.LoginBean;
 import com.zhkj.syyj.Beans.WechatLoginBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.MyApplication;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.CommonUtil;
@@ -42,24 +43,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginPresenter loginPresenter;
     private SharedPreferences share;
     private String token;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mContext = getApplicationContext();
-        XXPermissions.with(this)
-                .request(new OnPermission() {
-                    @Override
-                    public void hasPermission(List<String> granted, boolean isAll) {
-
-                    }
-
-                    @Override
-                    public void noPermission(List<String> denied, boolean quick) {
-
-                    }
-                });
         share = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         token = share.getString("token", "");
         mobile = share.getString("mobile", "");
@@ -109,6 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mobile = edt_mobile.getText().toString();
                 if (!password.equals("")&&!mobile.equals(""))
                 {
+                    LoadingDialog();
                     loginPresenter.GetLogin(mobile,password);
                 }
                 break;
@@ -124,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 登录返回事件
      * */
     public void Login(int code, String msg, LoginBean.DataBean dataBean){
+        LoadingClose();
         if (code==1){
             if (msg.equals("登录成功")) {
                 String token = dataBean.getToken();
@@ -166,5 +158,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Beans.CouponDetailBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.DateUtils;
 import com.zhkj.syyj.contract.CouponDetailContract;
@@ -28,6 +29,7 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
     private String token;
     private String uid;
     private Button btn_use;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +43,14 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
         cid = intent.getStringExtra("Cid");
         InitUI();
         couponDetailPresenter = new CouponDetailPresenter(this);
+        LoadingDialog();
         couponDetailPresenter.GetCouponDetail(uid,token,cid);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         couponDetailPresenter.GetCouponDetail(uid,token,cid);
     }
 
@@ -85,6 +89,7 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void UpdateUI(int code, String msg, CouponDetailBean.DataBean data){
+        LoadingClose();
      if (code==1){
          tv_title.setText(data.getName());
          String start_time=data.getUse_start_time()+"";
@@ -100,5 +105,25 @@ public class CouponDetailActivity extends AppCompatActivity implements View.OnCl
              btn_use.setClickable(false);
          }
      }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -19,6 +19,7 @@ import com.zhkj.syyj.Adapters.UsableCouponAdapter;
 import com.zhkj.syyj.Beans.CouponBean;
 import com.zhkj.syyj.Beans.PlaceOrderBean;
 import com.zhkj.syyj.Beans.UsableCouponBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
@@ -40,6 +41,7 @@ public class UsableCouponActivity extends AppCompatActivity {
     private List<PlaceOrderBean.DataBean.UserCartCouponListBean> userCartCouponList=new ArrayList<>();
     private UsableCouponAdapter couponAdapter;
     private int COUPON_CODE=2002;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,5 +123,25 @@ public class UsableCouponActivity extends AppCompatActivity {
             finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Beans.LiteCollectBean;
 import com.zhkj.syyj.Beans.LiteCommentBean;
 import com.zhkj.syyj.Beans.OrderDetailBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.DateUtils;
@@ -50,6 +51,7 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
     private String token;
     private Context mContext;
     private List<LiteCommentBean> commentBeanList=new ArrayList<>();
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +65,14 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
         order_id = intent.getStringExtra("order_id");
         InitUI();
         evaluatePresenter = new EvaluatePresenter(this);
+        LoadingDialog();
         evaluatePresenter.GetOrderDetail(uid,token,order_id);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         evaluatePresenter.GetOrderDetail(uid,token,order_id);
     }
 
@@ -89,6 +93,7 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
             case R.id.evaluate_btn_confirm:
                 commentBeanList = LitePal.findAll(LiteCommentBean.class);
                 String content = new GsonBuilder().create().toJson(commentBeanList);
+
                 evaluatePresenter.GetOrderAddComment(uid,token,order_id,content);
                 break;
                 default:
@@ -184,6 +189,7 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
 
     //数据解析
     public void  UpdateJson(int code, String msg, OrderDetailBean.DataBean data){
+        LoadingClose();
         if (code==1){
             OrderDetailBean.DataBean.OrderStatusDetailBean order_status_detail = data.getOrder_status_detail();
             order_goods = data.getOrder_goods();
@@ -209,6 +215,26 @@ public class EvaluateActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }else {
             ToastUtils.showToast(mContext,msg);
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 

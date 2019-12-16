@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Beans.UserLevelBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhkj.syyj.contract.MemberContract;
@@ -46,6 +47,7 @@ public class MemberActivity extends AppCompatActivity implements MemberContract.
     private TextView tv_lever_two;
     private TextView tv_lever_three;
     private TextView tv_lever_four;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class MemberActivity extends AppCompatActivity implements MemberContract.
     }
 
     private void InitData() {
+        LoadingDialog();
         memberPresenter.GetMember(uid,token);
     }
 
@@ -104,6 +107,7 @@ public class MemberActivity extends AppCompatActivity implements MemberContract.
 
     //返回数据更新UI
     public void UpdateUI(int code, String msg, UserLevelBean.DataBean  data){
+        LoadingClose();
         if (code==1){
             UserLevelBean.DataBean.UserBean user = data.getUser();
             List<UserLevelBean.DataBean.LevelBean> level = data.getLevel();
@@ -149,6 +153,26 @@ public class MemberActivity extends AppCompatActivity implements MemberContract.
                 + r.getResourceEntryName(resId));
 
         return uri.toString();
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 
 }

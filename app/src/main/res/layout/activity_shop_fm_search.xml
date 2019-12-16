@@ -44,7 +44,7 @@
             android:gravity="center|left"
             android:hint="请输入搜索内容"
             android:layout_width="@dimen/dp_295"
-            android:layout_height="@dimen/dp_36" />
+            android:layout_height="@dimen/dp_40" />
 
         <TextView
             android:id="@+id/ShopFmSearch_tv_search"

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.Wheel.ScreenInfo;
 import com.zhkj.syyj.CustView.Wheel.WheelMain;
 import com.zhkj.syyj.R;
@@ -37,6 +38,7 @@ public class ReMindActivity extends AppCompatActivity implements View.OnClickLis
     private String token;
     private ReMindPresenter reMindPresenter;
     private String task_id;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +177,26 @@ public class ReMindActivity extends AppCompatActivity implements View.OnClickLis
         if (code==1){
           finish();
           startActivity(new Intent(mContext,HomeActivity.class));
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 }

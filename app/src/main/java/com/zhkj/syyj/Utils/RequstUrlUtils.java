@@ -99,6 +99,9 @@ public class RequstUrlUtils {
         //获取默认地址
         public static String GetDefaultAddress=HOST+"/user/getDefaultAddress";
 
+        //设置默认地址
+        public static  String defaultAddress=HOST+"/user/defaultAddress";
+
         //设置提醒
         public static String TaskSetRemind=HOST+"/task/setRemind";
 

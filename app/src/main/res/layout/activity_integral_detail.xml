@@ -39,7 +39,7 @@
             android:background="@color/white"
             android:id="@+id/integral_detail_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.zhouyou.recyclerview.XRecyclerView>
+            android:layout_height="match_parent"></com.zhouyou.recyclerview.XRecyclerView>
     </RelativeLayout>
     <Button
         android:layout_marginBottom="@dimen/dp_40"

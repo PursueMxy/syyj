@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 
@@ -28,6 +29,7 @@ public class MessageDetailActivity extends AppCompatActivity implements View.OnC
     private String content;
     private String time;
     private String name;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,14 @@ public class MessageDetailActivity extends AppCompatActivity implements View.OnC
         time = intent.getStringExtra("time");
         content = intent.getStringExtra("content");
         InitUI();
+        LoadingDialog();
         GetMessageData();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         GetMessageData();
     }
 
@@ -98,8 +102,28 @@ public class MessageDetailActivity extends AppCompatActivity implements View.OnC
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                   LoadingClose();
                     }
                 });
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

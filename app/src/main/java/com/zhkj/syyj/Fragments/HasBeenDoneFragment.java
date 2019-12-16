@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.zhkj.syyj.Adapters.HasBeenDoneAdapter;
 import com.zhkj.syyj.Adapters.TaskListAdapter;
 import com.zhkj.syyj.Beans.DoneListBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhouyou.recyclerview.XRecyclerView;
 
@@ -36,6 +37,7 @@ public class HasBeenDoneFragment extends Fragment {
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
     private HasBeenDoneAdapter hasBeenDoneAdapter;
+    private CustomProgressDialog progressDialog;
 
     public HasBeenDoneFragment() {
         // Required empty public constructor
@@ -110,5 +112,23 @@ public class HasBeenDoneFragment extends Fragment {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         float px = context.getResources().getDimension(id);
         return px / dm.density;
+    }
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
     }
 }

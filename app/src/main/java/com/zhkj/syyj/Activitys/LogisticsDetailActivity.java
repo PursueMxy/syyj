@@ -20,6 +20,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhkj.syyj.Beans.ExpressBean;
 import com.zhkj.syyj.Beans.LogistisBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 
@@ -38,6 +39,7 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
     private String uid;
     private String token;
     private List<LogistisBean.DataBean> dataList=new ArrayList<>();
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
 
     //获取物流信息
     public void GetLogistics(){
+        LoadingDialog();
         OkGo.<String>get(RequstUrlUtils.URL.OrderExpress)
                 .params("uid",uid)
                 .params("token",token)
@@ -116,7 +119,7 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-
+                        LoadingClose();
                         ExpressBean expressBean = new GsonBuilder().create().fromJson(response.body(), ExpressBean.class);
                         if (expressBean.getCode()==1){
                             ExpressBean.DataBean data = expressBean.getData();
@@ -151,5 +154,25 @@ public class LogisticsDetailActivity extends AppCompatActivity implements View.O
                         }
                     }
                 });
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

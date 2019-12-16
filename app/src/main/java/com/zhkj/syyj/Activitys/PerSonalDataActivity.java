@@ -28,6 +28,7 @@ import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhkj.syyj.Beans.UploadBean;
 import com.zhkj.syyj.Beans.UserBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.GifSizeFilter;
 import com.zhkj.syyj.Utils.MxyUtils;
@@ -55,6 +56,7 @@ public class PerSonalDataActivity extends AppCompatActivity implements PerSonalD
     private String token;
     private String uid;
     private String headimg;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class PerSonalDataActivity extends AppCompatActivity implements PerSonalD
         token = share.getString("token", "");
         uid = share.getString("uid", "");
         perSonalDataPresenter = new PerSonalDataPresenter(this);
+        LoadingClose();
         perSonalDataPresenter.GetUser(uid,token);
 
     }
@@ -73,7 +76,7 @@ public class PerSonalDataActivity extends AppCompatActivity implements PerSonalD
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        perSonalDataPresenter = new PerSonalDataPresenter(this);
+        LoadingClose();
         perSonalDataPresenter.GetUser(uid,token);
 
     }
@@ -92,22 +95,6 @@ public class PerSonalDataActivity extends AppCompatActivity implements PerSonalD
                 break;
             case R.id.personal_data_img_edt_head:
                 startActivity(new Intent(mContext,UpdateUserActivity.class));
-//                Matisse.from(this)
-//                        .choose(MimeType.ofImage(), false)
-//                        .countable(true)
-//                        .capture(true)
-//                        .captureStrategy(new CaptureStrategy(true, "com.zhkj.syyj.fileprovider", "test"))
-//                        .maxSelectable(1)
-//                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.dp_110))
-//                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-//                        .thumbnailScale(0.85f)
-//                        .imageEngine(new GlideEngine())
-//                        .showSingleMediaType(true)
-//                        .originalEnable(true)
-//                        .maxOriginalSize(10)
-//                        .autoHideToolbarOnSingleTap(true)
-//                        .forResult(REQUEST_CODE);
                 break;
             case R.id.personal_date_rl_update_mobile:
                 startActivity(new Intent(mContext,UpdateMobileActivity.class));
@@ -168,11 +155,32 @@ public class PerSonalDataActivity extends AppCompatActivity implements PerSonalD
     }
 
     public void UpdateUI(int code, String msg, UserBean.DataBean data){
+        LoadingClose();
        if (code==1){
        Glide.with(mContext).load(RequstUrlUtils.URL.HOST+data.getHeadimg()).into(img_head);
        tv_mobile.setText(data.getMobile());
        }else {
            ToastUtils.showToast(mContext,msg);
        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

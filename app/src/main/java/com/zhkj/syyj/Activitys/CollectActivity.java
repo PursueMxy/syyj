@@ -22,6 +22,7 @@ import com.zhkj.syyj.Adapters.CollectAdapter;
 import com.zhkj.syyj.Beans.CollectListBean;
 import com.zhkj.syyj.Beans.LiteCollectBean;
 import com.zhkj.syyj.Beans.LiteGoodsCartBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.Fragments.ShopCartFragment;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
@@ -47,7 +48,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     private CollectPresenter collectPresenter;
     private String uid;
     private String token;
-    private int page=0;
+    private int page=1;
     private List<LiteCollectBean> liteCollectBeanList=new ArrayList<>();
     private TextView tv_manage;
     private Button btn_delete;
@@ -59,6 +60,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     public static final String LOCAL_BROADCAST = "com.zhkj.syyj.LOCAL_BROADCAST_COLLECT";
     private LocalReceiver localReceiver;
     private List<LiteCollectBean> liteCollectDeleteList=new ArrayList<>();
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
         uid = share.getString("uid", "");
         token = share.getString("token", "");
         InitUI();
+        LoadingDialog();
         collectPresenter = new CollectPresenter(this);
         collectPresenter.GetCollectList(uid,token,page);
     }
@@ -76,6 +79,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         collectPresenter.GetCollectList(uid,token,page);
     }
 
@@ -100,17 +104,14 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mRecyclerView.refreshComplete();//刷新动画完成
+                page=1;
+                collectPresenter.GetCollectList(uid,token,page);
             }
 
             @Override
             public void onLoadMore() {
-//                collectAdapter.addItemsToLast(addlist);
-//                collectAdapter.notifyDataSetChanged();
-//                //加载更多
-                mRecyclerView.loadMoreComplete();//加载动画完成
-//                if(addlist.size()>5) {
-                mRecyclerView.setNoMore(true);//数据加载完成
+                page=page+1;
+                collectPresenter.GetCollectList(uid,token,page);
 //                }
             }
         });
@@ -203,21 +204,47 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void UpdateUI(int code ,String msg,List<CollectListBean.DataBean> data){
+        LoadingClose();
       if (code==1){
-          LitePal.deleteAll(LiteCollectBean.class);
-          for (int  a=0;a<data.size();a++){
-              LiteCollectBean liteCollectBean = new LiteCollectBean();
-              liteCollectBean.setCollect_id(data.get(a).getCollect_id());
-              liteCollectBean.setGoods_id(data.get(a).getGoods_id());
-              liteCollectBean.setGoods_name(data.get(a).getGoods_name());
-              liteCollectBean.setOriginal_img(data.get(a).getOriginal_img());
-              liteCollectBean.setShop_price(data.get(a).getShop_price());
-              liteCollectBean.setCollect_slt("false");
-              liteCollectBean.setIsShow("false");
-              liteCollectBean.save();
+          if (page==1) {
+              LitePal.deleteAll(LiteCollectBean.class);
+              for (int  a=0;a<data.size();a++){
+                  LiteCollectBean liteCollectBean = new LiteCollectBean();
+                  liteCollectBean.setCollect_id(data.get(a).getCollect_id());
+                  liteCollectBean.setGoods_id(data.get(a).getGoods_id());
+                  liteCollectBean.setGoods_name(data.get(a).getGoods_name());
+                  liteCollectBean.setOriginal_img(data.get(a).getOriginal_img());
+                  liteCollectBean.setShop_price(data.get(a).getShop_price());
+                  liteCollectBean.setCollect_slt("false");
+                  liteCollectBean.setIsShow("false");
+                  liteCollectBean.save();
+              }
+              liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
+              collectAdapter.setListAll(liteCollectBeanList);
+              mRecyclerView.refreshComplete();//刷新动画完成
+          }else {
+              for (int  a=0;a<data.size();a++){
+                  LiteCollectBean liteCollectBean = new LiteCollectBean();
+                  liteCollectBean.setCollect_id(data.get(a).getCollect_id());
+                  liteCollectBean.setGoods_id(data.get(a).getGoods_id());
+                  liteCollectBean.setGoods_name(data.get(a).getGoods_name());
+                  liteCollectBean.setOriginal_img(data.get(a).getOriginal_img());
+                  liteCollectBean.setShop_price(data.get(a).getShop_price());
+                  liteCollectBean.setCollect_slt("false");
+                  liteCollectBean.setIsShow("false");
+                  liteCollectBean.save();
+              }
+              List<LiteCollectBean> CollectList  = LitePal.findAll(LiteCollectBean.class);
+              if (data.size()>0) {
+                  liteCollectBeanList.addAll(CollectList);
+                  collectAdapter.addItemsToLast(CollectList);
+              }else {
+                  page=1;
+                  mRecyclerView.setNoMore(true);//数据加载完成
+              }
+              //加载更多
+              mRecyclerView.loadMoreComplete();//加载动画完成
           }
-          liteCollectBeanList = LitePal.findAll(LiteCollectBean.class);
-          collectAdapter.setListAll(liteCollectBeanList);
           collectAdapter.notifyDataSetChanged();
           tv_manage.setText("管理");
           btn_delete.setVisibility(View.GONE);
@@ -247,6 +274,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     //返回通知
     public void UpdateUI(int code,String msg){
         if (code==1) {
+            LoadingDialog();
             collectPresenter.GetCollectList(uid, token, page);
         }else {
             ToastUtils.showToast(mContext,msg);
@@ -257,5 +285,25 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
     public void onDestroy() {
         super.onDestroy();
         localBroadcastManager.unregisterReceiver(localReceiver);    //取消广播的注册
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -37,6 +41,7 @@ import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhkj.syyj.Beans.UploadBean;
 import com.zhkj.syyj.Beans.UserInfoBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.Wheel.ScreenInfo;
 import com.zhkj.syyj.CustView.Wheel.WheelMain;
 import com.zhkj.syyj.R;
@@ -59,6 +64,8 @@ import java.util.zip.ZipFile;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static org.litepal.LitePalApplication.sContext;
 
 public class UpdateUserActivity extends AppCompatActivity implements UpdateMobileContract.View, UpdateUserContract.View {
     private static final int REQUEST_CODE = 1024;
@@ -95,6 +102,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     private int sex=0;
     private UpdateUserPresenter updateUserPresenter;
     private String headimg;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +115,14 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
         token = share.getString("token", "");
         uid = share.getString("uid", "");
         updateUserPresenter = new UpdateUserPresenter(this);
+        LoadingDialog();
         updateUserPresenter.GetUserInfo(uid,token);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         updateUserPresenter.GetUserInfo(uid,token);
     }
 
@@ -135,6 +145,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     public void onViewClicked(View view){
         switch (view.getId()){
             case R.id.update_user_img_head:
+                getPermission(this,true,true);
                 Matisse.from(this)
                         .choose(MimeType.ofImage(), false)
                         .countable(true)
@@ -307,6 +318,7 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
     }
 
     public void UpdateUI(int code, String msg, UserInfoBean.DataBean data){
+        LoadingClose();
        if (code==1){
            edt_wechatNumber.setText(data.getWechat());
            edt_vocation.setText(data.getCareer());
@@ -340,6 +352,88 @@ public class UpdateUserActivity extends AppCompatActivity implements UpdateMobil
 
         }else {
             ToastUtils.showToast(mContext,msg);
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
+    }
+
+    /**
+     * getPermission 动态获取权限方法
+     *
+     * @param context 上下文
+     * @param isAsk   是否开启权限询问      (Android6.0以下用户可以不开启,所有权限自动可以获得；6.0以上用户若不开启，获取不到某权限时，若你没做相应处理，可能会崩溃)
+     * @param isHandOpen   是否询问用户被引导手动开启权限界面   (用户永久禁用某权限时是否引导让用户手动授权权限)
+     */
+    private void getPermission(Context context,boolean isAsk,final boolean isHandOpen){
+        if(!isAsk)return;
+
+        if (XXPermissions.isHasPermission(context,
+                //所需危险权限可以在此处添加：
+                Permission.CAMERA,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE)) {
+           ToastUtils.showToast(mContext, "已经获得所需所有权限");
+        }else {
+            XXPermissions.with((Activity)context).permission(
+                    //同时在此处添加：
+                    Permission.READ_PHONE_STATE,
+                    Permission.WRITE_EXTERNAL_STORAGE
+            ).request(new OnPermission() {
+                @Override
+                public void noPermission(List<String> denied, boolean quick) {
+                    if (quick) {
+                        ToastUtils.showToast(mContext,"被永久拒绝授权，请手动授予权限");
+                        //如果是被永久拒绝就跳转到应用权限系统设置页面
+                        if(isHandOpen) {
+                            final AlertDialog.Builder normalDialog =
+                                    new AlertDialog.Builder(sContext);
+                            normalDialog.setTitle("开启权限引导");
+                            normalDialog.setMessage("被您永久禁用的权限为应用必要权限，是否需要引导您去手动开启权限呢？");
+                            normalDialog.setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    XXPermissions.gotoPermissionSettings(sContext);
+                                }
+                            });
+                            normalDialog.setNegativeButton("下一次", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                }
+                            });
+                            normalDialog.show();
+                        }
+                    }else {
+                        ToastUtils.showToast(mContext, "获取权限失败");
+                    }
+                }
+
+                @Override
+                public void hasPermission(List<String> granted, boolean isAll) {
+                    if (isAll) {
+                        ToastUtils.showToast(mContext,"获取权限成功");
+                    }else {
+                        ToastUtils.showToast(mContext, "获取权限成功，部分权限未正常授予");
+                    }
+                }
+            });
         }
     }
 }

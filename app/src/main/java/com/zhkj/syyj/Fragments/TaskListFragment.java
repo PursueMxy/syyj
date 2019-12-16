@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.zhkj.syyj.Activitys.LoginActivity;
 import com.zhkj.syyj.Adapters.TaskListAdapter;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.ToastUtils;
 import com.zhouyou.recyclerview.XRecyclerView;
@@ -40,6 +41,7 @@ public class TaskListFragment extends Fragment {
     private TaskListAdapter taskListAdapter;
     public static final String TRANSFER_PAGE = "page";
     private String mArgument;
+    private CustomProgressDialog progressDialog;
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -130,5 +132,23 @@ public class TaskListFragment extends Fragment {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         float px = context.getResources().getDimension(id);
         return px / dm.density;
+    }
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
     }
 }

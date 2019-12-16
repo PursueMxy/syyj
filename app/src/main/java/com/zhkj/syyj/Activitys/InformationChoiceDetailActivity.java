@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Beans.NewsDetailBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.contract.InformationChoiceDetailContract;
 import com.zhkj.syyj.presenter.InformationChoiceDetailPresenter;
@@ -21,6 +22,7 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
     private TextView tv_title;
     private InformationChoiceDetailPresenter informationChoiceDetailPresenter;
     private String id;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +32,14 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
         id = intent.getStringExtra("id");
         InitUI();
         informationChoiceDetailPresenter = new InformationChoiceDetailPresenter(this);
+        LoadingDialog();
         informationChoiceDetailPresenter.getNewsDetail(id);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         informationChoiceDetailPresenter.getNewsDetail(id);
     }
 
@@ -70,13 +74,32 @@ public class InformationChoiceDetailActivity extends AppCompatActivity implement
 
     //获取到内容
     public void UpdateNewsDetail(NewsDetailBean newsDetailBean){
+        LoadingClose();
         int code = newsDetailBean.getCode();
         if (code==1){
             NewsDetailBean.DataBean data = newsDetailBean.getData();
             tv_title.setText(Html.fromHtml(data.getContent()));
         }
     }
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
 
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
+    }
 
 }
 

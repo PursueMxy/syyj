@@ -144,10 +144,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         img_item = intent.getStringExtra("img_item");
         mContext = getApplicationContext();
         InitUI();
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(this);
-        }
-        progressDialog.show();
+      LoadingDialog();
         goodsDetailPresenter = new GoodsDetailPresenter(this);
         goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
     }
@@ -155,6 +152,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
     }
 
@@ -314,7 +312,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         Glide.with(mContext).load(img_item).into(img_goods);
             tv_market_price.setText("建议售价：¥ "+market_price);
         tv_money.setText("¥ "+shop_price);
-        tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
+        tv_selectedNum.setText(key_name+","+SelectNum+"件");
         tv_stock_num.setText("库存："+store_count+"");
             dtl_nolistview = inflate.findViewById(R.id.db_integral_dtl_nolistview);
             dtl_nolistview.setAdapter(new TypeAdapter());
@@ -348,7 +346,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 if (SelectNum>1){
                     SelectNum=--SelectNum;
                     tv_select_num.setText(SelectNum+"");
-                    tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
+                    tv_selectedNum.setText(key_name+","+SelectNum+"件");
                 }else {
                     if (SpecGoodsPriceList.size()==0){
                         if (SelectNum>0) {
@@ -369,7 +367,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 if ( SelectNum<store_count) {
                     SelectNum = ++SelectNum;
                     tv_select_num.setText(SelectNum + "");
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                    tv_selectedNum.setText(key_name + "," + SelectNum + "件");
                 }else {
                     ToastUtils.showToast(mContext,"库存不足");
                 }
@@ -394,7 +392,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
             tv_market_price.setText("建议售价：¥ " + market_price);
             tv_money.setText("¥ " + shop_price);
-            tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+            tv_selectedNum.setText(key_name + "," + SelectNum + "件");
             tv_stock_num.setText("库存：" + store_count + "");
             ImageView img_goods= inflate.findViewById(R.id.db_integral_dtl_img_goods);
             Glide.with(mContext).load(img_item).into(img_goods);
@@ -434,7 +432,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                     if (SelectNum > 1) {
                         SelectNum = --SelectNum;
                         tv_select_num.setText(SelectNum + "");
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                        tv_selectedNum.setText( key_name + "," + SelectNum + "件");
                     } else {
                         ToastUtils.showToast(mContext, "换购数量不能小于1");
                     }
@@ -446,7 +444,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                     if (SelectNum < store_count) {
                         SelectNum = ++SelectNum;
                         tv_select_num.setText(SelectNum + "");
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                        tv_selectedNum.setText(key_name + "," + SelectNum + "件");
                     } else {
                         ToastUtils.showToast(mContext, "库存不足");
                     }
@@ -472,10 +470,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void UpdateUI(int code, String msg, String data){
-        if (progressDialog != null){
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
+      LoadingClose();
         parseJSONWithJSONObject(data);
     }
 
@@ -684,22 +679,42 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                     key_name = SpecGoodsPriceList.get(a).getKey_name();
                     store_count = SpecGoodsPriceList.get(a).getStore_count();
                     item_id = SpecGoodsPriceList.get(a).getItem_id();
+                    if (store_count>0) {
+                        SelectNum = 1;
+                        tv_select_num.setText(SelectNum + "");
+                    } else {
+                        SelectNum = 0;
+                        tv_select_num.setText(SelectNum + "");
+                    }
                     //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                    tv_selectedNum.setText(key_name + "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
                     return ;
                 }else {
-                    tv_selectedNum.setText("已选" + "请选择"+ "," + SelectNum + "件");
+                    tv_selectedNum.setText("请选择"+ "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
                 }
-                if (store_count > 0) {
-                    SelectNum = 1;
-                    tv_select_num.setText(SelectNum + "");
-                } else {
-                    SelectNum = 0;
-                    tv_select_num.setText(SelectNum + "");
-                }
             }
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 }

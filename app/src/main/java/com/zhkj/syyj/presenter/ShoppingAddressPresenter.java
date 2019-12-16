@@ -40,4 +40,5 @@ public class ShoppingAddressPresenter implements ShoppingAddressContract.Present
         }
 
     }
+
 }

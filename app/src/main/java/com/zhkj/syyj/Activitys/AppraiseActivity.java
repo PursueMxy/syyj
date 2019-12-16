@@ -40,7 +40,7 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
     private RadioButton radiobutton_to_bo_shipped;
     private RadioButton radiobutton_to_bo_received;
     private RadioButton radiobutton_obligation;
-    private  int page=0;
+    private  int page=1;
     private  String goods_id;
     private int type=0;
     private AppraisePresenter appraisePresenter;
@@ -54,16 +54,15 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         goods_id = intent.getStringExtra("goods_id");
         InitUI();
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(this);
-        }
-        progressDialog.show();
+        LoadingDialog();
         appraisePresenter = new AppraisePresenter(this);
         appraisePresenter.GetGoodsComment(page, goods_id,type);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         appraisePresenter.GetGoodsComment(page, goods_id,type);
     }
     private void InitUI() {
@@ -76,16 +75,15 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mRecyclerView.refreshComplete();//刷新动画完成
+                page=1;
+                appraisePresenter.GetGoodsComment(page, goods_id,type);
             }
 
             @Override
             public void onLoadMore() {
-                page=0;
-                appraisePresenter.GetGoodsComment(page, goods_id,type);
                 //加载更多
-                mRecyclerView.loadMoreComplete();//加载动画完成
-                mRecyclerView.setNoMore(true);//数据加载完成
+                page=page+1;
+                appraisePresenter.GetGoodsComment(page, goods_id,type);
             }
         });
         mRecyclerView.setAdapter(appraiseAdapter);
@@ -112,7 +110,8 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                 switch (checkedId){
                     case R.id.appraise_radiobutton_obligation:
                         type=1;
-                        page=0;
+                        page=1;
+                        LoadingDialog();
                         appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -125,7 +124,8 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.appraise_radiobutton_to_bo_shipped:
                         type=2;
-                        page=0;
+                        page=1;
+                        LoadingDialog();
                         appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -138,7 +138,8 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.appraise_radiobutton_to_bo_received:
                         type=3;
-                        page=0;
+                        page=1;
+                        LoadingDialog();
                         appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_fdfdfd));
@@ -151,7 +152,8 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
                         break;
                     case R.id.appraise_radiobutton_whole:
                         type=0;
-                        page=0;
+                        page=1;
+                        LoadingDialog();
                         appraisePresenter.GetGoodsComment(page, goods_id,type);
                         radiobutton_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                         radiobutton_whole.setTextColor(getResources().getColor(R.color.text_efb134));
@@ -178,6 +180,26 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)){
@@ -193,12 +215,21 @@ public class AppraiseActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void UpdateUI(int code,String msg,List<GoodsCommentBean.DataBean> data){
-        if (progressDialog != null){
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
+        LoadingClose();
         if (code==1){
-            list=data;
+            if (page==1) {
+                list = data;
+                mRecyclerView.refreshComplete();//刷新动画完成
+            }else {
+                if (data!=null||data.size()>0){
+                    list.addAll(data);
+                    appraiseAdapter.addItemsToLast(list);
+                }else {
+                    page=1;
+                    mRecyclerView.setNoMore(true);//数据加载完成
+                }
+                mRecyclerView.loadMoreComplete();//加载动画完成
+            }
             appraiseAdapter.setListAll(list);
             appraiseAdapter.notifyDataSetChanged();
         }else {

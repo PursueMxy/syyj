@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.zhkj.syyj.Adapters.CollectAdapter;
 import com.zhkj.syyj.Adapters.GoodsListAdapter;
 import com.zhkj.syyj.Beans.GoodsListBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -53,6 +54,7 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
     private boolean isasc=false;
     private String sort_asc="desc";
     private String sort="sort";
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,14 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
         ButterKnife.bind(this);
         InitUI();
         goodsListPresenter = new GoodsListPresenter(this);
+        LoadingDialog();
+        goodsListPresenter.GetGoodsList(id,sort,sort_asc);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LoadingDialog();
         goodsListPresenter.GetGoodsList(id,sort,sort_asc);
     }
 
@@ -128,6 +138,9 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
                 tv_whole.setBackgroundResource(R.drawable.myorder_choosed_color);
                 tv_salas.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                 tv_price.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_whole.setTextColor(getResources().getColor(R.color.text_efb134));
+                tv_salas.setTextColor(getResources().getColor(R.color.text_949397));
+                tv_price.setTextColor(getResources().getColor(R.color.text_949397));
                 goodsListPresenter.GetGoodsList(id,sort,sort_asc);
                 break;
             case R.id.goods_list_top_rl_salas:
@@ -135,6 +148,9 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
                 tv_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                 tv_salas.setBackgroundResource(R.drawable.myorder_choosed_color);
                 tv_price.setBackgroundResource(R.drawable.myorder_nochoosed_color);
+                tv_whole.setTextColor(getResources().getColor(R.color.text_949397));
+                tv_salas.setTextColor(getResources().getColor(R.color.text_efb134));
+                tv_price.setTextColor(getResources().getColor(R.color.text_949397));
                 goodsListPresenter.GetGoodsList(id,sort,sort_asc);
                 break;
             case R.id.goods_list_top_rl_price:
@@ -142,16 +158,19 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
                 tv_whole.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                 tv_salas.setBackgroundResource(R.drawable.myorder_nochoosed_color);
                 tv_price.setBackgroundResource(R.drawable.myorder_choosed_color);
+                tv_whole.setTextColor(getResources().getColor(R.color.text_949397));
+                tv_salas.setTextColor(getResources().getColor(R.color.text_949397));
+                tv_price.setTextColor(getResources().getColor(R.color.text_efb134));
                 goodsListPresenter.GetGoodsList(id,sort,sort_asc);
                 break;
             case R.id.goods_list_img_price:
                 if (isasc){
                     isasc=!isasc;
-                    img_price.setBackgroundResource(R.mipmap.ic_price_rise);
+                    img_price.setImageResource(R.mipmap.ic_price_rise);
                     sort_asc="desc";
                 }else {
                     isasc=!isasc;
-                    img_price.setBackgroundResource(R.mipmap.ic_price_down);
+                    img_price.setImageResource(R.mipmap.ic_price_down);
                     sort_asc="asc";
                 }
                 goodsListPresenter.GetGoodsList(id,sort,sort_asc);
@@ -173,8 +192,30 @@ public class GoodsListActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void UpdateUI(int code, String msg, List<GoodsListBean.DataBean> data){
+        LoadingClose();
         data_list=data;
         goodsListAdapter.setListAll(data_list);
         mRecyclerView.setAdapter(goodsListAdapter);
+    }
+
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

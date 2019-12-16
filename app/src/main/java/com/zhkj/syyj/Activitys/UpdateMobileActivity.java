@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
@@ -53,6 +54,7 @@ public class UpdateMobileActivity extends AppCompatActivity implements UpdateMob
     private String token;
     private String uid;
     private UpdateMobilePresenter updateMobilePresenter;
+    private CustomProgressDialog progressDialog;
 
 
     @Override
@@ -172,5 +174,25 @@ public class UpdateMobileActivity extends AppCompatActivity implements UpdateMob
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

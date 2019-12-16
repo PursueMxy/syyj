@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.zhkj.syyj.Adapters.ServicesMessageAdapter;
 import com.zhkj.syyj.Beans.MessageNoticeBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.contract.ServicesMessageContract;
@@ -36,7 +37,9 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
     private ServicesMessageAdapter servicesMessageAdapter;
     private String token;
     private String uid;
+    private int page=1;
     private ServicesMessagePresenter servicesMessagePresenter;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,15 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
         uid = share.getString("uid", "");
         InitUI();
         servicesMessagePresenter = new ServicesMessagePresenter(this);
-        servicesMessagePresenter.GetMessageNoticeList(uid,token,0,0);
+        LoadingDialog();
+        servicesMessagePresenter.GetMessageNoticeList(uid,token,1,page);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        servicesMessagePresenter.GetMessageNoticeList(uid,token,0,0);
+        LoadingDialog();
+        servicesMessagePresenter.GetMessageNoticeList(uid,token,1,page);
     }
 
     private void InitUI() {
@@ -67,14 +72,15 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mRecyclerView.refreshComplete();//刷新动画完成
+                page=1;
+                servicesMessagePresenter.GetMessageNoticeList(uid,token,1,page);
             }
 
             @Override
             public void onLoadMore() {
                 //加载更多
-                mRecyclerView.loadMoreComplete();//加载动画完成
-                mRecyclerView.setNoMore(true);//数据加载完成
+                page=page+1;
+                servicesMessagePresenter.GetMessageNoticeList(uid,token,1,page);
             }
         });
         mRecyclerView.setAdapter( servicesMessageAdapter);
@@ -128,8 +134,41 @@ public class ServicesMessageActivity extends AppCompatActivity implements View.O
     }
 
     public void UpdateUI(int code,String msg, List<MessageNoticeBean.DataBean> data){
-        list=data;
-        servicesMessageAdapter.setListAll(list);
+        LoadingClose();
+        if (page==1) {
+            list = data;
+            servicesMessageAdapter.setListAll(list);
+            mRecyclerView.refreshComplete();//刷新动画完成
+        }else {
+            if (data!=null||data.size()>0){
+                list.addAll(data);
+                servicesMessageAdapter.addItemsToLast(data);
+            }else {
+                page=1;
+                mRecyclerView.setNoMore(true);//数据加载完成
+            }
+            mRecyclerView.loadMoreComplete();//加载动画完成
+        }
         servicesMessageAdapter.notifyDataSetChanged();
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

@@ -117,7 +117,7 @@ public class IntegralAdapter extends HelperRecyclerViewAdapter<IntegralListBean.
             TextView  tv_market_price = inflate.findViewById(R.id.db_integral_dtl_tv_market_price);
             tv_market_price.setVisibility(View.GONE);
             tv_money.setText(" "+data.getExchange_integral());
-            tv_selectedNum.setText("已选"+key_name+","+SelectNum+"件");
+            tv_selectedNum.setText(key_name+","+SelectNum+"件");
             tv_stock_num.setText("库存："+store_count+"");
             inflate.findViewById(R.id.db_integral_dtl_btn_confirm).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,7 +155,7 @@ public class IntegralAdapter extends HelperRecyclerViewAdapter<IntegralListBean.
                     if (SelectNum > 1) {
                         SelectNum = --SelectNum;
                         tv_select_num.setText(SelectNum + "");
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                        tv_selectedNum.setText(key_name + "," + SelectNum + "件");
                     } else {
                         ToastUtils.showToast(mContext, "换购数量不能小于1");
                     }
@@ -167,7 +167,7 @@ public class IntegralAdapter extends HelperRecyclerViewAdapter<IntegralListBean.
                     if (SelectNum < store_count) {
                         SelectNum = ++SelectNum;
                         tv_select_num.setText(SelectNum + "");
-                        tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                        tv_selectedNum.setText(key_name + "," + SelectNum + "件");
                     } else {
                         ToastUtils.showToast(mContext, "库存不足");
                     }
@@ -251,20 +251,21 @@ public class IntegralAdapter extends HelperRecyclerViewAdapter<IntegralListBean.
                     key_name = spec_goods_price.get(a).getKey_name();
                     store_count = spec_goods_price.get(a).getStore_count();
                     item_id = spec_goods_price.get(a).getItem_id();
+                    if (store_count > 0) {
+                        SelectNum = 1;
+                        tv_select_num.setText(SelectNum + "");
+                    } else {
+                        SelectNum = 0;
+                        tv_select_num.setText(SelectNum + "");
+                    }
                     //label是被点击的标签，data是标签所对应的数据，position是标签的位置。
-                    tv_selectedNum.setText("已选" + key_name + "," + SelectNum + "件");
+                    tv_selectedNum.setText( key_name + "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
                     return ;
                 }else {
-                    tv_selectedNum.setText("已选" + "请选择"+ "," + SelectNum + "件");
+                    SelectNum=0;
+                    tv_selectedNum.setText("请选择"+ "," + SelectNum + "件");
                     tv_stock_num.setText("库存：" + store_count + "");
-                }
-                if (store_count > 0) {
-                    SelectNum = 1;
-                    tv_select_num.setText(SelectNum + "");
-                } else {
-                    SelectNum = 0;
-                    tv_select_num.setText(SelectNum + "");
                 }
             }
         }

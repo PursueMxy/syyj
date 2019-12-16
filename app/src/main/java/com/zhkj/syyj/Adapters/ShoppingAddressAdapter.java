@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Activitys.ShoppingAddressActivity;
@@ -63,8 +64,21 @@ public class ShoppingAddressAdapter extends HelperRecyclerViewAdapter<AddressLis
         tv_name.setText(data.getConsignee()+"  "+data.getMobile());
         if (data.getIs_default()==1){
             cb_default.setChecked(true);
+            tv_default.setVisibility(View.VISIBLE);
         }else {
             cb_default.setChecked(false);
+            tv_default.setVisibility(View.INVISIBLE);
         }
+        cb_default.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ShoppingAddressActivity shoppingAddressActivity=(ShoppingAddressActivity)weak.get();
+                if (isChecked){
+                    shoppingAddressActivity.defaultAddress(data.getAddress_id()+"","1");
+                }else {
+                    shoppingAddressActivity.defaultAddress(data.getAddress_id()+"","0");
+                }
+            }
+        });
     }
 }

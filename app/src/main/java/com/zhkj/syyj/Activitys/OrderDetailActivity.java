@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhkj.syyj.Beans.OrderDetailBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.DateUtils;
@@ -55,6 +56,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private RelativeLayout rl_bottom;
     private TextView tv_address;
     private String shipping_name="";
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +70,14 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         token = share.getString("token", "");
         orderDetailPresenter = new OrderDetailPresenter(this);
         InitUI();
+        LoadingDialog();
         orderDetailPresenter.GetOrderDetail(uid,token,order_id);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         orderDetailPresenter.GetOrderDetail(uid,token,order_id);
     }
 
@@ -206,6 +210,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
     //数据解析
     public void  UpdateJson(int code, String msg, OrderDetailBean.DataBean data){
+        LoadingClose();
         if (code==1){
             OrderDetailBean.DataBean.OrderStatusDetailBean order_status_detail = data.getOrder_status_detail();
             order_goods = data.getOrder_goods();
@@ -273,5 +278,25 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     //点击返回
     public void UpdateUI(int code, String msg,String typename){
         ToastUtils.showToast(mContext,msg);
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

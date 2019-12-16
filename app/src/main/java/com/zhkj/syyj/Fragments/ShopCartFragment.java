@@ -32,6 +32,7 @@ import com.zhkj.syyj.Beans.CardOrderBean;
 import com.zhkj.syyj.Beans.CartListBean;
 import com.zhkj.syyj.Beans.CartsBean;
 import com.zhkj.syyj.Beans.PublicResultBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
 import com.zhkj.syyj.Utils.ToastUtils;
@@ -69,6 +70,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     private Button btn_settle;
     private boolean IsManage=false;
     private ArrayList<CartsBean> cartList=new ArrayList<>();
+    private CustomProgressDialog progressDialog;
 
     public ShopCartFragment() {
         // Required empty public constructor
@@ -90,12 +92,14 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
+        LoadingDialogShow();
         OkGo.<String>get(RequstUrlUtils.URL.CartIndex)
                 .params("uid",uid)
                 .params("token",token)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LoadingDialogClose();
                         CarGoodsBean carGoodsBean = new GsonBuilder().create().fromJson(response.body(), CarGoodsBean.class);
                         goodsCartTrueList.clear();
                         goodsCartFalseList.clear();
@@ -293,6 +297,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
     }
 
     public void  AsyncUpdateCart(String cart){
+        LoadingDialogShow();
         OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
                 .params("uid",uid)
                 .params("token",token)
@@ -300,6 +305,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LoadingDialogClose();
                         AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
                         if (asyncUpdateCartBean.getCode()==1){
                             InitData();
@@ -314,6 +320,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
 
 
     public void  AsyncUpdateCart(ArrayList<CartsBean> cartList){
+        LoadingDialogShow();
         String s = new GsonBuilder().create().toJson(cartList);
         OkGo.<String>post(RequstUrlUtils.URL.AsyncUpdateCart)
                 .params("uid", uid)
@@ -322,6 +329,7 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LoadingDialogClose();
                         AsyncUpdateCartBean asyncUpdateCartBean = new GsonBuilder().create().fromJson(response.body(), AsyncUpdateCartBean.class);
                         if (asyncUpdateCartBean.getCode() == 1) {
                             AsyncUpdateCartBean.DataBean data = asyncUpdateCartBean.getData();
@@ -378,5 +386,24 @@ public class ShopCartFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
+    }
+
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
     }
 }

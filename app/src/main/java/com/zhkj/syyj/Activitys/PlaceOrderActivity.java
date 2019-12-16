@@ -35,6 +35,7 @@ import com.zhkj.syyj.Beans.AuthResult;
 import com.zhkj.syyj.Beans.PayResult;
 import com.zhkj.syyj.Beans.PlaceOrderBean;
 import com.zhkj.syyj.Beans.WechatPayBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.CustView.NoScrollListView;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.AppContUtils;
@@ -81,6 +82,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
     private SharedPreferences share;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void InitData() {
+        LoadingDialog();
         placeOrderPresenter.getDefaultAddress(uid,token);
         PlaceOrderBean placeOrderBean = new GsonBuilder().create().fromJson(content, PlaceOrderBean.class);
         PlaceOrderBean.DataBean data = placeOrderBean.getData();
@@ -117,7 +120,6 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
             tv_coupon.setText(userCartCouponList.get(0).getCoupon().getName());
             cid = userCartCouponList.get(0).getId()+"";
             coupon_money = Double.parseDouble(userCartCouponList.get(0).getCoupon().getMoney());
-            Log.e("hsdhsbdh",coupon_money+"hhh"+cartPriceInfo.getTotal_fee());
         }else {
             tv_coupon.setText("没有可以用优惠券");
         }
@@ -262,6 +264,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
 
     //默认地址解析
     public void Update(int code, String msg, AddressBean.DataBean data){
+        LoadingClose();
         if (data!=null) {
             if (code == 1) {
                 address_id = data.getAddress_id() + "";
@@ -413,5 +416,25 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
                 .setPositiveButton(R.string.confirm, null)
                 .setOnDismissListener(onDismiss)
                 .show();
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

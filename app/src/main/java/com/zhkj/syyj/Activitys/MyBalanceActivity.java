@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zhkj.syyj.Beans.BalanceBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.DateUtils;
 import com.zhkj.syyj.contract.MyBalanceContract;
@@ -42,6 +43,7 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
     private List<BalanceBean.DataBean.LogBean> log=new ArrayList<>();
     private String balance;
     private TextView tv_pursue;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +58,14 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
         uid = share.getString("uid", "");
         InitUI();
         myBalancePresenter = new MyBalancePresenter(this);
+        LoadingDialog();
         myBalancePresenter.GetBalance(uid,token);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         myBalancePresenter.GetBalance(uid,token);
     }
 
@@ -141,11 +145,32 @@ public class MyBalanceActivity extends AppCompatActivity implements View.OnClick
 
     //UI更新
     public void  UpdateUI(int code, String msg, BalanceBean.DataBean data){
+        LoadingClose();
         if (code==1){
             balance = data.getBalance();
             tv_pursue.setText(balance);
             log = data.getLog();
             myAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 }

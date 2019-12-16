@@ -89,18 +89,12 @@ public class ShopFragment extends Fragment implements View.OnClickListener {
     }
 
     public void InitData() {
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(mContext);
-        }
-        progressDialog.show();
+       LoadingDialogShow();
         OkGo.<String>get(RequstUrlUtils.URL.CategoryList)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (progressDialog != null){
-                            progressDialog.dismiss();
-                            progressDialog = null;
-                        }
+                      LoadingDialogClose();
                         Gson gson = new GsonBuilder().create();
                         CategoryListBean categoryListBean = gson.fromJson(response.body(), CategoryListBean.class);
                         if (categoryListBean.getCode()==1){
@@ -154,6 +148,7 @@ public class ShopFragment extends Fragment implements View.OnClickListener {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                InitData();
                 mRecyclerView.refreshComplete();//刷新动画完成
             }
 
@@ -227,4 +222,24 @@ public class ShopFragment extends Fragment implements View.OnClickListener {
                     break;
         }
     }
+
+    public  void LoadingDialogShow(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(getContext());
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingDialogClose(){
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){}
+    }
+
+
 }

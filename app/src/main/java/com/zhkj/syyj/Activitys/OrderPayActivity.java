@@ -30,6 +30,7 @@ import com.zhkj.syyj.Beans.AuthResult;
 import com.zhkj.syyj.Beans.PayResult;
 import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.Beans.WechatPayBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.AppContUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -60,6 +61,7 @@ public class OrderPayActivity extends AppCompatActivity {
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
     private SharedPreferences share;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,5 +242,25 @@ public class OrderPayActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.confirm, null)
                 .setOnDismissListener(onDismiss)
                 .show();
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

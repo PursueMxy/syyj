@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.zhkj.syyj.Adapters.FmShopSearchAdapter;
 import com.zhkj.syyj.Beans.GoodsListBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.Utils.MxyUtils;
 import com.zhkj.syyj.Utils.RequstUrlUtils;
@@ -43,6 +44,7 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
     private String uid;
     private String search="";
     private EditText edt_content;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +56,11 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
         uid = share.getString("uid", "");
         InitUI();
         shopFmSearchPresenter = new ShopFmSearchPresenter(this);
-        shopFmSearchPresenter.GetSearchGoods(uid,token,search);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        shopFmSearchPresenter.GetSearchGoods(uid,token,search);
     }
 
     private void InitUI() {
@@ -116,6 +116,7 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
             case R.id.ShopFmSearch_tv_search:
                 shop_xRecyclerView.setVisibility(View.VISIBLE);
                 search=edt_content.getText().toString();
+                LoadingDialog();
                 shopFmSearchPresenter.GetSearchGoods(uid,token,search);
                 break;
             case R.id.ShopFmSearch_img_back:
@@ -140,6 +141,7 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void UpdateUI(int code,String msg,List<GoodsListBean.DataBean> data){
+        LoadingClose();
      if (code==1){
        list=data;
          fmShopSearchAdapter.setListAll(list);
@@ -147,5 +149,25 @@ public class ShopFmSearchActivity extends AppCompatActivity implements View.OnCl
      }else {
          ToastUtils.showToast(mContext,msg);
      }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
     }
 }

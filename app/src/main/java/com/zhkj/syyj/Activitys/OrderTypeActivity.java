@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Adapters.MyOrderAdapter;
 import com.zhkj.syyj.Beans.OrderListBean;
 import com.zhkj.syyj.Beans.ShoppingCarDataBean;
+import com.zhkj.syyj.CustView.CustomProgressDialog;
 import com.zhkj.syyj.R;
 import com.zhkj.syyj.contract.OrderTypeContract;
 import com.zhkj.syyj.presenter.OrderTypePresenter;
@@ -40,6 +41,7 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
     private OrderTypePresenter orderTypePresenter;
     private String uid;
     private String token;
+    private CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
         orderTypePresenter = new OrderTypePresenter(this);
         Intent intent = getIntent();
         titleName = intent.getStringExtra("title");
+        InitUI();
+        initExpandableListView();
+        initData();
+        LoadingDialog();
        if (titleName.equals("待付款")){
             orderTypePresenter.GetOrderType(uid, token, "WAITPAY", 0, 0);
         }else if (titleName.equals("待发货")) {
@@ -63,9 +69,6 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
         }else {
             orderTypePresenter.GetOrderType(uid, token, "", 0, 0);
         }
-        InitUI();
-        initExpandableListView();
-        initData();
     }
 
     private void InitUI() {
@@ -80,7 +83,18 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        initData();
+        LoadingDialog();
+        if (titleName.equals("待付款")){
+            orderTypePresenter.GetOrderType(uid, token, "WAITPAY", 0, 0);
+        }else if (titleName.equals("待发货")) {
+            orderTypePresenter.GetOrderType(uid, token, "WAITSEND", 0, 0);
+        } else if (titleName.equals("待收货")){
+            orderTypePresenter.GetOrderType(uid, token, "WAITRECEIVE", 0, 0);
+        }else if (titleName.equals("已完成")){
+            orderTypePresenter.GetOrderType(uid, token, "FINISH", 0, 0);
+        }else {
+            orderTypePresenter.GetOrderType(uid, token, "", 0, 0);
+        }
     }
 
     /**
@@ -167,6 +181,7 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
 
     //解析数据
     public void UpdateJson(int code,String msg,String data){
+        LoadingClose();
         if (code==1) {
             try {
                 OrderListBean orderListBean = new GsonBuilder().create().fromJson(data, OrderListBean.class);
@@ -175,6 +190,26 @@ public class OrderTypeActivity extends AppCompatActivity implements View.OnClick
             }catch (Exception e){
                 initExpandableListViewData(datas);
             }
+        }
+    }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
         }
     }
 }

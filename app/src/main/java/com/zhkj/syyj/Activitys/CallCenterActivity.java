@@ -41,14 +41,6 @@ public class CallCenterActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void InitUI() {
-        list.add("102");
-        list.add("112");
-        list.add("122");
-        list.add("132");
-        list.add("142");
-        list.add("152");
-        list.add("162");
-        list.add("172");
         findViewById(R.id.callCenter_img_back).setOnClickListener(this);
         mSwipeRefresh = findViewById(R.id.swipe_chat);
         mRvChat = findViewById(R.id.rv_chat_list);

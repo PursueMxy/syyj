@@ -46,7 +46,7 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     private String token;
     private String uid;
     private String type="";
-    private int page=0;
+    private int page=1;
     private CustomProgressDialog progressDialog;
 
     @Override
@@ -58,10 +58,7 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
         token = share.getString("token", "");
         uid = share.getString("uid", "");
         InitUI();
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(this);
-        }
-        progressDialog.show();
+        LoadingDialog();
         couponPresenter = new CouponPresenter(this);
         couponPresenter.GetCoupon(uid,token,type,page);
     }
@@ -69,6 +66,7 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LoadingDialog();
         couponPresenter.GetCoupon(uid,token,type,page);
     }
 
@@ -84,16 +82,15 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                page=1;
                 couponPresenter.GetCoupon(uid,token,type,page);
-                mRecyclerView.refreshComplete();//刷新动画完成
             }
 
             @Override
             public void onLoadMore() {
                 //加载更多
+                page=page+1;
                 couponPresenter.GetCoupon(uid,token,type,page);
-                mRecyclerView.loadMoreComplete();//加载动画完成
-                mRecyclerView.setNoMore(true);//数据加载完成
             }
         });
         mRecyclerView.setAdapter(couponAdapter);
@@ -223,12 +220,42 @@ public class CouponActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void UpdateUI(int code ,String msg,List<CouponBean.DataBean> data){
-        if (progressDialog != null){
-            progressDialog.dismiss();
-            progressDialog = null;
+        LoadingClose();
+        if (page==1) {
+            list = data;
+            couponAdapter.setListAll(list);
+            mRecyclerView.refreshComplete();//刷新动画完成
+        }else {
+            if (data!=null||data.size()>0){
+                list.addAll(data);
+                couponAdapter.addItemsToLast(data);
+            }else {
+                page=1;
+                mRecyclerView.setNoMore(true);//数据加载完成
+            }
+            mRecyclerView.loadMoreComplete();//加载动画完成
         }
-        list=data;
-        couponAdapter.setListAll(list);
         couponAdapter.notifyDataSetChanged();
     }
+
+    public void LoadingDialog(){
+        try {
+            if (progressDialog == null){
+                progressDialog = CustomProgressDialog.createDialog(this);
+            }
+            progressDialog.show();
+        }catch (Exception e){}
+    }
+
+    public void LoadingClose(){
+        try {
+            if (progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        }catch (Exception e){
+
+        }
+    }
+
 }

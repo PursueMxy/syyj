@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.zhkj.syyj.Beans.BuyIntegralGoodsBean;
 import com.zhkj.syyj.Beans.GoodsDetailBean;
 import com.zhkj.syyj.Beans.IntegralGoodsDetailBean;
+import com.zhkj.syyj.Beans.PublicResultBean;
 import com.zhkj.syyj.contract.IntegralDetailContract;
 import com.zhkj.syyj.contract.IntegralGoodsDetailContract;
 import com.zhkj.syyj.model.IntegralDetailModel;
@@ -37,7 +38,7 @@ public class IntegralGoodsDetailPresenter implements IntegralGoodsDetailContract
 
     //立即兑换解析
     public void SetBuyIntegralGoods(String content){
-        BuyIntegralGoodsBean buyIntegralGoodsBean = new GsonBuilder().create().fromJson(content, BuyIntegralGoodsBean.class);
-        mView.UpdateBuyIntegralGoods(buyIntegralGoodsBean.getCode(),buyIntegralGoodsBean.getMsg(),content);
+        PublicResultBean publicResultBean = new GsonBuilder().create().fromJson(content, PublicResultBean.class);
+        mView.UpdateBuyIntegralGoods(publicResultBean.getCode(),publicResultBean.getMsg(),content);
     }
 }

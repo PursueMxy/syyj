@@ -1,5 +1,6 @@
 package com.zhkj.syyj.Activitys;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -57,9 +58,12 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
     TextView tv_price;
     @BindView(R.id.place_order_integral_edt_message)
     EditText edt_message;
+
     private int goods_id;
     private String goods_num;
     private CustomProgressDialog progressDialog;
+    private int ADDRESS_CODE=2001;
+    private TextView tv_default;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +109,11 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
         tv_address = findViewById(R.id.place_order_integral_tv_address);
         tv_contracts = findViewById(R.id.place_order_integral_tv_contracts);
         tv_couponNumber = findViewById(R.id.place_order_integral_tv_couponNumber);
+        tv_default = findViewById(R.id.place_order_integral_tv_default);
         tv_freight = findViewById(R.id.place_order_integral_tv_freight);
     }
 
-    @OnClick({R.id.place_order_integral_img_back,R.id.place_order_integral_btn_immediate_payment})
+    @OnClick({R.id.place_order_integral_img_back,R.id.place_order_integral_btn_immediate_payment,R.id.place_order_integral_rl_address})
     public void onViewClicked(View view){
         switch (view.getId()){
             case R.id.place_order_integral_img_back:
@@ -117,6 +122,11 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
             case R.id.place_order_integral_btn_immediate_payment:
                 String message = edt_message.getText().toString();
                 placeOrderIntegralPresenter.GetIntegral(uid,token,goods_id+"",item_id,goods_num,address_id,message);
+                break;
+            case R.id.place_order_integral_rl_address:
+                Intent intent = new Intent(mContext,ShoppingAddressActivity.class);
+                intent.putExtra("type","select");
+                startActivityForResult(intent,ADDRESS_CODE);
                 break;
                 default:
                     break;
@@ -134,6 +144,24 @@ public class PlaceOrderIntegralActivity extends AppCompatActivity implements Pla
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADDRESS_CODE&&resultCode==ADDRESS_CODE) {
+            address_id = data.getStringExtra("address_id");
+            String address = data.getStringExtra("address");
+            String contacts= data.getStringExtra("contacts");
+            String IsDefault = data.getStringExtra("default");
+            if (IsDefault.equals("1")){
+                tv_default.setVisibility(View.VISIBLE);
+            }else {
+                tv_default.setVisibility(View.GONE);
+            }
+            tv_address.setText(address);
+            tv_contracts.setText(contacts);
+        }
     }
 
     //默认地址解析

@@ -120,7 +120,7 @@
                     app:unSelectedIndicatorWidth="7dp" />
                 <RelativeLayout
                     android:layout_alignParentBottom="true"
-                    android:background="#e0F2EFF1"
+                    android:background="@mipmap/ic_rectangle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_34">
                     <TextView

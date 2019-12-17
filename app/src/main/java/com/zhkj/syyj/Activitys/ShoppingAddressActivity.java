@@ -104,7 +104,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
                 outRect.set(0
-                        , 0
+                        ,0
                         , 0
                         , MxyUtils.dpToPx(mContext, MxyUtils.getDimens(mContext, R.dimen.dp_10)));
             }
@@ -117,6 +117,7 @@ public class  ShoppingAddressActivity extends AppCompatActivity implements View.
                     intent.putExtra("address_id",tasklist_item.get(position).getAddress_id()+"");
                     intent.putExtra("address",tasklist_item.get(position).getProvince()+tasklist_item.get(position).getCity()+tasklist_item.get(position).getDistrict() +tasklist_item.get(position).getTwon()+tasklist_item.get(position).getAddress());
                     intent.putExtra("contacts",tasklist_item.get(position).getConsignee()+"  "+tasklist_item.get(position).getMobile());
+                    intent.putExtra("default",tasklist_item.get(position).getIs_default()+"");
                     setResult(ADDRESS_CODE,intent);
                     finish();
                 }

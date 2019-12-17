@@ -53,36 +53,6 @@
                     android:textSize="16sp"
                     />
             </RelativeLayout>
-            <LinearLayout
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/fm_shop_ll_two_rec"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fm_shop_rec_left"
-                    android:layout_width="@dimen/dp_79"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/text_fdfdfd" />
-
-                <FrameLayout
-                    android:layout_width="@dimen/dp_280"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fm_shop_rec_right"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </FrameLayout>
-            </LinearLayout>
            <LinearLayout
                android:background="@color/white"
                android:orientation="horizontal"
@@ -98,9 +68,9 @@
                   />
 
                <View
-                   android:layout_width="@dimen/dp_1"
+                   android:layout_width="1dp"
                    android:layout_height="match_parent"
-                   android:background="@color/text_fdfdfd" />
+                   android:background="@color/bg_e6e6e6" />
 
                <com.zhouyou.recyclerview.XRecyclerView
                    android:id="@+id/fm_shop_right_xrecycler"

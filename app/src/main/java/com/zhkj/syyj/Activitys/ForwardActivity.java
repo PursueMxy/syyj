@@ -62,7 +62,7 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
     private GridLayoutManager mLayoutManager;
     private ForwardAdapter forwardAdapter;
     private TextView tv_content;
-    private ArrayList<String> share_imgs;
+    private ArrayList<String> share_imgs=new ArrayList<>();
     private String content;
     private String task_id;
     private static ArrayList<Uri> urisList=new ArrayList<>();
@@ -82,8 +82,12 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
 
     private void InitData() {
         urisList.clear();
-        for(int a=0;a<share_imgs.size();a++){
-           savePicture( RequstUrlUtils.URL.HOST +share_imgs.get(a));
+        try {
+            for (int a = 0; a < share_imgs.size(); a++) {
+                savePicture(RequstUrlUtils.URL.HOST + share_imgs.get(a));
+            }
+        }catch (Exception e){
+
         }
     }
 
@@ -158,7 +162,6 @@ public class ForwardActivity extends AppCompatActivity implements View.OnClickLi
         inflate.findViewById(R.id.dialog_forward_btn_shareToTimeLine).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast(mContext,urisList.size()+"条");
                 shareToTimeLine(content,urisList);
                 bottomDialog.dismiss();
             }

@@ -131,6 +131,8 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
     private MeasureRelativeLayout goods_detail_ll;
     private LinearLayout ll_suspension;
     private String img_item;
+    private String share_content;
+    private List<String> share_imgsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
         img_item = intent.getStringExtra("img_item");
         mContext = getApplicationContext();
         InitUI();
-      LoadingDialog();
+        LoadingDialog();
         goodsDetailPresenter = new GoodsDetailPresenter(this);
         goodsDetailPresenter.GetGoodsDetail(uid,token,goods_id);
     }
@@ -278,7 +280,12 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent1);
                 break;
             case R.id.goods_detail_tv_forward:
-                startActivity(new Intent(mContext,ForwardActivity.class));
+                Intent intent8 = new Intent(mContext, ForwardActivity.class);
+                intent8.putExtra("task_id",goods_id+"");
+                intent8.putExtra("content",share_content);
+                ArrayList<String> share_imgs = (ArrayList<String>)share_imgsList;
+                intent8.putStringArrayListExtra("share_imgs",share_imgs);
+                startActivity(intent8);
                 break;
             case R.id.goods_detail_btn_buynow:
                 RedeemBuyNowDialog();
@@ -491,9 +498,9 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             //轮播图
              urls.clear();
              ShareImgBean shareImgBean = new GsonBuilder().create().fromJson("{share_imgs:"+ share_imgs+"}", ShareImgBean.class);
-             List<String> share_imgsList = shareImgBean.getShare_imgs();
-             for (int a=0;a<share_imgsList.size();a++){
-             urls.add(RequstUrlUtils.URL.HOST+share_imgsList.get(a));
+            share_imgsList = shareImgBean.getShare_imgs();
+             for (int a = 0; a< share_imgsList.size(); a++){
+             urls.add(RequstUrlUtils.URL.HOST+ share_imgsList.get(a));
              }
              if (urls.size()>0) {
                  bannerLayout.setViewUrls(urls);
@@ -506,7 +513,7 @@ public class GoodsDetailActivity extends AppCompatActivity implements View.OnCli
             if (is_share==1){
                 tv_share.setText("该商品支持转发卖货");
                 tv_forward.setClickable(true);
-                String share_content = jsonObject.getString("share_content");
+                share_content = jsonObject.getString("share_content");
                 tv_copywriting.setText(share_content);
             }else {
                 tv_share.setText("该商品不支持转发卖货");

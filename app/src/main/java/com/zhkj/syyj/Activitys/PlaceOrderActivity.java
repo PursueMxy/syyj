@@ -83,6 +83,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
     private static final int SDK_AUTH_FLAG = 2;
     private SharedPreferences share;
     private CustomProgressDialog progressDialog;
+    private TextView tv_default;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
         myAdapter = new MyAdapter();
         noScrollListView.setAdapter(myAdapter);
         tv_address = findViewById(R.id.place_order_tv_address);
+        tv_default = findViewById(R.id.place_order_tv_default);
         tv_contacts = findViewById(R.id.place_order_tv_contacts);
         tv_coupon = findViewById(R.id.place_order_tv_coupon);
         tv_freight = findViewById(R.id.place_order_tv_freight);
@@ -281,6 +283,12 @@ public class PlaceOrderActivity extends AppCompatActivity implements View.OnClic
             address_id = data.getStringExtra("address_id");
             String address = data.getStringExtra("address");
             String contacts= data.getStringExtra("contacts");
+            String IsDefault = data.getStringExtra("default");
+            if (IsDefault.equals("1")){
+                tv_default.setVisibility(View.VISIBLE);
+            }else {
+                tv_default.setVisibility(View.GONE);
+            }
             tv_address.setText(address);
             tv_contacts.setText(contacts);
         }else  if (requestCode == COUPON_CODE&&resultCode==COUPON_CODE) {

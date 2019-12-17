@@ -228,9 +228,9 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
             case R.id.integral_btn_redeem_now:
                 RedeemNowDialog();
                 break;
-            case R.id.integral_detail_goods_tv_forward:
-                startActivity(new Intent(mContext,ForwardActivity.class));
-                break;
+//            case R.id.integral_detail_goods_tv_forward:
+//                startActivity(new Intent(mContext,ForwardActivity.class));
+//                break;
             case R.id.integral_detail_goods_img_home:
                 Intent intent = new Intent(mContext, HomeActivity.class);
                 intent.putExtra("currentItems","0");
@@ -343,7 +343,7 @@ public class IntegralGoodsDetailActivity extends AppCompatActivity implements In
        tv_goodsMoney.setText(data.getExchange_integral()+"");
        if (data.getIsCollect()==1){
            tv_forward.setClickable(true);
-           tv_forwardName.setText("该商品支持转发卖货");
+           tv_forwardName.setText("该商品不支持转发卖货");
        }else {
            tv_forward.setClickable(false);
            tv_forwardName.setText("该商品不支持转发卖货");

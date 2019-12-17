@@ -133,7 +133,6 @@ public class ShopFragment extends Fragment implements View.OnClickListener {
             }
         });
         inflate.findViewById(R.id.fm_shop_rl_search).setOnClickListener(this);
-        ll_two_rec = inflate.findViewById(R.id.fm_shop_ll_two_rec);
         recycler_left = inflate.findViewById(R.id.fm_shop_recycler_left);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recycler_left.setLayoutManager(layoutManager);

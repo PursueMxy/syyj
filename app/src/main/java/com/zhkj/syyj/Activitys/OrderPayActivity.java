@@ -174,8 +174,9 @@ public class OrderPayActivity extends AppCompatActivity {
                                 // 必须异步调用
                                 Thread payThread = new Thread(payRunnable);
                                 payThread.start();
+                            }else {
+                                startActivity(new Intent(mContext,CouponActivity.class));
                             }
-                            startActivity(new Intent(mContext,CouponActivity.class));
                         }else{
                             ToastUtils.showToast(mContext,publicResultBean.getMsg());
                         }
